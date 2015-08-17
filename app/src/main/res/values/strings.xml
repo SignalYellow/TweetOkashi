@@ -1,0 +1,49 @@
+<resources>
+    <!-- アプリ系 -->
+    <string name="app_name">ついいとおかし</string>
+
+    <!-- パスワード系 重要かつ基本的に変更しない -->
+    <string name="yahoo_application_id">dj0zaiZpPVhJa1IyQVhqZ0ozNyZzPWNvbnN1bWVyc2VjcmV0Jng9ZTg-</string>
+
+    <string name="consumer_key">Yz7nOmak7BTuwmTiwWK0JDbE6</string>
+    <string name="consumer_secret">JMHBEVyMGDDmTpS2pqs1dUuA1S8Vgn7KDHOFkRbhDQ0wwwVje4</string>
+
+    <string name="twitter_callback_url">callback://TwitterOAuthActivity</string>
+
+
+    <!-- 一般系 -->
+    <string name="btn_tweet">ツイート</string>
+    <string name="btn_update">更新</string>
+
+    <string name="retweet_tag">#ついいとおかし</string>
+
+    <string name="toast_list_is_null">表示するツイートがありません</string>
+
+    <!-- メニュー系 -->
+    <string name="menu_setting">設定の変更</string>
+    <string name="menu_help">説明書</string>
+
+
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="button1">Click!</string>
+    <string name="title_activity_tweet">TweetActivity</string>
+    <string name="title_activity_oauth">OAuthActivity</string>
+    <string name="title_activity_twitter_oauth">TwitterOAuthActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="menu_refresh">更新</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_timeline">TimelineActivity</string>
+    <string name="title_activity_setting">SettingActivity</string>
+</resources>
