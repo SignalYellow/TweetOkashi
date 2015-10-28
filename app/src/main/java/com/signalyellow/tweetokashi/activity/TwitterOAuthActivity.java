@@ -1,5 +1,6 @@
 package com.signalyellow.tweetokashi.activity;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,24 +23,31 @@ import twitter4j.auth.RequestToken;
 
 public class TwitterOAuthActivity extends Activity {
 
+    private static final String TAG = "OauthActivity";
+
     private String mCallbackURL;
     private Twitter mTwitter;
     private RequestToken mRequestToken;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_twitter_oauth);
 
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null){
+            actionBar.setSubtitle(R.string.login_activity_subtitle);
+        }
+
         mCallbackURL = getString(R.string.twitter_callback_url);
         mTwitter = TwitterUtils.getTwitterInstance(this);
         mTwitter.setOAuthAccessToken(null);
 
         findViewById(R.id.oauthButton).setOnClickListener(
-                new View.OnClickListener(){
+                new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
-                        Log.d("debug_check","checks onclick");
+                    public void onClick(View v) {
                         startAuthorize();
                     }
                 }
@@ -53,9 +61,9 @@ public class TwitterOAuthActivity extends Activity {
             protected String doInBackground(Void... params) {
                 try{
                     mRequestToken = mTwitter.getOAuthRequestToken(mCallbackURL);
-                    return mRequestToken.getAuthorizationURL();
+                    return  mRequestToken.getAuthorizationURL();
                 }catch (TwitterException e){
-                    e.printStackTrace();
+                    Log.d(TAG,e.toString());
                 }
 
                 return null;
@@ -64,12 +72,8 @@ public class TwitterOAuthActivity extends Activity {
             @Override
             protected void onPostExecute(String url) {
                 if(url != null){
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     Log.d("Authorize",url);
-                    startActivity(intent);
-                }else{
-                    Log.d("Authorize",url);
-
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 }
             }
         };
@@ -78,46 +82,50 @@ public class TwitterOAuthActivity extends Activity {
     }
 
     @Override
-    public void onNewIntent(Intent intent){
-        if(intent == null || intent.getData() == null
-                || !intent.getData().toString().startsWith(mCallbackURL)){
-            Log.d("new Intent","miss");
+    public void onNewIntent(Intent intent) {
+        if (intent == null || intent.getData() == null
+                || !intent.getData().toString().startsWith(mCallbackURL)) {
+            Log.d("new Intent", "miss");
+            startActivity(new Intent(getApplicationContext(),TwitterOAuthActivity.class));
+            finish();
             return;
         }
-        Log.d("new Intent","start");
         String verifier = intent.getData().getQueryParameter("oauth_verifier");
+        if (verifier == null) {
+            showToast(getString(R.string.error_normal));
+            startActivity(new Intent(getApplicationContext(), TwitterOAuthActivity.class));
+            finish();
+            return;
+        }
 
-        AsyncTask<String, Void, AccessToken> task = new AsyncTask<String, Void, AccessToken>() {
+        new AsyncTask<String, Void, AccessToken>() {
             @Override
             protected AccessToken doInBackground(String... params) {
-                try{
+                try {
                     return mTwitter.getOAuthAccessToken(mRequestToken, params[0]);
-                }catch (TwitterException e){
-                    e.printStackTrace();
+                } catch (TwitterException e) {
+                    Log.d(TAG, e.toString());
+                    return null;
                 }
-                return null;
-
             }
 
             @Override
-            protected void onPostExecute(AccessToken accessToken){
-                if(accessToken != null){
-                    showToast("Success! Authorization");
+            protected void onPostExecute(AccessToken accessToken) {
+                if (accessToken != null) {
+                    showToast(getString(R.string.success_login));
                     successOAuth(accessToken);
-                }else{
-                    showToast("failed... Acuhorization");
+                } else {
+                    showToast(getString(R.string.error_normal));
 
                 }
             }
-        };
-        task.execute(verifier);
+        }
+                .execute(verifier);
     }
 
     private void successOAuth(AccessToken accessToken){
         TwitterUtils.storeAccessToken(this, accessToken);
-        Intent intent = new Intent(this, MainActivity.class);
-
-        startActivity(intent);
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
@@ -128,20 +136,15 @@ public class TwitterOAuthActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_twitter_oauth, menu);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()){
+            case R.id.menu_help:
+                startActivity(new Intent(getApplicationContext(), HelpActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_color">#8C1274</color>
+    <color name="glycine">#D775C0</color>
+
+    <color name="text_name_color">@color/kikyonezu</color>
+    <color name="text_date_color">@color/kikyonezu</color>
+
+    <color name="bar_color">#9000a381</color>
+
+    <color name="kikyonezu">#95949a</color>
+    <color name="hanarokushou">#00a381</color>
+
+    <color name="white_out">#33ffffff</color>
+    <color name="black">#000000</color>
+    <color name="white">#fff</color>
+
+
+
+    <color name="main_green">#347b2c</color>
+    <color name="sub_green">#8bffac</color>
+    <color name="chigusanezu">#bed3ca</color>
+    <color name="tokiwa">#007b43</color>
+    <color name="tokiwamidori">#028760</color>
+    <color name="yanagizome">#93b881</color>
+    <color name="seijinezu">#bed2c3</color>
+
+    <color name="color_1">#7A9B76</color>
+    <color name="color_2">#8A7E72</color>
+    <color name="color_3">#5A2328</color>
+    <color name="color_4">#090302</color>
+    <color name="color_0">#090302</color>
+
+    <color name="purple_1">#FCECF9</color>
+    <color name="purple_2">#F9D6F2</color>
+    <color name="purple_3">#F6BFEB</color>
+    <color name="purple_4">#F3A9E4</color>
+    <color name="purple_5">#F092DE</color>
+
+
+</resources>

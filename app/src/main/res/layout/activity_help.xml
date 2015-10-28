@@ -1,0 +1,164 @@
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.signalyellow.tweetokashi.activity.HelpActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"
+                android:text="@string/help_title_concept"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_concept"/>
+
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"
+                android:text="@string/help_title_login"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_login"/>
+
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"
+                android:text="@string/help_title_haiku"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_haiku"/>
+
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_title_timeline"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_timeline"/>
+
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"
+                android:text="@string/help_title_haikuretweet"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_haikuretweet"/>
+
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"
+                android:text="@string/help_title_regenerate"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_regenerate"/>
+
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"
+                android:text="@string/help_title_search"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_search"/>
+
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"
+                android:text="@string/help_title_users"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_users"/>
+
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"
+                android:text="@string/help_title_tweet"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_tweet"/>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

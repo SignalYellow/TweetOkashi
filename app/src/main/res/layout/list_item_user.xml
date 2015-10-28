@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="@dimen/item_tweet_padding">
+
+    <com.loopj.android.image.SmartImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/icon"
+        android:layout_marginLeft="@dimen/text_name_margin_left"
+        android:layout_toRightOf="@+id/icon"
+        android:text="@string/test_name_long"
+        android:textSize="@dimen/text_name_size"
+        />
+    <TextView
+        android:id="@+id/screen_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_marginLeft="@dimen/text_name_margin_left"
+        android:layout_alignParentRight="true"
+        android:text="@string/test_screenname_long"
+        android:textSize="@dimen/text_name_size"
+        android:textColor="@color/text_name_color"
+        />
+
+    <TextView
+        android:layout_marginTop="@dimen/text_margin_top"
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name"
+        android:layout_below="@+id/screen_name"
+        android:text="@string/test_text"
+
+        />
+
+
+    <TextView
+        android:id="@+id/haikutext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:text="@string/test_haiku_long"
+        android:textSize="@dimen/text_haiku_size"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+</RelativeLayout>

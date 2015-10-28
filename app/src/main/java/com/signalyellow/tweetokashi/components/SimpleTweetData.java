@@ -1,8 +1,12 @@
 package com.signalyellow.tweetokashi.components;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import twitter4j.Status;
+import twitter4j.User;
 
 /**
  * Created by shohei on 15/08/14.
@@ -12,6 +16,8 @@ public class SimpleTweetData implements Serializable {
     String userName;
     String userScreenName;
     String haiku;
+    String imageURL;
+    Date date;
     long tweetId;
 
     public SimpleTweetData(HaikuStatus haikuStatus){
@@ -20,7 +26,34 @@ public class SimpleTweetData implements Serializable {
         this.userName = status.getUser().getName();
         this.userScreenName = status.getUser().getScreenName();
         this.tweetId = status.getId();
+        this.haiku = haikuStatus.getHaikuText();
+        this.imageURL = status.getUser().getProfileImageURL();
+        this.date = status.getCreatedAt();
 
+    }
+
+    public SimpleTweetData(HaikuUserStatus status){
+        this.haiku = status.getHaikuText();
+        User user = status.getUser();
+        this.imageURL = user.getProfileImageURL();
+        this.userScreenName = user.getScreenName();
+        this.userName = user.getName();
+    }
+
+    public String getDate() {
+        return getDate(this.date);
+    }
+    public static String getDate(Date date){
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return format.format(date);
+    }
+
+    public String setHaiku(String haiku) {
+        return this.haiku = haiku;
+    }
+
+    public String getImageURL() {
+        return imageURL;
     }
 
     public String getText() {
@@ -41,4 +74,9 @@ public class SimpleTweetData implements Serializable {
     public String getURL(){
         return "https://twitter.com/" + userScreenName +"/status/" + tweetId;
     }
+    public static String getURL(Status status){
+        return "https://twitter.com/" + status.getUser().getScreenName() +"/status/" + status.getId();
+    }
+
+
 }

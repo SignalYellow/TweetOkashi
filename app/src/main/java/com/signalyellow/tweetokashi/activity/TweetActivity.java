@@ -1,11 +1,19 @@
 package com.signalyellow.tweetokashi.activity;
+import jp.signalyellow.haiku.*;
+import twitter4j.Status;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.User;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,221 +21,275 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.components.TwitterUtils.TWITTER_STATUS;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
+
 
 public class TweetActivity extends Activity  {
 
-    public static final String INTENT_TAG_TWEETDATA = "Simple_Tweet_Data";
-    public static final String INTENT_TAG_JOBKIND = "JOB_KIND";
 
     static final String TAG = "TweetActivity";
 
+    boolean hasCreateHaiku;
+
     Twitter mTwitter;
+    User mUser;
 
-    enum TWITTER_STATUS{
-        SUCCESS,
-        ERROR
-    }
+    EditText inputEditText;
+    TextView haikuResultText;
+    HaikuGeneratorByGooAPI generator;
+    String previousInput="A";
 
-    public enum TWEET_ACTIVITY{
-        TWEET,
-        RETWEET,
-        REPLY,
-        HAIKU_RETWEET,
-    }
+    Button haikuTweetButton;
+    Button tweetButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet);
 
+        android.app.ActionBar bar = getActionBar();
+        if(bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setSubtitle(R.string.tweet_activity_subtitle);
+        }
+
         mTwitter = TwitterUtils.getTwitterInstance(this);
+        mUser = (User)getIntent().getSerializableExtra(TwitterUtils.INTENT_TAG_USERDATA);
+        prepareForTweet();
 
-        SimpleTweetData data = (SimpleTweetData)getIntent().getSerializableExtra(INTENT_TAG_TWEETDATA);
-        TWEET_ACTIVITY kind = (TWEET_ACTIVITY)getIntent().getSerializableExtra(INTENT_TAG_JOBKIND);
+    }
 
-        switch (kind){
-            case HAIKU_RETWEET:
-                doHaikuRetweet("",data);
-                return;
-            case TWEET:
-                prepareForTweet(data);
-                break;
-            case REPLY:
-                prepareForReply(data);
-                break;
-            case RETWEET:
-                doRetweet(data.getTweetId());
-                break;
-            default:
-                showToast("エラー");
-                finish();
-                return;
+    private void prepareForTweet(){
+        if(mUser != null) {
+            TextView userName = (TextView) findViewById(R.id.name);
+            userName.setText(mUser.getName());
+            SmartImageView imageView = (SmartImageView) findViewById(R.id.icon);
+            imageView.setImageUrl(mUser.getProfileImageURL());
+            TextView screenName = (TextView) findViewById(R.id.screen_name);
+            screenName.setText("@" + mUser.getScreenName());
         }
 
-    }
 
-    private void prepareForTweet(SimpleTweetData data){
-
-        Button btn = (Button)findViewById(R.id.tweet_button);
-
-        btn.setOnClickListener(new OnClickListener() {
+        haikuTweetButton = (Button)findViewById(R.id.haiku_tweet);
+        haikuResultText = (TextView)findViewById(R.id.haiku_result);
+        final Button haikuGenerateButton = (Button)findViewById(R.id.haiku_button);
+        tweetButton = (Button)findViewById(R.id.tweet_button);
+        tweetButton.setEnabled(false);
+        inputEditText = (EditText)findViewById(R.id.tweetEditText);
+        inputEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                doTweet(getInputText());
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
-        });
-    }
-    private void prepareForReply(SimpleTweetData data){
-        TextView originalText = (TextView)findViewById(R.id.original_text);
-        originalText.setVisibility(View.VISIBLE);
 
-        EditText editText = (EditText)findViewById(R.id.tweetEditText);
-        editText.setText("@" + data.getUserScreenName() + " ");
-
-        final String tweetId = String.valueOf(data.getTweetId());
-
-        Button btn = (Button)findViewById(R.id.tweet_button);
-        btn.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                doReply(getInputText(), tweetId);
-            }
-        });
-    }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                TextView textView = (TextView) findViewById(R.id.tweet_text_count);
+                Integer length = s.length();
+                textView.setText(length.toString());
 
-    private void doTweet(String text){
+                haikuTweetButton.setEnabled(true);
+                tweetButton.setEnabled(true);
 
-        if(text.isEmpty()){
-            showToast("文章を入力してください");
-            return;
-        }
-
-        new AsyncTask<String,Void,TWITTER_STATUS>(){
-            @Override
-            protected TWITTER_STATUS doInBackground(String... params) {
-                try {
-                    mTwitter.updateStatus(params[0]);
-                    return TWITTER_STATUS.SUCCESS;
-                } catch (TwitterException e) {
-                    return TWITTER_STATUS.ERROR;
+                if (length == 0 || length > 140) {
+                    tweetButton.setEnabled(false);
+                    haikuTweetButton.setEnabled(false);
                 }
             }
 
             @Override
-            protected void onPostExecute(TWITTER_STATUS twitter_status) {
-                if(twitter_status == TWITTER_STATUS.ERROR){
-                    showToast("エラー　が起きました");
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        tweetButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = inputEditText.getText().toString();
+
+                if (text.length() > 140) {
+                    showToastShort(getString(R.string.error_too_long_text) + ":現在" + text.length() + "字");
+                    return;
+                }
+                new TweetAsyncTask().execute(text);
+            }
+        });
+
+        haikuGenerateButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String temp = inputEditText.getText().toString();
+                if (temp.equals(previousInput)) {
+                    haikuResultText.setText(generator.generate());
+                    return;
                 }
 
-                if(twitter_status == TWITTER_STATUS.SUCCESS){
-                    showToast("ツイートに成功しました");
+                new AsyncMorphologicalAnalysis().execute(previousInput = temp);
+            }
+        });
+    }
+
+    private void prepareSubButtons(){
+
+        final Button haikuOnly = (Button)findViewById(R.id.haiku_only_tweet);
+        haikuOnly.setVisibility(View.VISIBLE);
+        haikuOnly.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TweetAsyncTask().execute(haikuResultText.getText().toString() + " " + getString(R.string.retweet_tag));
+            }
+        });
+
+        Button haikuTweetButton = (Button)findViewById(R.id.haiku_tweet);
+        haikuTweetButton.setVisibility(View.VISIBLE);
+        haikuTweetButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new HaikuTweetTask(haikuResultText.getText().toString(), inputEditText.getText().toString()).execute();
+
+            }
+        });
+    }
+
+
+
+
+    public class HaikuTweetTask extends AsyncTask<Void,Void,TWITTER_STATUS>{
+        String haiku;
+        String text;
+
+        public HaikuTweetTask(String haiku, String text){
+            this.haiku = haiku;
+            this.text = text;
+        }
+
+        @Override
+        protected TWITTER_STATUS doInBackground(Void... params) {
+            try {
+                twitter4j.Status s = mTwitter.updateStatus(text);
+
+                mTwitter.updateStatus(haiku + " " + getString(R.string.retweet_tag) + "\n" + SimpleTweetData.getURL(s));
+                return TWITTER_STATUS.SUCCESS;
+            } catch (TwitterException e) {
+                return TWITTER_STATUS.ERROR;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(TWITTER_STATUS twitter_status) {
+            switch (twitter_status){
+                case SUCCESS:
+                    showToastShort(getString(R.string.success_tweet));
+                    return;
+                case ERROR:
+                    showToastShort(getString(R.string.error_normal));
+                    break;
+            }
+        }
+    }
+
+    public class AsyncMorphologicalAnalysis extends AsyncTask<String,Void,String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            List<Word> temp;
+            try {
+                MorphologicalAnalysisByGooAPI analyzor = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+                temp = analyzor.analyze(params[0]);
+            }catch (Exception e){
+                Log.d(TAG, e.toString());
+                return null;
+            }
+
+            generator = new HaikuGeneratorByGooAPI(temp);
+            return generator.generate();
+
+        }
+
+        @Override
+        protected void onPostExecute(String haiku) {
+            if(haiku == null){
+                showToastShort(getString(R.string.error_normal));
+                return;
+            }
+            if(!hasCreateHaiku){
+                prepareSubButtons();
+            }
+
+            hasCreateHaiku = true;
+            haikuResultText.setText(haiku);
+        }
+    }
+
+
+
+
+
+    private class TweetAsyncTask extends AsyncTask<String,Void,TWITTER_STATUS>{
+        @Override
+        protected TWITTER_STATUS doInBackground(String... params) {
+            try {
+                mTwitter.updateStatus(params[0]);
+                return TWITTER_STATUS.SUCCESS;
+            } catch (TwitterException e) {
+                return TWITTER_STATUS.ERROR;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(TWITTER_STATUS twitter_status) {
+
+            switch (twitter_status){
+                case SUCCESS:
+                    showToastShort(getString(R.string.success_tweet));
                     finish();
-                }
+                    return;
+                case ERROR:
+                    showToastShort(getString(R.string.error_normal));
+                    break;
             }
-        }.execute(text);
-    }
-    private void doHaikuRetweet(String text, SimpleTweetData data){
-
-        String TAG = getString(R.string.retweet_tag);
-
-        if(data.getHaiku().isEmpty()){
-            return;
         }
-
-        String tweetText =   data.getHaiku() + TAG + "\n"  + text + " \n" +  data.getURL();
-
-        new AsyncTask<String,Void,TWITTER_STATUS>(){
-            @Override
-            protected TWITTER_STATUS doInBackground(String... params) {
-                try {
-                    mTwitter.updateStatus(params[0]);
-                    return TWITTER_STATUS.SUCCESS;
-                } catch (TwitterException e) {
-                    return TWITTER_STATUS.ERROR;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(TWITTER_STATUS twitter_status) {
-
-                switch (twitter_status){
-                    case SUCCESS:
-                        showToast("ツイートに成功しました");
-                        finish();
-                        break;
-                    case ERROR:
-                        showToast("エラー　が起きました");
-                        break;
-                }
-            }
-        }.execute(tweetText);
     }
-    private void doReply(String text, String tweetId){
 
-        new AsyncTask<String,Void,TWITTER_STATUS>(){
-            @Override
-            protected TWITTER_STATUS doInBackground(String... params) {
-                try {
-                    mTwitter.updateStatus(new StatusUpdate(params[0])
-                            .inReplyToStatusId(Long.parseLong(params[1])));
-                    return TWITTER_STATUS.SUCCESS;
-                } catch (TwitterException e) {
-                    return TWITTER_STATUS.ERROR;
-                }
-            }
 
-            @Override
-            protected void onPostExecute(TWITTER_STATUS twitter_status) {
-                switch (twitter_status){
-                    case SUCCESS:
-                        showToast("ツイートに成功しました");
-                        finish();
-                    case ERROR:
-                        showToast("エラー　が起きました");
-                        break;
-                }
-            }
-        }.execute(text,String.valueOf(tweetId));
-    }
-    private void doRetweet(Long tweetId){
-        new AsyncTask<Long,Void,TWITTER_STATUS>(){
-            @Override
-            protected TWITTER_STATUS doInBackground(Long... params) {
-                try {
-                    mTwitter.retweetStatus(params[0]);
-                    return TWITTER_STATUS.SUCCESS;
-                } catch (TwitterException e) {
-                    return TWITTER_STATUS.ERROR;
-                }
 
-            }
 
-            @Override
-            protected void onPostExecute(TWITTER_STATUS twitter_status) {
-                switch (twitter_status){
-                    case SUCCESS:
-                        showToast("リツイートに成功しました");
-                        finish();
-                        break;
-                    case ERROR:
-                        showToast("エラー　が起きました");
-                        break;
-                }
-            }
-        }.execute(tweetId);
-    }
+
 
     private void showToast(String text){
         Toast.makeText(getApplicationContext(),text,Toast.LENGTH_LONG).show();
     }
-    private String getInputText(){
-        EditText editText = (EditText)findViewById(R.id.tweetEditText);
-        String text = editText.getText().toString();
-        return text;
+
+    private void showToastShort(String text){
+        Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT).show();
     }
 
+    private String getInputText(){
+        EditText editText = (EditText)findViewById(R.id.tweetEditText);
+        return editText.getText().toString();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

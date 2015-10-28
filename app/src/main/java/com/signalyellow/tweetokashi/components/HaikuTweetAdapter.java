@@ -50,6 +50,10 @@ public class HaikuTweetAdapter extends ArrayAdapter<HaikuStatus> {
         TextView haikuText = (TextView)convertView.findViewById(R.id.haikutext);
         haikuText.setText(status.getHaikuText());
 
+        TextView dateText = (TextView)convertView.findViewById(R.id.datetime);
+        dateText.setText(SimpleTweetData.getDate(item.getCreatedAt()));
+        
+
         return convertView;
     }
 }

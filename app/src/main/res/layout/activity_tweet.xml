@@ -5,39 +5,149 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.signalyellow.tweetokashi.activity.TweetActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin">
+        <com.loopj.android.image.SmartImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/icon"
+            android:layout_marginLeft="@dimen/text_name_margin_left"
+            android:layout_marginStart="@dimen/text_name_margin_left"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_toEndOf="@+id/icon"
+            android:text="@string/test_name_long"
+            android:textSize="@dimen/text_name_size"
+            />
+        <TextView
+            android:id="@+id/screen_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_marginLeft="@dimen/text_name_margin_left"
+            android:layout_alignParentRight="true"
+            android:text="@string/test_screenname_long"
+            android:textSize="@dimen/text_name_size"
+            android:textColor="@color/text_name_color"
+            />
+
+    </RelativeLayout>
 
 
 
-    <TextView
-        android:id="@+id/original_text"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+        <EditText
+            android:id="@+id/tweetEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:hint="@string/text_hint_input"
+            android:minLines="3"
+            android:maxLines="6"/>
+
+        <TextView
+            android:id="@+id/tweet_text_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/text_count_margin"
+            android:layout_marginEnd="@dimen/text_count_margin"
+            android:layout_marginBottom="@dimen/text_count_margin"
+            android:layout_alignBottom="@+id/tweetEditText"
+            android:layout_alignRight="@id/tweetEditText"
+            android:layout_alignEnd="@id/tweetEditText" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/screenName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        <Button
+            android:id="@+id/tweet_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_tweet" />
 
-    <EditText
-        android:id="@+id/tweetEditText"
+        <Button
+            android:id="@+id/haiku_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_haiku_create"
+            android:enabled="true"
+            android:clickable="false"
+            android:focusable="true" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/item_tweet_padding"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:layout_marginTop="@dimen/text_haiku_margin_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_haiku_result"/>
+
+
+        <TextView
+            android:id="@+id/haiku_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_haiku_size"
+            android:textStyle="bold"
+            android:lines="3"
+            android:hint="@string/text_hint_haiku_generate"
+            android:layout_marginTop="@dimen/text_margin_top"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:lines="5" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/tweet_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:text="@string/btn_tweet" />
+
+        <Button
+            android:id="@+id/haiku_tweet"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_haiku_retweet"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/haiku_only_tweet"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_haiku_tweet"
+            android:visibility="gone"/>
+    </LinearLayout>
 
 </LinearLayout>

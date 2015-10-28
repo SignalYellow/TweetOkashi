@@ -18,15 +18,9 @@ public class HaikuStatus {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
     public String getHaikuText() {
         return haikuText;
     }
 
-    public void setHaikuText(String haikuText) {
-        this.haikuText = haikuText;
-    }
 }

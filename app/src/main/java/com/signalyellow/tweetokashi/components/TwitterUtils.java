@@ -16,6 +16,15 @@ public class TwitterUtils {
     private static final String TOKEN_SECRET = "token_secret";
     private static final String PREF_NAME = "twitter_access_token";
 
+    public static String INTENT_TAG_TWEETDATA = "Simple_Tweet_Data";
+    public static String INTENT_TAG_USERDATA = "Credintial_User";
+
+
+    public static enum TWITTER_STATUS{
+        SUCCESS,
+        ERROR
+    }
+
     public static Twitter getTwitterInstance(Context context) {
         String consumerKey = context.getString(R.string.consumer_key);
         String consumerSecret = context.getString(R.string.consumer_secret);
@@ -35,7 +44,7 @@ public class TwitterUtils {
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(TOKEN, accessToken.getToken());
-        editor.putString(TOKEN_SECRET,accessToken.getTokenSecret());
+        editor.putString(TOKEN_SECRET, accessToken.getTokenSecret());
         editor.commit();
     }
 
@@ -50,6 +59,14 @@ public class TwitterUtils {
         }else{
             return null;
         }
+    }
+
+    public static void deleteAccessToken(Context context){
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREF_NAME,
+                Context.MODE_PRIVATE).edit();
+        editor.remove(TOKEN);
+        editor.remove(TOKEN_SECRET);
+        editor.commit();
     }
 
     public static boolean hasAccessToken(Context context){

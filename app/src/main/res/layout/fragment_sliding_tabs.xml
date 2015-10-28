@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <jp.signalyellow.view.SlidingTabLayout
+    <com.signalyellow.tweetokashi.fragments.SlidingTabLayout
         android:id="@+id/slidingtabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

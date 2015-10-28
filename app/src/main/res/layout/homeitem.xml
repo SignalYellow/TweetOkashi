@@ -7,7 +7,7 @@
         android:id="@+id/button_sub"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_update"/>
+        android:text="@string/btn_update" />
 
 
     <ListView

@@ -4,16 +4,49 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/main_color"
     tools:context="com.signalyellow.tweetokashi.activity.TwitterOAuthActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="@dimen/text_login_margin_top"
+        android:id="@+id/titleup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_login"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_login"
+        android:gravity="center_horizontal"
+        />
+    <TextView
+        android:id="@+id/title_below"
+        android:layout_below="@id/titleup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_login_below"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_login"
+        android:gravity="center_horizontal"
+        />
+
+    <TextView
+        android:id="@+id/login_explanation"
+        android:layout_below="@id/title_below"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/text_login_explanation"
+        android:layout_marginTop="@dimen/text_login_explanation_margin_top"
+        android:textColor="@android:color/white"/>
+    
     <Button
+
+        android:layout_below="@id/login_explanation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:id="@+id/oauthButton"
-        android:text="a" />
+        android:text="@string/btn_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/text_login_margin_top" />
 
 </RelativeLayout>

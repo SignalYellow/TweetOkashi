@@ -1,10 +1,13 @@
 <resources>
     <!-- アプリ系 -->
-    <string name="app_name">ついいとおかし</string>
+    <string name="app_name">@string/app_name_en</string>
+    <string name="app_name_ja">ついいとおかし</string>
+    <string name="app_name_en">Tweet-Okashi</string>
 
     <!-- パスワード系 重要かつ基本的に変更しない -->
-    <string name="yahoo_application_id">dj0zaiZpPVhJa1IyQVhqZ0ozNyZzPWNvbnN1bWVyc2VjcmV0Jng9ZTg-</string>
+    <string name="yahoo_application_id">dj0zaiZpPUxLVnlYYmRUdWtJNiZzPWNvbnN1bWVyc2VjcmV0Jng9MTg-</string>
 
+    <string name="goo_id">139fa8536242d11739fcca695edbc164572c8b27d3571d0c2cda76df9aedfca3</string>
     <string name="consumer_key">Yz7nOmak7BTuwmTiwWK0JDbE6</string>
     <string name="consumer_secret">JMHBEVyMGDDmTpS2pqs1dUuA1S8Vgn7KDHOFkRbhDQ0wwwVje4</string>
 
@@ -14,25 +17,181 @@
     <!-- 一般系 -->
     <string name="btn_tweet">ツイート</string>
     <string name="btn_update">更新</string>
+    <string name="btn_search">検索</string>
+    <string name="btn_updating">更新中</string>
+    <string name="btn_reply">返信</string>
+    <string name="btn_login">Twitterアカウントでログインする</string>
+    <string name="text_login">ようこそ！</string>
+    <string name="text_login_below">ついいとおかしへ</string>
+    <string name="text_login_explanation">下のボタンを押してTwitterログインしてください</string>
+    <string name="text_ok">OK</string>
+    <string name="text_cancel">キャンセル</string>
+    <string name="btn_haiku_create">俳句生成</string>
+    <string name="btn_haiku_regenerate">俳句再生成</string>
+    <string name="btn_haiku_retweet">俳句リツイート</string>
+    <string name="btn_haiku_tweet">俳句のみツイート</string>
+    <string name="text_haiku_result">俳句生成結果</string>
+    <string name="text_hint_input">文章を入力してください</string>
+    <string name="text_hint_haiku_generate">ここに俳句が生成されます</string>
 
     <string name="retweet_tag">#ついいとおかし</string>
+    <string name="tweet_count">140</string>
 
-    <string name="toast_list_is_null">表示するツイートがありません</string>
 
     <!-- メニュー系 -->
-    <string name="menu_setting">設定の変更</string>
-    <string name="menu_help">説明書</string>
+    <string name="menu_setting">設定</string>
+    <string name="menu_help">ヘルプ</string>
+    <string name="menu_logout">ログアウト</string>
+    <string name="menu_credit">クレジット</string>
+    <string name="menu_tweet">ツイート</string>
+
+    <!-- ダイアログ系 -->
+    <string name="dialog_title">メニュー</string>
+    <string name="dialog_retweet">リツイート</string>
+    <string name="dialog_haikuretweet">俳句リツイート</string>
+    <string name="dialog_usertimeline">　のツイートを表示</string>
+    <string name="dialog_reply">このツイートに返信</string>
+    <string name="dialog_regenerate">俳句を再生成</string>
+
+    <string name="dialog_confirm_logout_title">確認 - ログアウト</string>
+    <string name="dialog_confirm_logout_message">ログアウトします。よろしいですか？</string>
+
+
+    <!-- -->
+    <!--ページタイトル SlidingTabFragment -->
+    <string name="sliding_tab_title_timeline">TIMELINE</string>
+    <string name="sliding_tab_title_search">SEARCH</string>
+    <string name="sliding_tab_title_users">USERS</string>
+
+    <string name="tweet_activity_subtitle">ツイート</string>
+    <string name="reply_activity_subtitle">リプライ</string>
+    <string name="regenerate_activity_subtitle">俳句生成</string>
+    <string name="help_activity_subtitle">ヘルプ</string>
+    <string name="login_activity_subtitle">ログイン</string>
+    <string name="setting_activity_subtitle">設定</string>
+    <string name="credit_activity_subtitle">クレジット</string>
 
 
 
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="button1">Click!</string>
-    <string name="title_activity_tweet">TweetActivity</string>
-    <string name="title_activity_oauth">OAuthActivity</string>
-    <string name="title_activity_twitter_oauth">TwitterOAuthActivity</string>
-    <string name="title_activity_main">MainActivity</string>
+
+    <!-- 設定 Setting Activity-->
+    <string name="setting_haiku">俳句を生成しない</string>
+    <string name="setting_title_yahoo">YahooAPIの設定</string>
+    <string name="setting_title_haiku">俳句生成の設定</string>
+    <string name="setting_btn_cancel">キャンセル</string>
+    <string name="setting_btn_save">設定を保存</string>
+
+    <!-- 成功系 -->
+    <string name="success_retweet">リツイートに成功しました</string>
+    <string name="success_tweet">ツイートに成功しました</string>
+    <string name="success_reply">返信に成功しました</string>
+    <string name="success_haikuRetweet">俳句リツイートに成功しました</string>
+    <string name="success_login">ログインに成功</string>
+
+
+    <!-- エラー系 -->
+    <string name="error_normal">エラーが発生しました</string>
+    <string name="toast_list_is_null">表示するツイートがありません</string>
+    <string name="error_tweet_timeline">Twitterエラー：取得できませんでした</string>
+    <string name="error_empty_text">テキストを入力してください</string>
+    <string name="error_too_long_text">文字数オーバーです</string>
+
+
+    <!-- クレジット　ライセンスなど-->
+    <string name="credit_tweetokashi">ついいとおかし(TweetOkashi) Copyright © 2015 SignalYellow(@signalyellowsho).  All rights reserved.</string>
+    <string name="credit_title_yahoo_api">Yahoo Web API</string>
+    <string name="credit_title_library">利用しているライブラリやサービス</string>
+    <string name="credit_yahoo_api_user">このアプリケーションではYahooテキスト解析APIを利用しています</string>
+    <string name="credit_yahoo_api_url">Webサービス by Yahoo! JAPAN（ http://developer.yahoo.co.jp/about ）</string>
+    <string name="credit_yahoo_api_raw_url">http://developer.yahoo.co.jp/about</string>
+
+    <string name="credit_title_twitter4j">twitter4j</string>
+    <string name="credit_twitter4j">このアプリケーションでは、「Apache Licence 2.0（ http://www.apache.org/licenses/LICENSE-2.0 ）」
+    に基づいてリリースされる「twitter4j( http://twitter4j.org/ ）」
+        を利用しています</string>
+    <!-- ヘルプ-->
+    <string name="help_title_concept">概要</string>
+    <string name="help_description_concept">
+        このアプリはツイートからランダムに俳句を生成するアプリです。
+    </string>
+
+    <string name="help_title_haiku">生成される俳句について</string>
+    <string name="help_description_haiku">
+        このアプリ内では５・７・５の文章はすべて「俳句」ということとします。
+        このアプリ内で生成される俳句は季語を必ず含むわけではないので厳密には俳句ではない場合があります。
+        俳句はランダムに生成しているので同じ文章からでも違う俳句になる場合があります。
+    </string>
+    <string name="help_title_login">ログイン</string>
+    <string name="help_description_login">
+        このアプリではログインはOAUTHで行われます。
+        ログインボタンを押し、Twitterサイトにて承認を行うことで自動的にアプリへ戻り、ログインが行われます。
+        承認を行わずにアプリに手動で戻るとエラーとなる場合が有ります。その時ログインボタンを押しても反応しない場合はもう一度アプリを起動しなおしてログインしてください。
+
+        \n
+        ログアウトはアプリ内のアクションバー（タイトルが書いてある部分）の一番右にあるメニューボタンをクリックし、ログアウトをクリックしてください。
+
+
+    </string>
+    <string name="help_title_timeline">タイムライン(TIMELINE)</string>
+    <string name="help_description_timeline">
+        ユーザーのタイムラインを表示します。上の「更新ボタン」を押すことで更新を行い、
+        リストの最後の「さらに表示」ボタンを押すことでより古いツイートを見ることが可能です。
+        ストリーミングは行っていないので最新のツイートを見る場合は「更新ボタン」を押すことで更新を行ってください。
+
+
+        \n
+        タイムライン上のツイートをクリックすることで、返信、リツイート、そのツイートの作成者のタイムラインの表示、
+        「俳句リツイート」、「俳句再生成」などを行うことができます。「俳句リツイート」「俳句再生成」については後述の説明をご覧ください。
+    </string>
+
+
+    <string name="help_title_haikuretweet">俳句リツイート</string>
+    <string name="help_description_haikuretweet">
+        俳句リツイートは、できた俳句にタグ(#ついいとおかし)を付加したものと
+        元のツイートのURLを貼り付けたものをツイートします。
+
+    </string>
+    <string name="help_title_regenerate">俳句再生成</string>
+    <string name="help_description_regenerate">
+        タイムラインなどのツイートをクリックした後、「俳句を再生成」を押すことで俳句再生成画面に映ります。
+        俳句再生成画面では「俳句再生成」ボタンを押すことで俳句を生成しなおすことが可能です。
+        「俳句再生成」ボタンは何度でも押すことが可能です。
+    </string>
+
+    <string name="help_title_search">検索(SEARCH)</string>
+    <string name="help_description_search">
+        検索(SEARCH)ではキーワードを入力しツイートを検索することが可能です。
+        良い俳句ができそうなキーワードを探してみましょう。
+        ほかの部分は「タイムライン」の場合と同様です。
+        ただ、更新ボタンはないので、同じキーワードで更新したい場合は
+        再度同じキーワードをテキストボックスに入れたまま検索ボタンを押してください。
+    </string>
+    <string name="help_title_users">ユーザー(USERS)</string>
+    <string name="help_description_users">
+        ユーザー(USERS)画面では自分とフォローしているユーザーの自己紹介文を俳句にして表示しています。
+    </string>
+    <string name="help_title_tweet">ツイート</string>
+    <string name="help_description_tweet">
+        ツイートはアクションバーにある紙飛行機のようなアイコンをクリックすることで行うことができます。
+        ツイート画面では、「ツイートや俳句生成」、「俳句リツイート」、「俳句のみツイート」を行うことができます。
+        「俳句生成」は「俳句再生成」の項目を、「俳句リツイート」は「俳句リツイート」の項目をご覧ください。
+        「俳句のみツイート」ではできた俳句にタグ(#ついいとおかし)を付加したものをツイートします。
+    </string>
+
+
+    <!-- テスト用 サンプル-->
+    <string name="test_name_long">あいうえおかきくけこさしすせそたちつてと</string>
+    <string name="test_screenname_long">\@123456789012345</string>
+    <string name="test_haiku_long">こんじょうの　こんじょうでしょう　こんじょうは</string>
+    <string name="test_text">ここにツイートの文章が表示されます。
+    この文章が表示されている場合このツイートの文章の取得に失敗しています。ネットワーク環境などをご確認ください</string>
+    <string name="test_date">1991:07:25:19:11:11</string>
+
+
+
+
+
 
     <string name="menu_refresh">更新</string>
     <string name="title_activity_home">HomeActivity</string>
@@ -41,9 +200,19 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
 
+    <string name="action_settings">a</string>
+    <string name="title_activity_credit">CreditActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_help">HelpActivity</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_timeline">TimelineActivity</string>
-    <string name="title_activity_setting">SettingActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+
 </resources>

@@ -1,47 +1,38 @@
 package com.signalyellow.tweetokashi.activity;
 
 
-import android.app.Activity;
-import android.content.Context;
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
 import com.signalyellow.tweetokashi.fragments.SlidingTabsFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import twitter4j.ResponseList;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.User;
+
 
 public class HomeActivity extends FragmentActivity{
 
-    static final String TAG = "HOME_ACTIVITY";
-
-    private TweetAdapter mAdapter;
-    private Twitter mTwitter;
+    Twitter mTwitter;
+    User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null) actionBar.setSubtitle(R.string.app_name_ja);
 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -49,14 +40,13 @@ public class HomeActivity extends FragmentActivity{
             transaction.replace(R.id.tab_main_fragment, fragment);
             transaction.commit();
         }
-        mAdapter = new TweetAdapter(this);
 
         mTwitter = TwitterUtils.getTwitterInstance(this);
+        new UserAsyncTask().execute();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
@@ -66,70 +56,73 @@ public class HomeActivity extends FragmentActivity{
 
         switch (item.getItemId()){
             case R.id.menu_tweet:
-                startTweetActivity();
+                Intent intent = new Intent(getApplicationContext(), TweetActivity.class);
+                intent.putExtra(TwitterUtils.INTENT_TAG_USERDATA,
+                        mUser);
+                startActivity(intent);
                 return true;
-            case R.id.action_settings:
-
+            case R.id.menu_setting:
+                startActivity(new Intent(getApplicationContext(),SettingActivity.class));
+                return true;
+            case R.id.menu_logout:
+                showLogoutDialog();
+                return true;
+            case R.id.menu_help:
+                startActivity(new Intent(getApplicationContext(), HelpActivity.class));
+                return true;
+            case R.id.menu_credit:
+                startActivity(new Intent(getApplicationContext(),CreditActivity.class));
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    private void startTweetActivity(){
-        Intent i = new Intent(getApplicationContext(), TweetActivity.class);
-        i.putExtra(TweetActivity.INTENT_TAG_JOBKIND,TweetActivity.TWEET_ACTIVITY.TWEET);
-        startActivity(i);
+    private void showLogoutDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.dialog_confirm_logout_title))
+                .setMessage(getString(R.string.dialog_confirm_logout_message))
+                .setPositiveButton(getString(R.string.text_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        logout();
+                    }
+                })
+                .setNegativeButton(getString(R.string.text_cancel), null)
+                .show();
     }
 
-    public Twitter onButtonClicked()
-    {
-        Log.d(TAG,"hello butom");
-        return mTwitter;
-    }
+    class UserAsyncTask extends AsyncTask<Void,Void, User>{
+        @Override
+        protected User doInBackground(Void... params) {
+            try {
+                return mTwitter.verifyCredentials();
 
-    private class TweetAdapter extends ArrayAdapter<Status> {
-
-        private LayoutInflater mInflater;
-
-
-        public TweetAdapter(Context context) {
-            super(context, android.R.layout.simple_list_item_1);
-            mInflater = (LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            } catch (TwitterException e) {
+                return null;
+            }
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            if(convertView == null){
-                convertView = mInflater.inflate(R.layout.list_item_tweet,null);
+        protected void onPostExecute(User user) {
+            if(user == null){
+                mUser = null;
+                return;
             }
 
-            Status item = getItem(position);
+            mUser = user;
 
-            TextView name = (TextView)convertView.findViewById(R.id.name);
-            name.setText(item.getUser().getName());
-
-            TextView screenName = (TextView)convertView.findViewById(R.id.screen_name);
-            screenName.setText("@" + item.getUser().getScreenName());
-
-            TextView text = (TextView) convertView.findViewById(R.id.text);
-            text.setText(item.getText());
-
-
-            SmartImageView icon = (SmartImageView)convertView.findViewById(R.id.icon);
-            icon.setImageUrl(item.getUser().getProfileImageURL());
-            return convertView;
         }
     }
 
-
-
-
-
-
-    private void showToast(String text){
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    private void logout(){
+        TwitterUtils.deleteAccessToken(getApplicationContext());
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        finish();
     }
+
+
+
+
 
 }
