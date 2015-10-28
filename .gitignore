@@ -19,5 +19,5 @@
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
 *.iml
+app/src/main/res/values/strings.xml
 
-strings.xml
