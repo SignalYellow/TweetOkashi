@@ -20,14 +20,13 @@ public class SimpleTweetData implements Serializable {
     Date date;
     long tweetId;
 
-    public SimpleTweetData(HaikuStatus haikuStatus){
-        Status status = haikuStatus.getStatus();
+    public SimpleTweetData(HaikuStatus status){
         this.text = status.getText();
-        this.userName = status.getUser().getName();
-        this.userScreenName = status.getUser().getScreenName();
+        this.userName = status.getUserName();
+        this.userScreenName = status.getScreenName();
         this.tweetId = status.getId();
-        this.haiku = haikuStatus.getHaikuText();
-        this.imageURL = status.getUser().getProfileImageURL();
+        this.haiku = status.getHaikuText();
+        this.imageURL = status.getProfileImageURL();
         this.date = status.getCreatedAt();
 
     }

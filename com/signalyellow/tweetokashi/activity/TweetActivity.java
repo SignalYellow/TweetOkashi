@@ -34,7 +34,6 @@ import java.util.List;
 
 public class TweetActivity extends Activity  {
 
-
     static final String TAG = "TweetActivity";
 
     boolean hasCreateHaiku;
@@ -140,6 +139,9 @@ public class TweetActivity extends Activity  {
         });
     }
 
+    /**
+     * 俳句生成後に利用可能なボタンの準備
+     */
     private void prepareSubButtons(){
 
         final Button haikuOnly = (Button)findViewById(R.id.haiku_only_tweet);
@@ -163,8 +165,9 @@ public class TweetActivity extends Activity  {
     }
 
 
-
-
+    /**
+     * 一度ツイートしてからそのツイートを包んで俳句をツイート(俳句リツイート)
+     */
     public class HaikuTweetTask extends AsyncTask<Void,Void,TWITTER_STATUS>{
         String haiku;
         String text;
@@ -199,6 +202,10 @@ public class TweetActivity extends Activity  {
         }
     }
 
+
+    /**
+     * 形態素解析
+     */
     public class AsyncMorphologicalAnalysis extends AsyncTask<String,Void,String> {
 
         @Override
@@ -233,9 +240,9 @@ public class TweetActivity extends Activity  {
     }
 
 
-
-
-
+    /**
+     * ツイート処理
+     */
     private class TweetAsyncTask extends AsyncTask<String,Void,TWITTER_STATUS>{
         @Override
         protected TWITTER_STATUS doInBackground(String... params) {
