@@ -157,7 +157,7 @@ public class TimelineActivity extends Activity {
                 for (twitter4j.Status status : timeline) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
                         String haiku = new HaikuGeneratorByGooAPI(list).generate();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
@@ -272,7 +272,7 @@ public class TimelineActivity extends Activity {
                 for (twitter4j.Status status : timeline) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
                         String haiku = new HaikuGeneratorByGooAPI(list).generate();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {

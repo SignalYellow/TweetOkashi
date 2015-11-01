@@ -167,8 +167,9 @@ public class SlidingTabsFragment extends Fragment {
             if (canCreateHaiku) {
                 for (twitter4j.Status status : timeline) {
                     try {
+
                         List<Word> list = analyzer
-                                .analyze(status.getText());
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
                         String haiku = new HaikuGeneratorByGooAPI(list).generate();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
@@ -250,7 +251,7 @@ public class SlidingTabsFragment extends Fragment {
                 for (twitter4j.Status status : timeline) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
                         String haiku = new HaikuGeneratorByGooAPI(list).generate();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
@@ -323,7 +324,7 @@ public class SlidingTabsFragment extends Fragment {
                 for (twitter4j.Status status : result.getTweets()) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
                         String haiku = new HaikuGeneratorByGooAPI(list).generate();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
@@ -398,7 +399,7 @@ public class SlidingTabsFragment extends Fragment {
                 for (twitter4j.Status status : result.getTweets()) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
                         String haiku = new HaikuGeneratorByGooAPI(list).generate();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException  e) {

@@ -155,6 +155,10 @@ public class TweetActivity extends Activity  {
 
         Button haikuTweetButton = (Button)findViewById(R.id.haiku_tweet);
         haikuTweetButton.setVisibility(View.VISIBLE);
+        int len = inputEditText.getText().length();
+        if(len == 0 || len > 140){
+            haikuTweetButton.setEnabled(false);
+        }
         haikuTweetButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
