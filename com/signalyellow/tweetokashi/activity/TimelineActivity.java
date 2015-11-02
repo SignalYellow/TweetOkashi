@@ -158,7 +158,7 @@ public class TimelineActivity extends Activity {
                     try {
                         List<Word> list = analyzer
                                 .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
-                        String haiku = new HaikuGeneratorByGooAPI(list).generate();
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
                         Log.d("timeline generate error", e.toString());
@@ -273,7 +273,7 @@ public class TimelineActivity extends Activity {
                     try {
                         List<Word> list = analyzer
                                 .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
-                        String haiku = new HaikuGeneratorByGooAPI(list).generate();
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
                         Log.d(TAG, e.toString());

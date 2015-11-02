@@ -111,16 +111,16 @@ public class SlidingTabsFragment extends Fragment {
             } catch (TwitterException e) {
                 return null;
             }
-            MorphologicalAnalysisByYahooAPI analyzer =
-                    new MorphologicalAnalysisByYahooAPI(getString(R.string.yahoo_application_id));
+            MorphologicalAnalysisByGooAPI analyzer =
+                    new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
 
             if (canCreateHaiku) {
                 try {
                     List<Word> list = analyzer
                             .analyze(user.getDescription());
-                    String haiku = new HaikuGeneratorByYahooAPI(list).generate();
+                    String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                     return new HaikuUserStatus(haiku, user);
-                } catch (IOException | XmlPullParserException e) {
+                } catch (IOException e) {
                     Log.d(TAG, e.toString());
                     return new HaikuUserStatus("", user);
                 }
@@ -170,7 +170,7 @@ public class SlidingTabsFragment extends Fragment {
 
                         List<Word> list = analyzer
                                 .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
-                        String haiku = new HaikuGeneratorByGooAPI(list).generate();
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
                         Log.d("timline generate1",status.getText());
@@ -252,7 +252,7 @@ public class SlidingTabsFragment extends Fragment {
                     try {
                         List<Word> list = analyzer
                                 .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
-                        String haiku = new HaikuGeneratorByGooAPI(list).generate();
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
                         Log.d(TAG,e.toString());
@@ -325,7 +325,7 @@ public class SlidingTabsFragment extends Fragment {
                     try {
                         List<Word> list = analyzer
                                 .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
-                        String haiku = new HaikuGeneratorByGooAPI(list).generate();
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
                         Log.d(TAG, e.toString());
@@ -400,7 +400,7 @@ public class SlidingTabsFragment extends Fragment {
                     try {
                         List<Word> list = analyzer
                                 .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
-                        String haiku = new HaikuGeneratorByGooAPI(list).generate();
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException  e) {
                         Log.d(TAG, e.toString());
@@ -468,16 +468,16 @@ public class SlidingTabsFragment extends Fragment {
             }
 
             List<HaikuUserStatus> userStatusList = new ArrayList<>();
-            MorphologicalAnalysisByYahooAPI analyzer = new MorphologicalAnalysisByYahooAPI(getString(R.string.yahoo_application_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
 
             if (canCreateHaiku) {
                 for (User u:list) {
                     try {
                         List<Word> words = analyzer
                                 .analyze(u.getDescription());
-                        String haiku = new HaikuGeneratorByYahooAPI(words).generate();
+                        String haiku = new HaikuGeneratorByGooAPI(words).generateHaikuStrictly();
                         userStatusList.add(new HaikuUserStatus(haiku, u));
-                    } catch (IOException | XmlPullParserException e) {
+                    } catch (IOException e) {
                         Log.d(TAG, e.toString());
                     }
                 }
