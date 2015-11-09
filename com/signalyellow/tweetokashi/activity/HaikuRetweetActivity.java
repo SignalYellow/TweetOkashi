@@ -28,7 +28,7 @@ public class HaikuRetweetActivity extends Activity {
 
     private void doHaikuRetweet(SimpleTweetData data){
 
-        String TAG = getString(R.string.retweet_tag);
+        String TAG = getString(R.string.retweet_tag) + " " + getString(R.string.at_twitter_account);
 
         String tweetText = data.getHaiku() + " " + TAG +  "\n" + data.getURL();
 
