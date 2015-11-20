@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,6 +99,9 @@ public class HaikuRegenerateActivity extends Activity {
         startActivity(intent);
     }
 
+    /**
+     * 形態素解析後HaikuGeneratorの生成
+     */
     public class AsyncMorphologicalAnalysis extends AsyncTask<String,Void,String> {
 
         @Override
@@ -106,9 +110,9 @@ public class HaikuRegenerateActivity extends Activity {
             try {
                 MorphologicalAnalysisByGooAPI analyzor = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
                 temp = analyzor.analyze(params[0]);
+                Log.d(TAG,"done analysis");
             }catch (Exception e){
                 Log.d(TAG, e.toString());
-
                 return null;
             }
 

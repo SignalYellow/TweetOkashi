@@ -6,12 +6,11 @@
 
     <!-- パスワード系 重要かつ基本的に変更しない -->
     <string name="yahoo_application_id">dj0zaiZpPUxLVnlYYmRUdWtJNiZzPWNvbnN1bWVyc2VjcmV0Jng9MTg-</string>
-
     <string name="goo_id">139fa8536242d11739fcca695edbc164572c8b27d3571d0c2cda76df9aedfca3</string>
     <string name="consumer_key">Yz7nOmak7BTuwmTiwWK0JDbE6</string>
     <string name="consumer_secret">JMHBEVyMGDDmTpS2pqs1dUuA1S8Vgn7KDHOFkRbhDQ0wwwVje4</string>
-
     <string name="twitter_callback_url">callback://TwitterOAuthActivity</string>
+
 
 
     <!-- 一般系 -->
@@ -32,8 +31,12 @@
     <string name="btn_haiku_tweet">俳句のみツイート</string>
     <string name="text_haiku_result">俳句生成結果</string>
     <string name="text_hint_input">文章を入力してください</string>
+    <string name="text_retweet">RT</string>
+    <string name="text_favorite">FAV</string>
     <string name="text_hint_haiku_generate">ここに俳句が生成されます</string>
 
+
+    <string name="at_twitter_account">\@tweetokashi</string>
     <string name="retweet_tag">#ついいとおかし</string>
     <string name="tweet_count">140</string>
 
@@ -52,6 +55,7 @@
     <string name="dialog_usertimeline">　のツイートを表示</string>
     <string name="dialog_reply">このツイートに返信</string>
     <string name="dialog_regenerate">俳句を再生成</string>
+    <string name="dialog_favorite">お気に入りに登録</string>
 
     <string name="dialog_confirm_logout_title">確認 - ログアウト</string>
     <string name="dialog_confirm_logout_message">ログアウトします。よろしいですか？</string>
@@ -88,6 +92,7 @@
     <string name="success_reply">返信に成功しました</string>
     <string name="success_haikuRetweet">俳句リツイートに成功しました</string>
     <string name="success_login">ログインに成功</string>
+    <string name="success_fav">お気に入りに追加しました</string>
 
 
     <!-- エラー系 -->
@@ -105,6 +110,10 @@
     <string name="credit_yahoo_api_user">このアプリケーションではYahooテキスト解析APIを利用しています</string>
     <string name="credit_yahoo_api_url">Webサービス by Yahoo! JAPAN（ http://developer.yahoo.co.jp/about ）</string>
     <string name="credit_yahoo_api_raw_url">http://developer.yahoo.co.jp/about</string>
+    <string name="credit_goo_api_text_en">supported by goo</string>
+    <string name="credit_goo_api_text">このアプリケーションではgooラボAPIを利用しています</string>
+    <string name="credit_goo_api_url">supported by goo( http://www.goo.ne.jp/ )</string>
+    <string name="credit_title_goo_api">gooラボAPI</string>
 
     <string name="credit_title_twitter4j">twitter4j</string>
     <string name="credit_twitter4j">このアプリケーションでは、「Apache Licence 2.0（ http://www.apache.org/licenses/LICENSE-2.0 ）」
@@ -113,6 +122,7 @@
     <!-- ヘルプ-->
     <string name="help_title_concept">概要</string>
     <string name="help_description_concept">
+        この度は「ついいとおかし」をダウンロードいただきありがとうございます。
         このアプリはツイートからランダムに俳句を生成するアプリです。
     </string>
 
@@ -179,6 +189,15 @@
         「俳句のみツイート」ではできた俳句にタグ(#ついいとおかし)を付加したものをツイートします。
     </string>
 
+    <string name="help_title_error">エラーについて</string>
+    <string name="help_description_error">
+        リツイートやお気に入りに登録する際、エラーという表示が出ることがあります。これはもうそのツイートがリツイートやお気に入り済みの場合、
+        またそのツイートが自分自身のものである場合に多くでます。特に重大な問題が発生しているわけではありません。このアプリにはリツイートやお気に入りを外す機能は現在ございませんので、
+        Webや他のクライアントから外していただきますよう御願い致します。
+
+        その他エラー等ございましたらTwitterアカウントやレポートなどで報告いただけるとありがたいです。よろしく御願いいたします。
+    </string>
+
 
     <!-- テスト用 サンプル-->
     <string name="test_name_long">あいうえおかきくけこさしすせそたちつてと</string>
@@ -187,6 +206,8 @@
     <string name="test_text">ここにツイートの文章が表示されます。
     この文章が表示されている場合このツイートの文章の取得に失敗しています。ネットワーク環境などをご確認ください</string>
     <string name="test_date">1991:07:25:19:11:11</string>
+    <string name="test_rtcount">0</string>
+    <string name="test_favcount">0</string>
 
 
 
@@ -213,6 +234,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
+    <string name="title_activity_favorite">FavoriteActivity</string>
 
 
 </resources>

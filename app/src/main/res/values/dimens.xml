@@ -24,6 +24,7 @@
     <dimen name="text_haiku_size_sub">16sp</dimen>
     <dimen name="text_name_size">12sp</dimen>
     <dimen name="text_date_size">12sp</dimen>
+    <dimen name="text_RT_size">10sp</dimen>
     <dimen name="text_help_title">20sp</dimen>
     <dimen name="text_login">40sp</dimen>
 

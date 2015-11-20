@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.signalyellow.tweetokashi.activity.FavoriteActivity;
 import com.signalyellow.tweetokashi.activity.HaikuRegenerateActivity;
 import com.signalyellow.tweetokashi.activity.HaikuRetweetActivity;
 import com.signalyellow.tweetokashi.activity.ReplyActivity;
@@ -110,16 +111,16 @@ public class SlidingTabsFragment extends Fragment {
             } catch (TwitterException e) {
                 return null;
             }
-            MorphologicalAnalysisByYahooAPI analyzer =
-                    new MorphologicalAnalysisByYahooAPI(getString(R.string.yahoo_application_id));
+            MorphologicalAnalysisByGooAPI analyzer =
+                    new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
 
             if (canCreateHaiku) {
                 try {
                     List<Word> list = analyzer
                             .analyze(user.getDescription());
-                    String haiku = new HaikuGeneratorByYahooAPI(list).generate();
+                    String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                     return new HaikuUserStatus(haiku, user);
-                } catch (IOException | XmlPullParserException e) {
+                } catch (IOException e) {
                     Log.d(TAG, e.toString());
                     return new HaikuUserStatus("", user);
                 }
@@ -160,19 +161,22 @@ public class SlidingTabsFragment extends Fragment {
                 return null;
             }
 
-            MorphologicalAnalysisByYahooAPI analyzer = new MorphologicalAnalysisByYahooAPI(getString(R.string.yahoo_application_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
 
             if (canCreateHaiku) {
                 for (twitter4j.Status status : timeline) {
                     try {
+
                         List<Word> list = analyzer
-                                .analyze(status.getText());
-                        String haiku = new HaikuGeneratorByYahooAPI(list).generate();
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
-                    } catch (IOException | XmlPullParserException e) {
+                    } catch (IOException e) {
+                        Log.d("timline generate1",status.getText());
+                        Log.d("timline generate1",analyzer.removeURLText(status.getText()));
                         Log.d("timeline generate", e.toString());
-                        showToast(getString(R.string.error_normal));
+                        //showToast(getString(R.string.error_normal));
                     }
                 }
             } else {
@@ -240,17 +244,17 @@ public class SlidingTabsFragment extends Fragment {
                 return null;
             }
 
-            MorphologicalAnalysisByYahooAPI analyzer = new MorphologicalAnalysisByYahooAPI(getString(R.string.yahoo_application_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
 
             if (canCreateHaiku) {
                 for (twitter4j.Status status : timeline) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
-                        String haiku = new HaikuGeneratorByYahooAPI(list).generate();
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
-                    } catch (IOException | XmlPullParserException e) {
+                    } catch (IOException e) {
                         Log.d(TAG,e.toString());
                     }
                 }
@@ -314,16 +318,16 @@ public class SlidingTabsFragment extends Fragment {
             }
 
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
-            MorphologicalAnalysisByYahooAPI analyzer = new MorphologicalAnalysisByYahooAPI(getString(R.string.yahoo_application_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
 
             if (canCreateHaiku) {
                 for (twitter4j.Status status : result.getTweets()) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
-                        String haiku = new HaikuGeneratorByYahooAPI(list).generate();
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
-                    } catch (IOException | XmlPullParserException e) {
+                    } catch (IOException e) {
                         Log.d(TAG, e.toString());
                     }
                 }
@@ -389,16 +393,16 @@ public class SlidingTabsFragment extends Fragment {
             }
 
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
-            MorphologicalAnalysisByYahooAPI analyzer = new MorphologicalAnalysisByYahooAPI(getString(R.string.yahoo_application_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
 
             if (canCreateHaiku) {
                 for (twitter4j.Status status : result.getTweets()) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
-                        String haiku = new HaikuGeneratorByYahooAPI(list).generate();
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
-                    } catch (IOException | XmlPullParserException e) {
+                    } catch (IOException  e) {
                         Log.d(TAG, e.toString());
                     }
                 }
@@ -433,6 +437,10 @@ public class SlidingTabsFragment extends Fragment {
     }
 
 
+
+    /**
+     * FollowしているUserの表示、説明文からの俳句生成
+     */
     private class FollowAsyncTask extends AsyncTask<Void,Void,List<HaikuUserStatus>>{
 
         UserAdapter mAdapter;
@@ -460,16 +468,16 @@ public class SlidingTabsFragment extends Fragment {
             }
 
             List<HaikuUserStatus> userStatusList = new ArrayList<>();
-            MorphologicalAnalysisByYahooAPI analyzer = new MorphologicalAnalysisByYahooAPI(getString(R.string.yahoo_application_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
 
             if (canCreateHaiku) {
                 for (User u:list) {
                     try {
                         List<Word> words = analyzer
                                 .analyze(u.getDescription());
-                        String haiku = new HaikuGeneratorByYahooAPI(words).generate();
+                        String haiku = new HaikuGeneratorByGooAPI(words).generateHaikuStrictly();
                         userStatusList.add(new HaikuUserStatus(haiku, u));
-                    } catch (IOException | XmlPullParserException e) {
+                    } catch (IOException e) {
                         Log.d(TAG, e.toString());
                     }
                 }
@@ -800,7 +808,8 @@ public class SlidingTabsFragment extends Fragment {
 
             final String[] items = {getString(R.string.dialog_reply),
                     getString(R.string.dialog_retweet),
-                    haikuStatus.getStatus().getUser().getName() + " " + getString(R.string.dialog_usertimeline)
+                    haikuStatus.getUserName() + " " + getString(R.string.dialog_usertimeline),
+                    getString(R.string.dialog_favorite)
                     };
             new AlertDialog.Builder(getActivity())
                     .setTitle(getString(R.string.dialog_title))
@@ -820,10 +829,7 @@ public class SlidingTabsFragment extends Fragment {
                                     intent = new Intent(getActivity(), TimelineActivity.class);
                                     break;
                                 case 3:
-                                    intent = new Intent(getActivity(), HaikuRetweetActivity.class);
-                                    break;
-                                case 4:
-                                    intent = new Intent(getActivity(), HaikuRegenerateActivity.class);
+                                    intent = new Intent(getActivity(),FavoriteActivity.class);
                                     break;
                                 default:
                                     showToast(getString(R.string.error_normal));
@@ -841,9 +847,10 @@ public class SlidingTabsFragment extends Fragment {
         private void showDialogForHaiku(final HaikuStatus haikuStatus){
             final String[] items = {getString(R.string.dialog_reply),
                     getString(R.string.dialog_retweet),
-                    haikuStatus.getStatus().getUser().getName() + " " + getString(R.string.dialog_usertimeline),
+                    haikuStatus.getUserName() + " " + getString(R.string.dialog_usertimeline),
                     getString(R.string.dialog_haikuretweet),
-                    getString(R.string.dialog_regenerate)};
+                    getString(R.string.dialog_regenerate),
+                    getString(R.string.dialog_favorite)};
             new AlertDialog.Builder(getActivity())
                     .setTitle(getString(R.string.dialog_title))
                     .setItems(items, new DialogInterface.OnClickListener() {
@@ -865,6 +872,9 @@ public class SlidingTabsFragment extends Fragment {
                                     break;
                                 case 4:
                                     intent = new Intent(getActivity(), HaikuRegenerateActivity.class);
+                                    break;
+                                case 5:
+                                    intent = new Intent(getActivity(), FavoriteActivity.class);
                                     break;
                                 default:
                                     showToast(getString(R.string.error_normal));

@@ -153,6 +153,20 @@
                 android:text="@string/help_description_tweet"/>
 
 
+            <TextView
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_title_top"
+                android:textSize="@dimen/text_help_title"
+                android:text="@string/help_title_error"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/help_margin_description_top"
+                android:text="@string/help_description_error"/>
         </LinearLayout>
 
 

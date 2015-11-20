@@ -12,6 +12,43 @@
         android:src="@mipmap/ic_launcher"/>
 
     <TextView
+        android:id="@+id/RT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_retweet"
+        android:textSize="@dimen/text_RT_size"
+        android:textColor="@color/text_date_color"
+        android:layout_below="@id/icon"/>
+
+    <TextView
+        android:id="@+id/RTcount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/test_rtcount"
+        android:textColor="@color/text_date_color"
+
+        android:textSize="@dimen/text_RT_size"
+        android:layout_below="@id/RT"/>
+
+    <TextView
+        android:id="@+id/FAV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_favorite"
+        android:textColor="@color/text_date_color"
+        android:layout_below="@id/RTcount"
+        android:textSize="@dimen/text_RT_size"
+        />
+    <TextView
+        android:id="@+id/FAVCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_RT_size"
+        android:text="@string/test_favcount"
+        android:textColor="@color/text_date_color"
+        android:layout_below="@+id/FAV"/>
+
+    <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

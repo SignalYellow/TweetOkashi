@@ -27,7 +27,7 @@ public class TwitterOAuthActivity extends Activity {
 
     private String mCallbackURL;
     private Twitter mTwitter;
-    private RequestToken mRequestToken;
+    private static RequestToken mRequestToken;
 
 
     @Override
@@ -39,21 +39,32 @@ public class TwitterOAuthActivity extends Activity {
         if(actionBar != null){
             actionBar.setSubtitle(R.string.login_activity_subtitle);
         }
-
         mCallbackURL = getString(R.string.twitter_callback_url);
+        prepareOauth();
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        prepareOauth();
+    }
+
+    private void prepareOauth(){
+
         mTwitter = TwitterUtils.getTwitterInstance(this);
         mTwitter.setOAuthAccessToken(null);
-
         findViewById(R.id.oauthButton).setOnClickListener(
+
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         startAuthorize();
                     }
                 }
         );
     }
-
 
     private void startAuthorize(){
         AsyncTask<Void,Void,String> task = new AsyncTask<Void, Void, String>() {
@@ -64,16 +75,16 @@ public class TwitterOAuthActivity extends Activity {
                     return  mRequestToken.getAuthorizationURL();
                 }catch (TwitterException e){
                     Log.d(TAG,e.toString());
+                    return null;
                 }
-
-                return null;
             }
 
             @Override
             protected void onPostExecute(String url) {
                 if(url != null){
-                    Log.d("Authorize",url);
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                }else {
+                    showToast(getString(R.string.error_normal));
                 }
             }
         };
@@ -85,12 +96,14 @@ public class TwitterOAuthActivity extends Activity {
     public void onNewIntent(Intent intent) {
         if (intent == null || intent.getData() == null
                 || !intent.getData().toString().startsWith(mCallbackURL)) {
-            Log.d("new Intent", "miss");
             startActivity(new Intent(getApplicationContext(),TwitterOAuthActivity.class));
             finish();
             return;
         }
+
+        //Log.d(TAG,intent.getData().toString());
         String verifier = intent.getData().getQueryParameter("oauth_verifier");
+
         if (verifier == null) {
             showToast(getString(R.string.error_normal));
             startActivity(new Intent(getApplicationContext(), TwitterOAuthActivity.class));
@@ -116,11 +129,9 @@ public class TwitterOAuthActivity extends Activity {
                     successOAuth(accessToken);
                 } else {
                     showToast(getString(R.string.error_normal));
-
                 }
             }
-        }
-                .execute(verifier);
+        }.execute(verifier);
     }
 
     private void successOAuth(AccessToken accessToken){

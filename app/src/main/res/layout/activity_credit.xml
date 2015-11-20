@@ -26,7 +26,7 @@
         android:layout_marginTop="@dimen/help_margin_title_top"
         android:textStyle="bold"/>
 
-    <TextView android:text="@string/credit_title_yahoo_api" android:layout_width="wrap_content"
+    <TextView android:text="@string/credit_title_goo_api" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/help_margin_description_top"
         android:textStyle="bold"/>
@@ -34,18 +34,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/help_margin_description_top"
-        android:text="@string/credit_yahoo_api_user"/>
+        android:text="@string/credit_goo_api_text"/>
 
     <ImageView
         android:layout_margin="@dimen/credit_yahoo_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:src="@drawable/yahoo_credit"
+        android:src="@drawable/sgoo"
         android:layout_gravity="center_horizontal" />
 
     <TextView
-        android:text="@string/credit_yahoo_api_url"
+        android:text="@string/credit_goo_api_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -65,5 +65,7 @@
         android:autoLink="web"
 
         />
+
+
 
 </LinearLayout>

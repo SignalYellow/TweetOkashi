@@ -23,7 +23,6 @@ import com.signalyellow.tweetokashi.components.SettingUtils;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
 
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +34,10 @@ import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
+/**
+ * ユーザーのタイムラインを表示するActivity
+ * HomeActivityなどで、(ユーザ)のツイートを表示をクリックすると起動
+ */
 public class TimelineActivity extends Activity {
 
     Twitter mTwitter;
@@ -116,6 +119,9 @@ public class TimelineActivity extends Activity {
         canCreateHaiku = SettingUtils.canCreateHaiku(this);
     }
 
+    /**
+     * タイムライン更新処理
+     */
     private class TimelineAsyncTask extends AsyncTask<Void,Void,List<HaikuStatus>>{
 
         boolean isThereTweetException = false;
@@ -139,24 +145,23 @@ public class TimelineActivity extends Activity {
             try {
                 timeline = mTwitter.getUserTimeline(userScreenName);
             } catch (TwitterException e) {
-                Log.e("twitter timeline", e.toString());
+                Log.e(TAG, e.toString());
                 isThereTweetException = true;
                 return null;
             }
 
             MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
-            List<HaikuStatus> haikuStatusList = new ArrayList<HaikuStatus>();
+            List<HaikuStatus> haikuStatusList = new ArrayList<>();
 
             if (canCreateHaiku) {
                 for (twitter4j.Status status : timeline) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
-                        String haiku = new HaikuGeneratorByGooAPI(list).generate();
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
-                        Log.d("timeline generate", e.toString());
-                        showToast(getString(R.string.error_normal));
+                        Log.d("timeline generate error", e.toString());
                     }
                 }
             } else {
@@ -196,6 +201,10 @@ public class TimelineActivity extends Activity {
         }
     }
 
+    /**
+     * タイムラインの更新作業終了時の処理
+     * footerの更新ボタンとheaderの更新ボタンを利用できるようにする
+     */
     private void completeTimelineUpdating(){
         ProgressBar pb = (ProgressBar) footerView.findViewById(R.id.progress);
         Button tailButton = (Button)footerView.findViewById(R.id.tail_button);
@@ -207,6 +216,10 @@ public class TimelineActivity extends Activity {
 
     }
 
+    /**
+     * タイムラインの更新準備
+     * タイムラインの更新ボタンを利用できないようにする。
+     */
     private void prepareTimelineUpdating(){
         ProgressBar pb = (ProgressBar) footerView.findViewById(R.id.progress);
         Button tailButton = (Button)footerView.findViewById(R.id.tail_button);
@@ -259,8 +272,8 @@ public class TimelineActivity extends Activity {
                 for (twitter4j.Status status : timeline) {
                     try {
                         List<Word> list = analyzer
-                                .analyze(status.getText());
-                        String haiku = new HaikuGeneratorByGooAPI(list).generate();
+                                .analyze(status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT","") : status.getText());
+                        String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
                         Log.d(TAG, e.toString());
@@ -308,7 +321,8 @@ public class TimelineActivity extends Activity {
 
 
         final String[] items = {getString(R.string.dialog_reply),
-                getString(R.string.dialog_retweet)
+                getString(R.string.dialog_retweet),
+                getString(R.string.dialog_favorite)
         };
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.dialog_title))
@@ -325,10 +339,7 @@ public class TimelineActivity extends Activity {
                                 intent = new Intent(getApplicationContext(), RetweetActivity.class);
                                 break;
                             case 2:
-                                intent = new Intent(getApplicationContext(), HaikuRetweetActivity.class);
-                                break;
-                            case 3:
-                                intent = new Intent(getApplicationContext(), HaikuRegenerateActivity.class);
+                                intent = new Intent(getApplicationContext(),FavoriteActivity.class);
                                 break;
                             default:
                                 showToast(getString(R.string.error_normal));
@@ -347,7 +358,8 @@ public class TimelineActivity extends Activity {
         final String[] items = {getString(R.string.dialog_reply),
                 getString(R.string.dialog_retweet),
                 getString(R.string.dialog_haikuretweet),
-                getString(R.string.dialog_regenerate)};
+                getString(R.string.dialog_regenerate),
+                getString(R.string.dialog_favorite)};
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.dialog_title))
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -366,6 +378,9 @@ public class TimelineActivity extends Activity {
                                 break;
                             case 3:
                                 intent = new Intent(getApplicationContext(), HaikuRegenerateActivity.class);
+                                break;
+                            case 4:
+                                intent = new Intent(getApplicationContext(), FavoriteActivity.class);
                                 break;
                             default:
                                 showToast(getString(R.string.error_normal));
