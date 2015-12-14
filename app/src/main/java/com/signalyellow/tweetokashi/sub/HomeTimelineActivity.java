@@ -1,5 +1,6 @@
 package com.signalyellow.tweetokashi.sub;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -47,8 +48,9 @@ public class HomeTimelineActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(),TweetPostActivity.class);
+                startActivity(intent);
+
             }
         });
 
@@ -164,6 +166,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+            startActivity(new Intent(getApplicationContext(),HomeViewActivity.class));
 
         } else if (id == R.id.nav_slideshow) {
 

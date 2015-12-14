@@ -71,15 +71,17 @@
         <activity
             android:name=".activity.FavoriteActivity"
             android:label="@string/title_activity_favorite" />
-
         <activity
             android:name=".sub.HomeViewActivity"
             android:label="@string/title_activity_home_view" />
-
         <activity
             android:name=".sub.HomeTimelineActivity"
             android:label="@string/title_activity_home_timeline"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".sub.TweetPostActivity"
+            android:label="@string/title_activity_tweet_post"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

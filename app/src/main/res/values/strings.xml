@@ -235,6 +235,7 @@
     <string name="title_activity_home_view">HomeViewActivity</string>
     <string name="title_activity_main_home">MainHomeActivity</string>
     <string name="title_activity_home_timeline">HomeTimelineActivity</string>
+    <string name="title_activity_tweet_post">TweetPostActivity</string>
 
 
 </resources>
