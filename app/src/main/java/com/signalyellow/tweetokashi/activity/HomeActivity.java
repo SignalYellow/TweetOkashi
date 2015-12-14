@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
 import com.signalyellow.tweetokashi.fragments.SlidingTabsFragment;
+import com.signalyellow.tweetokashi.sub.HomeTimelineActivity;
+import com.signalyellow.tweetokashi.sub.HomeViewActivity;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -30,6 +32,11 @@ public class HomeActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        if(true) {
+            startActivity(new Intent(getApplicationContext(), HomeTimelineActivity.class));
+            finish();
+        }
+
 
         ActionBar actionBar = getActionBar();
         if(actionBar != null) actionBar.setSubtitle(R.string.app_name_ja);

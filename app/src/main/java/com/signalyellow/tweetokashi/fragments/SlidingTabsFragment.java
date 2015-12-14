@@ -173,9 +173,6 @@ public class SlidingTabsFragment extends Fragment {
                         String haiku = new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
                         haikuStatusList.add(new HaikuStatus(haiku, status));
                     } catch (IOException e) {
-                        Log.d("timline generate1",status.getText());
-                        Log.d("timline generate1",analyzer.removeURLText(status.getText()));
-                        Log.d("timeline generate", e.toString());
                         //showToast(getString(R.string.error_normal));
                     }
                 }

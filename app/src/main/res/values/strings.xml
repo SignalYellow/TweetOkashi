@@ -12,6 +12,8 @@
     <string name="twitter_callback_url">callback://TwitterOAuthActivity</string>
 
 
+    <!-- page name -->
+    <string name="timeline_page_name">TIMELINE</string>
 
     <!-- 一般系 -->
     <string name="btn_tweet">ツイート</string>
@@ -74,9 +76,6 @@
     <string name="login_activity_subtitle">ログイン</string>
     <string name="setting_activity_subtitle">設定</string>
     <string name="credit_activity_subtitle">クレジット</string>
-
-
-
 
 
     <!-- 設定 Setting Activity-->
@@ -210,10 +209,6 @@
     <string name="test_favcount">0</string>
 
 
-
-
-
-
     <string name="menu_refresh">更新</string>
     <string name="title_activity_home">HomeActivity</string>
 
@@ -221,13 +216,12 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
 
-    <string name="action_settings">a</string>
     <string name="title_activity_credit">CreditActivity</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_help">HelpActivity</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -235,6 +229,12 @@
 
     <string name="action_example">Example action</string>
     <string name="title_activity_favorite">FavoriteActivity</string>
+    <string name="title_activity_home_tweet">HomeTweetActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_home_view">HomeViewActivity</string>
+    <string name="title_activity_main_home">MainHomeActivity</string>
+    <string name="title_activity_home_timeline">HomeTimelineActivity</string>
 
 
 </resources>
