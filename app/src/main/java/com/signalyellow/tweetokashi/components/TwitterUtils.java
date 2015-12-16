@@ -2,12 +2,15 @@ package com.signalyellow.tweetokashi.components;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.signalyellow.tweetokashi.keys.Key;
 
-import com.signalyellow.tweetokashi.R;
-
+import twitter4j.AsyncTwitter;
+import twitter4j.AsyncTwitterFactory;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationBuilder;
 
 
 public class TwitterUtils {
@@ -26,12 +29,10 @@ public class TwitterUtils {
     }
 
     public static Twitter getTwitterInstance(Context context) {
-        String consumerKey = context.getString(R.string.consumer_key);
-        String consumerSecret = context.getString(R.string.consumer_secret);
 
         TwitterFactory factory = new TwitterFactory();
         Twitter twitter = factory.getInstance();
-        twitter.setOAuthConsumer(consumerKey, consumerSecret);
+        twitter.setOAuthConsumer(Key.getConsumerKey(),Key.getConsumerSecret());
 
         if(hasAccessToken(context)){
             twitter.setOAuthAccessToken(loadAccessToken(context));
@@ -40,12 +41,39 @@ public class TwitterUtils {
         return twitter;
     }
 
+    public static Configuration getTwitterConfiguration(Context context){
+
+        Configuration conf=null;
+        AccessToken token = loadAccessToken(context);
+        if(token != null) {
+             conf = new ConfigurationBuilder()
+                    .setOAuthConsumerKey(Key.getConsumerKey())
+                    .setOAuthConsumerSecret(Key.getConsumerSecret())
+                    .setOAuthAccessToken(token.getToken())
+                    .setOAuthAccessToken(token.getTokenSecret())
+                    .build();
+        }
+
+        return conf;
+
+    }
+
+    public static AsyncTwitter getAsyncTwitterInstance(Context context){
+        AsyncTwitter twitter = new AsyncTwitterFactory().getInstance();
+        twitter.setOAuthConsumer(Key.getConsumerKey(),Key.getConsumerSecret());
+
+        if(hasAccessToken(context)){
+            twitter.setOAuthAccessToken(loadAccessToken(context));
+        }
+        return twitter;
+    }
+
     public static void storeAccessToken(Context context, AccessToken accessToken){
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(TOKEN, accessToken.getToken());
         editor.putString(TOKEN_SECRET, accessToken.getTokenSecret());
-        editor.commit();
+        editor.apply();
     }
 
     public static AccessToken loadAccessToken(Context context){
@@ -66,7 +94,7 @@ public class TwitterUtils {
                 Context.MODE_PRIVATE).edit();
         editor.remove(TOKEN);
         editor.remove(TOKEN_SECRET);
-        editor.commit();
+        editor.apply();
     }
 
     public static boolean hasAccessToken(Context context){

@@ -33,6 +33,7 @@ import com.signalyellow.tweetokashi.components.SettingUtils;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
 import com.signalyellow.tweetokashi.components.UserAdapter;
+import com.signalyellow.tweetokashi.keys.Key;
 
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -112,7 +113,7 @@ public class SlidingTabsFragment extends Fragment {
                 return null;
             }
             MorphologicalAnalysisByGooAPI analyzer =
-                    new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+                    new MorphologicalAnalysisByGooAPI(Key.getGooId());
 
             if (canCreateHaiku) {
                 try {
@@ -161,7 +162,7 @@ public class SlidingTabsFragment extends Fragment {
                 return null;
             }
 
-            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
 
             if (canCreateHaiku) {
@@ -241,7 +242,7 @@ public class SlidingTabsFragment extends Fragment {
                 return null;
             }
 
-            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
 
             if (canCreateHaiku) {
@@ -315,7 +316,7 @@ public class SlidingTabsFragment extends Fragment {
             }
 
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
-            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
 
             if (canCreateHaiku) {
                 for (twitter4j.Status status : result.getTweets()) {
@@ -390,7 +391,7 @@ public class SlidingTabsFragment extends Fragment {
             }
 
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
-            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
 
             if (canCreateHaiku) {
                 for (twitter4j.Status status : result.getTweets()) {
@@ -465,7 +466,7 @@ public class SlidingTabsFragment extends Fragment {
             }
 
             List<HaikuUserStatus> userStatusList = new ArrayList<>();
-            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
 
             if (canCreateHaiku) {
                 for (User u:list) {

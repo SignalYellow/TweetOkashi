@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
+import com.signalyellow.tweetokashi.keys.Key;
+
 import java.util.List;
 
 import jp.signalyellow.haiku.HaikuGeneratorByGooAPI;
@@ -29,7 +31,7 @@ public class HaikuTextAsyncTask extends AsyncTask<String,Void,String>{
     @Override
     protected String doInBackground(String... strings) {
         String text = strings[0];
-        MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(mContext.getString(R.string.goo_id));
+        MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
 
         try {
             List<Word> list = analyzer.analyze(text);

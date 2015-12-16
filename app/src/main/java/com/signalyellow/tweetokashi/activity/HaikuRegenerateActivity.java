@@ -16,6 +16,7 @@ import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.keys.Key;
 
 
 import java.util.List;
@@ -108,7 +109,7 @@ public class HaikuRegenerateActivity extends Activity {
         protected String doInBackground(String... params) {
             List<Word> temp;
             try {
-                MorphologicalAnalysisByGooAPI analyzor = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+                MorphologicalAnalysisByGooAPI analyzor = new MorphologicalAnalysisByGooAPI(Key.getGooId());
                 temp = analyzor.analyze(params[0]);
                 Log.d(TAG,"done analysis");
             }catch (Exception e){

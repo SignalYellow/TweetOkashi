@@ -26,6 +26,7 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
 import com.signalyellow.tweetokashi.components.TwitterUtils.TWITTER_STATUS;
+import com.signalyellow.tweetokashi.keys.Key;
 
 import org.w3c.dom.Text;
 
@@ -216,7 +217,7 @@ public class TweetActivity extends Activity  {
         protected String doInBackground(String... params) {
             List<Word> temp;
             try {
-                MorphologicalAnalysisByGooAPI analyzor = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+                MorphologicalAnalysisByGooAPI analyzor = new MorphologicalAnalysisByGooAPI(Key.getGooId());
                 temp = analyzor.analyze(params[0]);
             }catch (Exception e){
                 Log.d(TAG, e.toString());

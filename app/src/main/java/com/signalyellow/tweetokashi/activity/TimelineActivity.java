@@ -22,6 +22,7 @@ import com.signalyellow.tweetokashi.components.HaikuTweetAdapter;
 import com.signalyellow.tweetokashi.components.SettingUtils;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.keys.Key;
 
 
 import java.io.IOException;
@@ -150,7 +151,7 @@ public class TimelineActivity extends Activity {
                 return null;
             }
 
-            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
 
             if (canCreateHaiku) {
@@ -265,7 +266,7 @@ public class TimelineActivity extends Activity {
                 return null;
             }
 
-            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(getString(R.string.goo_id));
+            MorphologicalAnalysisByGooAPI analyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
             List<HaikuStatus> haikuStatusList = new ArrayList<>();
 
             if (canCreateHaiku) {

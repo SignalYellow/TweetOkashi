@@ -5,10 +5,6 @@
     <string name="app_name_en">Tweet-Okashi</string>
 
     <!-- パスワード系 重要かつ基本的に変更しない -->
-    <string name="yahoo_application_id">dj0zaiZpPUxLVnlYYmRUdWtJNiZzPWNvbnN1bWVyc2VjcmV0Jng9MTg-</string>
-    <string name="goo_id">139fa8536242d11739fcca695edbc164572c8b27d3571d0c2cda76df9aedfca3</string>
-    <string name="consumer_key">Yz7nOmak7BTuwmTiwWK0JDbE6</string>
-    <string name="consumer_secret">JMHBEVyMGDDmTpS2pqs1dUuA1S8Vgn7KDHOFkRbhDQ0wwwVje4</string>
     <string name="twitter_callback_url">callback://TwitterOAuthActivity</string>
 
 

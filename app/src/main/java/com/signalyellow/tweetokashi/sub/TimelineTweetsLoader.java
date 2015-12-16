@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.signalyellow.tweetokashi.R;
+import com.signalyellow.tweetokashi.keys.Key;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class TimelineTweetsLoader extends AsyncTaskLoader<List<TweetData>> {
         ResponseList<Status> timeline;
         List<TweetData> dataList = new ArrayList<>();
         MorphologicalAnalysisByGooAPI analyzer =
-                new MorphologicalAnalysisByGooAPI(mContext.getString(R.string.goo_id));
+                new MorphologicalAnalysisByGooAPI(Key.getGooId());
 
         try {
             timeline = mTwitter.getHomeTimeline();

@@ -2,7 +2,7 @@ package com.signalyellow.tweetokashi.app;
 
 import android.app.Application;
 
-import com.signalyellow.tweetokashi.R;
+import com.signalyellow.tweetokashi.keys.Key;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
 import com.signalyellow.tweetokashi.manager.LoadBitmapManager;
 
@@ -19,7 +19,7 @@ public class TweetOkashiApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        mHaikuManger = new HaikuManager(getApplicationContext().getString(R.string.goo_id));
+        mHaikuManger = new HaikuManager();
         mLoadBitmapManger = new LoadBitmapManager();
     }
 

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.signalyellow.tweetokashi.R;
+import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
 
 import twitter4j.*;
@@ -40,11 +41,13 @@ public class HomeTimelineActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
-        mSwipeRefreshLayout.setColorSchemeColors(Color.YELLOW,Color.RED);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color,android.R.color.holo_orange_dark);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d(TAG,"refresh");
+                Log.d(TAG, "refresh");
+                TweetOkashiApplication app = (TweetOkashiApplication)getApplicationContext();
+                app.getHaikuManger().refresh();
                 new TimelineAsyncTask().execute();
             }
         });
@@ -96,6 +99,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
             if(statuses != null){
                 mAdapter.clear();
+
                 for(twitter4j.Status s : statuses){
                     mAdapter.add(new TweetData(s,""));
                 }

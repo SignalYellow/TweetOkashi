@@ -6,6 +6,8 @@ import android.util.Log;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.TextView;
+
+import com.signalyellow.tweetokashi.keys.Key;
 import com.signalyellow.tweetokashi.sub.TweetData;
 import java.util.List;
 import jp.signalyellow.haiku.HaikuGeneratorByGooAPI;
@@ -27,9 +29,9 @@ public class HaikuManager {
     LruCache<Long,String> mCache;
 
 
-    public HaikuManager(String gooId){
+    public HaikuManager(){
         mCache = new LruCache<>(MAX_HAIKU);
-        mAnalyzer = new MorphologicalAnalysisByGooAPI(gooId);
+        mAnalyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
     }
 
     public void refresh(){

@@ -5,6 +5,7 @@
 .DS_Store
 /build
 /captures
+Key.java
 
 #User-specific configurations
 .idea/libraries/
@@ -19,5 +20,3 @@
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
 *.iml
-app/src/main/res/values/strings.xml
-
