@@ -21,6 +21,7 @@ import android.widget.ListView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.nav.NavigationItemAction;
 
 import twitter4j.*;
 
@@ -45,7 +46,6 @@ public class HomeTimelineActivity extends AppCompatActivity
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d(TAG, "refresh");
                 TweetOkashiApplication app = (TweetOkashiApplication)getApplicationContext();
                 app.getHaikuManger().refresh();
                 new TimelineAsyncTask().execute();
@@ -144,25 +144,11 @@ public class HomeTimelineActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(getApplicationContext(),HomeViewActivity.class));
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
+        NavigationItemAction action = NavigationItemAction.valueOf(item);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return action.getHandler().handle(this,null);
     }
 }
