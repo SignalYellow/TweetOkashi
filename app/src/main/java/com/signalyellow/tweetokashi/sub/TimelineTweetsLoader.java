@@ -56,7 +56,7 @@ public class TimelineTweetsLoader extends AsyncTaskLoader<List<TweetData>> {
                         continue;
                     }
                 }
-                dataList.add(new TweetData(status, haiku));
+                dataList.add(new TweetData(status));
             }
             return dataList;
         } catch (TwitterException e) {

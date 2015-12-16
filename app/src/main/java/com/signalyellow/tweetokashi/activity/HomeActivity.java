@@ -15,8 +15,6 @@ import android.view.MenuItem;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
 import com.signalyellow.tweetokashi.fragments.SlidingTabsFragment;
-import com.signalyellow.tweetokashi.sub.HomeTimelineActivity;
-import com.signalyellow.tweetokashi.sub.HomeViewActivity;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

@@ -77,7 +77,7 @@
             android:name=".sub.HomeViewActivity"
             android:label="@string/title_activity_home_view" />
         <activity
-            android:name=".sub.HomeTimelineActivity"
+            android:name=".activity.HomeTimelineActivity"
             android:label="@string/title_activity_home_timeline"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

@@ -24,7 +24,7 @@ public class TweetData implements Serializable{
 
 
 
-    public TweetData(Status status, String haiku){
+    public TweetData(Status status){
         User user = status.getUser();
         this.name = user.getName();
         this.screenName = user.getScreenName();
@@ -36,7 +36,6 @@ public class TweetData implements Serializable{
         this.isRetweeted = status.isRetweeted();
         this.text = status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT",""): status.getText();
 
-        this.haiku = haiku;
     }
 
     public long getTweetId() {

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
+import com.signalyellow.tweetokashi.activity.HomeTimelineActivity;
 
 public class HomeViewActivity extends AppCompatActivity implements TweetsFragment.OnListFragmentInteractionListener{
 
