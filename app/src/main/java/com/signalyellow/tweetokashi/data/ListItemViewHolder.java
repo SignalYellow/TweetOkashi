@@ -1,9 +1,7 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.data;
 
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.loopj.android.image.SmartImageView;
-
 
 /**
  * Created by shohei on 15/12/14.
@@ -16,6 +14,5 @@ public class ListItemViewHolder {
     public TextView textRetweetedCount;
     public TextView textFavoritedCount;
     public TextView textHaiku;
-    public SmartImageView imageThumbnail;
-
+    public ImageView imageThumbnail;
 }

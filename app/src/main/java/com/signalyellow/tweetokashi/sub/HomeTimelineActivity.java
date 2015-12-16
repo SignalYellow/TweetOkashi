@@ -1,10 +1,12 @@
 package com.signalyellow.tweetokashi.sub;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,20 +21,16 @@ import android.widget.ListView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import twitter4j.ResponseList;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
+import twitter4j.*;
 
 public class HomeTimelineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "HomeTimeline";
 
     private Twitter mTwitter;
-    private ListView mListView;
     private TweetDataAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +39,16 @@ public class HomeTimelineActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
+        mSwipeRefreshLayout.setColorSchemeColors(Color.YELLOW,Color.RED);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d(TAG,"refresh");
+                new TimelineAsyncTask().execute();
+            }
+        });
+
 
         mTwitter = TwitterUtils.getTwitterInstance(this);
 
@@ -48,7 +56,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),TweetPostActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TweetPostActivity.class);
                 startActivity(intent);
 
             }
@@ -63,65 +71,36 @@ public class HomeTimelineActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mListView = (ListView)findViewById(R.id.listView);
+
+        ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
 
         new TimelineAsyncTask().execute();
 
-
     }
-    private class TimelineAsyncTask extends AsyncTask<Void,Void,List<TweetData>>{
-
-        boolean isThereTweetException = false;
-
-
+    private class TimelineAsyncTask extends AsyncTask<Void,Void,ResponseList<twitter4j.Status>>{
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected List<TweetData> doInBackground(Void... params) {
-
-            ResponseList<twitter4j.Status> timeline;
+        protected ResponseList<twitter4j.Status> doInBackground(Void... params) {
 
             try {
-                timeline = mTwitter.getHomeTimeline();
+                return mTwitter.getHomeTimeline();
             } catch (TwitterException e) {
-                isThereTweetException = true;
+                Log.e(TAG,e.toString());
                 return null;
             }
-
-            List<TweetData> haikuStatusList = new ArrayList<>();
-
-                for (twitter4j.Status status : timeline) {
-                        haikuStatusList.add(new TweetData(status, ""));
-                }
-
-
-
-            return haikuStatusList;
         }
 
-        /**
-         * listview に取得したタイムラインを適用
-         * @param list tweetList that contains haiku
-         */
         @Override
-        protected void onPostExecute(List<TweetData> list) {
+        protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
+            super.onPostExecute(statuses);
 
-            if(isThereTweetException) {
-                return;
-            }
-
-            if(list != null){
+            if(statuses != null){
                 mAdapter.clear();
-                for(TweetData s: list){
-                    mAdapter.add(s);
+                for(twitter4j.Status s : statuses){
+                    mAdapter.add(new TweetData(s,""));
                 }
-            }else{
+                mSwipeRefreshLayout.setRefreshing(false);
             }
-
         }
     }
 

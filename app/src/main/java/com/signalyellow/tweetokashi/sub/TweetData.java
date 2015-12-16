@@ -10,27 +10,37 @@ import twitter4j.User;
  * Created by shohei on 15/11/21.
  */
 public class TweetData implements Serializable{
+    long tweetId;
     String name;
     String screenName;
     String profileImageURL;
     String text;
-    int reTweetedCount;
+    int retweetedCount;
+    boolean isRetweeted;
     int favoriteCount;
     Date date;
 
     String haiku;
+
+
 
     public TweetData(Status status, String haiku){
         User user = status.getUser();
         this.name = user.getName();
         this.screenName = user.getScreenName();
         this.profileImageURL = user.getProfileImageURL();
-        this.text = status.getText();
-        this.reTweetedCount = status.getRetweetCount();
+        this.retweetedCount = status.getRetweetCount();
         this.favoriteCount = status.getFavoriteCount();
         this.date = status.getCreatedAt();
+        this.tweetId = status.getId();
+        this.isRetweeted = status.isRetweeted();
+        this.text = status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT",""): status.getText();
 
         this.haiku = haiku;
+    }
+
+    public long getTweetId() {
+        return tweetId;
     }
 
     public String getName() {
@@ -49,8 +59,8 @@ public class TweetData implements Serializable{
         return text;
     }
 
-    public int getReTweetedCount() {
-        return reTweetedCount;
+    public int getRetweetedCount() {
+        return retweetedCount;
     }
 
     public int getFavoriteCount() {
