@@ -21,6 +21,7 @@ import android.widget.ListView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.listener.AutoUpdateListScrollListener;
 import com.signalyellow.tweetokashi.nav.NavigationItemAction;
 
 import twitter4j.*;
@@ -52,7 +53,6 @@ public class HomeTimelineActivity extends AppCompatActivity
             }
         });
 
-
         mTwitter = TwitterUtils.getTwitterInstance(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -61,7 +61,6 @@ public class HomeTimelineActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), TweetPostActivity.class);
                 startActivity(intent);
-
             }
         });
 
@@ -77,6 +76,8 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
+        mListView.setOnScrollListener(new AutoUpdateListScrollListener());
+
 
         new TimelineAsyncTask().execute();
 
@@ -143,7 +144,6 @@ public class HomeTimelineActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
 
         NavigationItemAction action = NavigationItemAction.valueOf(item);
 
