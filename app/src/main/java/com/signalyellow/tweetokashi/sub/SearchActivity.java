@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
@@ -60,9 +61,12 @@ public class SearchActivity extends AppCompatActivity
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                TweetOkashiApplication app = (TweetOkashiApplication) getApplicationContext();
-                app.getHaikuManger().refresh();
-                new SearchAsyncTask("京都").execute();
+                if(queryString == null){
+                    Toast.makeText(getApplicationContext(),"検索ワードを入力してください",Toast.LENGTH_SHORT).show();
+                    setRefreshing(false);
+                    return;
+                }
+                new SearchAsyncTask(queryString).execute();
             }
         });
 
@@ -102,8 +106,9 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public void scrolled() {
+        Log.d(TAG,"onscroll");
         TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
-        new SearchAsyncTask(queryString,lastData.getTweetId() - 1);
+        new SearchAsyncTask(queryString,lastData.getTweetId() - 1).execute();
     }
 
     private class SearchAsyncTask extends AsyncTask<Void,Void,QueryResult> {
@@ -169,7 +174,7 @@ public class SearchActivity extends AppCompatActivity
         view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d(TAG,"submit");
+                new SearchAsyncTask(queryString = query).execute();
                 return false;
             }
 
