@@ -49,6 +49,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color,android.R.color.holo_orange_dark);
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -120,7 +121,6 @@ public class HomeTimelineActivity extends AppCompatActivity
 
             if(statuses != null){
                 if(mPaging == null) mAdapter.clear();
-
                 for(twitter4j.Status s : statuses){
                     mAdapter.add(new TweetData(s));
                 }
@@ -129,50 +129,6 @@ public class HomeTimelineActivity extends AppCompatActivity
         }
     }
 
-    private class SearchAsyncTask extends AsyncTask<Void,Void,QueryResult>{
-
-        Paging mPaging;
-        Query mQuery;
-
-        public SearchAsyncTask(String query){
-            mPaging = null;
-            mQuery = new Query(query);
-        }
-
-        public SearchAsyncTask(String query,Paging paging) {
-            mPaging = paging;
-            mQuery = new Query(query);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            setRefreshing(true);
-        }
-
-        @Override
-        protected QueryResult doInBackground(Void... voids) {
-
-            try {
-                return mPaging == null ? mTwitter.search(mQuery) : mTwitter.search(mQuery);
-            } catch (TwitterException e) {
-                Log.e(TAG,e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(QueryResult result) {
-
-            if(result != null){
-                if(mPaging == null) mAdapter.clear();
-
-                for(twitter4j.Status s : result.getTweets()){
-                    mAdapter.add(new TweetData(s));
-                }
-                setRefreshing(false);
-            }
-        }
-    }
 
     @Override
     public void setRefreshing(boolean refreshing) {

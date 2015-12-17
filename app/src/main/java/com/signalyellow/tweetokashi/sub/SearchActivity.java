@@ -49,8 +49,8 @@ public class SearchActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_with_search);
         setSupportActionBar(toolbar);
-
 
         mTwitter = TwitterUtils.getTwitterInstance(this);
 
@@ -82,7 +82,6 @@ public class SearchActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
         ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_setting" android:title="@string/menu_setting"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/menu_help" android:title="@string/menu_help" />
+    <item android:id="@+id/menu_credit" android:title="@string/menu_credit"
+        android:orderInCategory="900"/>
+    <item android:id="@+id/menu_logout" android:title="@string/menu_logout"
+        android:orderInCategory="1000"/>
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/icon_search"
+        android:title="検索"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always" />
+</menu>
