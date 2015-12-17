@@ -85,15 +85,21 @@ public class HomeTimelineActivity extends AppCompatActivity
         ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
         mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this, mAdapter));
-        mAdapter.clear();
+
+
+
+        new TimelineAsyncTask().execute();
 
         mStream = TwitterUtils.getTwitterStreamInstance(getApplicationContext());
         mStream.addListener(new MyUserStreamAdapter());
         mStream.user();
 
-        //new TimelineAsyncTask().execute();
+
+
 
     }
+
+
 
     private class TimelineAsyncTask extends AsyncTask<Void,Void,ResponseList<twitter4j.Status>>{
 
@@ -131,8 +137,11 @@ public class HomeTimelineActivity extends AppCompatActivity
                 for(twitter4j.Status s : statuses){
                     mAdapter.add(new TweetData(s));
                 }
-                setRefreshing(false);
             }
+
+            setRefreshing(false);
+
+
         }
     }
 
@@ -145,7 +154,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             new UiHandler(){
                 @Override
                 public void run() {
-                    mAdapter.add(new TweetData(status));
+                    mAdapter.insert(new TweetData(status), 0);
 
                 }
             }.post();
