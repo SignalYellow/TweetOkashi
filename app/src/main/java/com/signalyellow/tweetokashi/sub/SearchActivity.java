@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -43,13 +44,13 @@ public class SearchActivity extends AppCompatActivity
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private boolean mIsRefreshing = false;
+    private String queryString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_with_search);
         setSupportActionBar(toolbar);
 
         mTwitter = TwitterUtils.getTwitterInstance(this);
@@ -101,25 +102,24 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public void scrolled() {
-        Paging paging = new Paging();
         TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
-        paging.setMaxId(lastData.getTweetId() - 1);
-
+        new SearchAsyncTask(queryString,lastData.getTweetId() - 1);
     }
 
     private class SearchAsyncTask extends AsyncTask<Void,Void,QueryResult> {
 
-        Paging mPaging;
+        Long mMaxId;
         Query mQuery;
 
         public SearchAsyncTask(String query){
-            mPaging = null;
+            mMaxId = null;
             mQuery = new Query(query);
         }
 
-        public SearchAsyncTask(String query,Paging paging) {
-            mPaging = paging;
+        public SearchAsyncTask(String query, Long maxId) {
+            mMaxId = maxId;
             mQuery = new Query(query);
+            mQuery.setMaxId(maxId);
         }
 
         @Override
@@ -131,7 +131,7 @@ public class SearchActivity extends AppCompatActivity
         protected QueryResult doInBackground(Void... voids) {
 
             try {
-                return mPaging == null ? mTwitter.search(mQuery) : mTwitter.search(mQuery);
+                return mMaxId == null ? mTwitter.search(mQuery) : mTwitter.search(mQuery);
             } catch (TwitterException e) {
                 Log.e(TAG,e.toString());
                 return null;
@@ -142,7 +142,7 @@ public class SearchActivity extends AppCompatActivity
         protected void onPostExecute(QueryResult result) {
 
             if(result != null){
-                if(mPaging == null) mAdapter.clear();
+                if(mMaxId == null) mAdapter.clear();
 
                 for(twitter4j.Status s : result.getTweets()){
                     mAdapter.add(new TweetData(s));
@@ -164,19 +164,28 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.search, menu);
+        getMenuInflater().inflate(R.menu.menu_with_search, menu);
+        SearchView  view = (SearchView)menu.findItem(R.id.menu_search).getActionView();
+        view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG,"submit");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG,"text");
+                return false;
+            }
+        });
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
