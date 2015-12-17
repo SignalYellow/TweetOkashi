@@ -1,9 +1,9 @@
-package com.signalyellow.tweetokashi.activity;
+package com.signalyellow.tweetokashi.sub;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -20,22 +20,26 @@ import android.widget.ListView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollCheckable;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.nav.NavigationItemAction;
-import com.signalyellow.tweetokashi.data.TweetData;
-import com.signalyellow.tweetokashi.data.TweetDataAdapter;
-import com.signalyellow.tweetokashi.sub.TweetPostActivity;
 
-import twitter4j.*;
+import twitter4j.Paging;
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
-public class HomeTimelineActivity extends AppCompatActivity
+public class SearchActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollCheckable {
 
-    private static final String TAG = "HomeTimeline";
+    static final String TAG = "SearchActivity";
 
     private Twitter mTwitter;
     private TweetDataAdapter mAdapter;
+
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private boolean mIsRefreshing = false;
@@ -43,29 +47,30 @@ public class HomeTimelineActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_timeline);
+        setContentView(R.layout.activity_search);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        mTwitter = TwitterUtils.getTwitterInstance(this);
+
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color,android.R.color.holo_orange_dark);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color, android.R.color.holo_orange_dark);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                TweetOkashiApplication app = (TweetOkashiApplication)getApplicationContext();
+                TweetOkashiApplication app = (TweetOkashiApplication) getApplicationContext();
                 app.getHaikuManger().refresh();
-                new TimelineAsyncTask().execute();
+                new SearchAsyncTask("京都").execute();
             }
         });
-
-        mTwitter = TwitterUtils.getTwitterInstance(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), TweetPostActivity.class);
-                startActivity(intent);
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
@@ -82,54 +87,28 @@ public class HomeTimelineActivity extends AppCompatActivity
         ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
         mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this, mAdapter));
+    }
 
-        new TimelineAsyncTask().execute();
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        mIsRefreshing = refreshing;
+        mSwipeRefreshLayout.setRefreshing(refreshing);
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return mIsRefreshing;
+    }
+
+    @Override
+    public void scrolled() {
+        Paging paging = new Paging();
+        TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
+        paging.setMaxId(lastData.getTweetId() - 1);
 
     }
 
-    private class TimelineAsyncTask extends AsyncTask<Void,Void,ResponseList<twitter4j.Status>>{
-
-        Paging mPaging;
-
-        public TimelineAsyncTask(){
-            mPaging = null;
-        }
-
-        public TimelineAsyncTask(Paging paging) {
-            mPaging = paging;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            setRefreshing(true);
-        }
-
-        @Override
-        protected ResponseList<twitter4j.Status> doInBackground(Void... voids) {
-
-            try {
-                return mPaging == null ? mTwitter.getHomeTimeline() : mTwitter.getHomeTimeline(mPaging);
-            } catch (TwitterException e) {
-                Log.e(TAG,e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
-
-            if(statuses != null){
-                if(mPaging == null) mAdapter.clear();
-
-                for(twitter4j.Status s : statuses){
-                    mAdapter.add(new TweetData(s));
-                }
-                setRefreshing(false);
-            }
-        }
-    }
-
-    private class SearchAsyncTask extends AsyncTask<Void,Void,QueryResult>{
+    private class SearchAsyncTask extends AsyncTask<Void,Void,QueryResult> {
 
         Paging mPaging;
         Query mQuery;
@@ -175,28 +154,6 @@ public class HomeTimelineActivity extends AppCompatActivity
     }
 
     @Override
-    public void setRefreshing(boolean refreshing) {
-        mIsRefreshing = refreshing;
-        mSwipeRefreshLayout.setRefreshing(refreshing);
-    }
-
-    @Override
-    public boolean isRefreshing() {
-        return mIsRefreshing;
-    }
-
-    @Override
-    public void scrolled() {
-        Log.d(TAG, "scrolled");
-
-        Paging paging = new Paging();
-        TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
-        paging.setMaxId(lastData.getTweetId() -1);
-        new TimelineAsyncTask(paging).execute();
-
-    }
-
-    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -209,7 +166,7 @@ public class HomeTimelineActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home_timeline, menu);
+        getMenuInflater().inflate(R.menu.search, menu);
         return true;
     }
 
@@ -231,7 +188,6 @@ public class HomeTimelineActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         NavigationItemAction action = NavigationItemAction.valueOf(item);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

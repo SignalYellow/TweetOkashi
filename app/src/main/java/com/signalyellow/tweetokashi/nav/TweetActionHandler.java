@@ -11,9 +11,8 @@ import com.signalyellow.tweetokashi.sub.TweetPostActivity;
 public class TweetActionHandler implements ItemActionHandler<Void>{
     @Override
     public boolean handle(Context context, Void entity) {
-
         Intent intent = new Intent(context, TweetPostActivity.class);
         context.startActivity(intent);
-        return false;
+        return true;
     }
 }

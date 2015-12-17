@@ -9,7 +9,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_home_timeline"
+        layout="@layout/app_bar_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_home_timeline"
+        app:headerLayout="@layout/nav_header_search"
         app:menu="@menu/drawer_menu" />
 
 </android.support.v4.widget.DrawerLayout>

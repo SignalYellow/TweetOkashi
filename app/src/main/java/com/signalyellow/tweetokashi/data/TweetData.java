@@ -1,4 +1,4 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.data;
 
 import java.io.Serializable;
 import java.util.Date;

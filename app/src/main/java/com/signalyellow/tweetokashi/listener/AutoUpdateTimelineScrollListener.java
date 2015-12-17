@@ -1,9 +1,8 @@
 package com.signalyellow.tweetokashi.listener;
 
-import android.util.Log;
 import android.widget.AbsListView;
 
-import com.signalyellow.tweetokashi.sub.TweetDataAdapter;
+import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 
 /**
  * Created by shohei on 15/12/16.

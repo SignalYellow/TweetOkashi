@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.keys.Key;
-import com.signalyellow.tweetokashi.sub.TweetData;
+import com.signalyellow.tweetokashi.data.TweetData;
 import java.util.List;
 import jp.signalyellow.haiku.HaikuGeneratorByGooAPI;
 import jp.signalyellow.haiku.MorphologicalAnalysisByGooAPI;
