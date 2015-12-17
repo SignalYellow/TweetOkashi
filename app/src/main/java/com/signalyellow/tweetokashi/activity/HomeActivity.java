@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.signalyellow.tweetokashi.R;
-import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.fragments.SlidingTabsFragment;
 
 import twitter4j.Twitter;

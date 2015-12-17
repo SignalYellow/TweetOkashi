@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.Toast;
 import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
-import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.keys.Key;
 
 

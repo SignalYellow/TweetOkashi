@@ -42,6 +42,7 @@ public class HaikuManager {
         String haiku = mCache.get(data.getTweetId());
 
         if(haiku == null){
+            textView.setText("");
             new HaikuAsyncTask(textView,data.getTweetId()).execute(data.getText());
             return;
         }

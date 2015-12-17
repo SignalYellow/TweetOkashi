@@ -1,13 +1,10 @@
 package com.signalyellow.tweetokashi.activity;
 import jp.signalyellow.haiku.*;
-import twitter4j.Status;
-import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,11 +21,9 @@ import android.widget.Toast;
 import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
-import com.signalyellow.tweetokashi.components.TwitterUtils;
-import com.signalyellow.tweetokashi.components.TwitterUtils.TWITTER_STATUS;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils.TWITTER_STATUS;
 import com.signalyellow.tweetokashi.keys.Key;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

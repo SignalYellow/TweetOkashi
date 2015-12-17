@@ -7,8 +7,8 @@ import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
-import com.signalyellow.tweetokashi.components.TwitterUtils;
-import com.signalyellow.tweetokashi.components.TwitterUtils.TWITTER_STATUS;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils.TWITTER_STATUS;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 

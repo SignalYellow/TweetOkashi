@@ -31,19 +31,16 @@ import com.signalyellow.tweetokashi.components.HaikuTweetAdapter;
 import com.signalyellow.tweetokashi.components.HaikuUserStatus;
 import com.signalyellow.tweetokashi.components.SettingUtils;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
-import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.components.UserAdapter;
 import com.signalyellow.tweetokashi.keys.Key;
 
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.signalyellow.haiku.*;
-import jp.signalyellow.haiku.MorphologicalAnalysisByYahooAPI;
 import jp.signalyellow.haiku.Word;
 
 import twitter4j.PagableResponseList;

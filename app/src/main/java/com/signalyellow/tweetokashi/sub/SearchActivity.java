@@ -20,22 +20,20 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
-import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
-import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollCheckable;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.nav.NavigationItemAction;
 
-import twitter4j.Paging;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 public class SearchActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollCheckable {
+        implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollCheckable, SwipeRefreshLayout.OnRefreshListener{
 
     static final String TAG = "SearchActivity";
 
@@ -45,7 +43,7 @@ public class SearchActivity extends AppCompatActivity
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private boolean mIsRefreshing = false;
-    private String queryString;
+    private String mQueryString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +56,7 @@ public class SearchActivity extends AppCompatActivity
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color, android.R.color.holo_orange_dark);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if(queryString == null){
-                    Toast.makeText(getApplicationContext(),"検索ワードを入力してください",Toast.LENGTH_SHORT).show();
-                    setRefreshing(false);
-                    return;
-                }
-                new SearchAsyncTask(queryString).execute();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +79,17 @@ public class SearchActivity extends AppCompatActivity
         ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
         mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this, mAdapter));
+
+    }
+
+    @Override
+    public void onRefresh() {
+        if(mQueryString == null){
+            Toast.makeText(getApplicationContext(),"検索ワードを入力してください",Toast.LENGTH_SHORT).show();
+            setRefreshing(false);
+            return;
+        }
+        new SearchAsyncTask(mQueryString).execute();
     }
 
     @Override
@@ -106,9 +105,8 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public void scrolled() {
-        Log.d(TAG,"onscroll");
         TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
-        new SearchAsyncTask(queryString,lastData.getTweetId() - 1).execute();
+        new SearchAsyncTask(mQueryString,lastData.getTweetId() - 1).execute();
     }
 
     private class SearchAsyncTask extends AsyncTask<Void,Void,QueryResult> {
@@ -174,7 +172,7 @@ public class SearchActivity extends AppCompatActivity
         view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                new SearchAsyncTask(queryString = query).execute();
+                new SearchAsyncTask(mQueryString = query).execute();
                 return false;
             }
 
@@ -205,6 +203,8 @@ public class SearchActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return action.getHandler().handle(this,null);
+
+        return action.getHandler().handle(this, null);
+
     }
 }

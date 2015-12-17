@@ -19,7 +19,8 @@ import android.widget.ListView;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
-import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.sub.UiHandler;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollCheckable;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.nav.NavigationItemAction;
@@ -37,6 +38,7 @@ public class HomeTimelineActivity extends AppCompatActivity
     private Twitter mTwitter;
     private TweetDataAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private TwitterStream mStream;
 
     private boolean mIsRefreshing = false;
 
@@ -53,7 +55,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                TweetOkashiApplication app = (TweetOkashiApplication)getApplicationContext();
+                TweetOkashiApplication app = (TweetOkashiApplication) getApplicationContext();
                 app.getHaikuManger().refresh();
                 new TimelineAsyncTask().execute();
             }
@@ -83,8 +85,13 @@ public class HomeTimelineActivity extends AppCompatActivity
         ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
         mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this, mAdapter));
+        mAdapter.clear();
 
-        new TimelineAsyncTask().execute();
+        mStream = TwitterUtils.getTwitterStreamInstance(getApplicationContext());
+        mStream.addListener(new MyUserStreamAdapter());
+        mStream.user();
+
+        //new TimelineAsyncTask().execute();
 
     }
 
@@ -129,6 +136,22 @@ public class HomeTimelineActivity extends AppCompatActivity
         }
     }
 
+
+    class MyUserStreamAdapter extends UserStreamAdapter{
+        @Override
+        public void onStatus(final Status status) {
+            super.onStatus(status);
+            Log.d(TAG, status.getUser().getName() + " " + status.getText());
+            new UiHandler(){
+                @Override
+                public void run() {
+                    mAdapter.add(new TweetData(status));
+
+                }
+            }.post();
+
+        }
+    }
 
     @Override
     public void setRefreshing(boolean refreshing) {

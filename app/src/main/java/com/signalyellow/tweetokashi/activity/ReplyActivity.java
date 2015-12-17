@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
-import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;

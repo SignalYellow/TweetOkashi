@@ -1,13 +1,17 @@
-package com.signalyellow.tweetokashi.components;
+package com.signalyellow.tweetokashi.twitter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.signalyellow.tweetokashi.keys.Key;
 
 import twitter4j.AsyncTwitter;
 import twitter4j.AsyncTwitterFactory;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -41,16 +45,22 @@ public class TwitterUtils {
         return twitter;
     }
 
-    public static Configuration getTwitterConfiguration(Context context){
+    public static TwitterStream getTwitterStreamInstance(Context context){
+        TwitterStreamFactory factory = new TwitterStreamFactory(getTwitterConfiguration(context));
+        return factory.getInstance();
+    }
+
+    private static Configuration getTwitterConfiguration(Context context){
 
         Configuration conf=null;
         AccessToken token = loadAccessToken(context);
         if(token != null) {
              conf = new ConfigurationBuilder()
+                     .setDebugEnabled(true)
                     .setOAuthConsumerKey(Key.getConsumerKey())
                     .setOAuthConsumerSecret(Key.getConsumerSecret())
                     .setOAuthAccessToken(token.getToken())
-                    .setOAuthAccessToken(token.getTokenSecret())
+                    .setOAuthAccessTokenSecret(token.getTokenSecret())
                     .build();
         }
 

@@ -21,7 +21,7 @@ import com.signalyellow.tweetokashi.components.HaikuStatus;
 import com.signalyellow.tweetokashi.components.HaikuTweetAdapter;
 import com.signalyellow.tweetokashi.components.SettingUtils;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
-import com.signalyellow.tweetokashi.components.TwitterUtils;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.keys.Key;
 
 
