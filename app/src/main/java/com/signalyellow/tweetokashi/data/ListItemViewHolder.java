@@ -37,7 +37,7 @@ public class ListItemViewHolder {
 
     public void setQuotedTweet(TweetData data){
         this.textQuotedText.setText(data.getText());
-        this.textQuotedDate.setText("");
+        this.textQuotedDate.setText(TimeUtils.getRelativeTime(data.getDate()));
         this.textQuotedUserName.setText(data.getName());
         this.textQuotedScreenName.setText("@" + data.getScreenName());
     }

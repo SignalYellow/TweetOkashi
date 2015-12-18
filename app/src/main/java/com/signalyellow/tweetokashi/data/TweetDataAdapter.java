@@ -63,7 +63,10 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         viewHolder.textUserName.setText(data.getName());
         viewHolder.textContent.setText(data.getText());
         viewHolder.textDate.setText(TimeUtils.getRelativeTime(data.getDate()));
+
         setQuotedTweetData(data, viewHolder);
+        setRetweetedCount(data,viewHolder);
+        setFavoritedCount(data,viewHolder);
 
         viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
         mLoadBitmapManager.downloadBitmap(viewHolder.imageThumbnail, data.getProfileImageURL());
@@ -83,6 +86,30 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
             holder.setQuotedTweet(q);
             holder.quotedTweetLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setRetweetedCount(TweetData data, ListItemViewHolder holder){
+        int count = data.getRetweetedCount();
+
+        if(count > 0) {
+            holder.textRetweetedCount.setText(String.valueOf(count));
+            holder.textRetweetedCount.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        holder.textRetweetedCount.setVisibility(View.GONE);
+    }
+
+    private void setFavoritedCount(TweetData data, ListItemViewHolder holder){
+        int count = data.getFavoriteCount();
+
+        if(count > 0){
+            holder.textFavoritedCount.setText(String.valueOf(count));
+            holder.textFavoritedCount.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        holder.textFavoritedCount.setVisibility(View.GONE);
     }
 
 }

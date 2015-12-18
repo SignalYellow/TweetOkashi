@@ -101,14 +101,6 @@
         android:layout_width="match_parent"
         />
 
-
-
-
-
-
-
-
-
     <TextView
         android:id="@+id/haikutext"
         android:layout_width="match_parent"
@@ -118,9 +110,6 @@
         android:textSize="@dimen/text_haiku_size"
         android:textStyle="bold"
         android:gravity="center" />
-
-
-
 
 
 </RelativeLayout>
