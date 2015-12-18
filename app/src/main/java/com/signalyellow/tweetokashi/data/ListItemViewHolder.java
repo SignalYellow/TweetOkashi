@@ -1,5 +1,6 @@
 package com.signalyellow.tweetokashi.data;
 
+import android.media.Image;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,10 @@ public class ListItemViewHolder {
     public TextView textQuotedScreenName;
     public TextView textQuotedDate;
     public TextView textQuotedText;
+    public ViewGroup imageGroupLayout;
+    public ImageView imageView;
+
+
 
     public ViewGroup setQuotedTweetView(ViewGroup viewGroup){
         this.quotedTweetLayout = viewGroup;
@@ -41,4 +46,6 @@ public class ListItemViewHolder {
         this.textQuotedUserName.setText(data.getName());
         this.textQuotedScreenName.setText("@" + data.getScreenName());
     }
+
+
 }

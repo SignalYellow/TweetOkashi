@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.Serializable;
 import java.util.Date;
 
+import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.User;
 
@@ -31,6 +32,8 @@ public class TweetData implements Serializable{
     private boolean isDeletable;
     private boolean isRetweetable;
 
+    private boolean isQuoted = false;
+
     String haiku;
 
     public TweetData(Status status){
@@ -48,10 +51,23 @@ public class TweetData implements Serializable{
         this.tweetId = status.getId();
         this.isRetweeted = status.isRetweeted();
         this.text =  status.getText();
-        this.quotedTweetData = status.getQuotedStatus() == null ? null : new TweetData(status.getQuotedStatus());
+        this.quotedTweetData = status.getQuotedStatus() == null && !isQuoted  ? null : new TweetData(status.getQuotedStatus()).setIsQuoted(true);
         this.isRetweetable = !status.isRetweetedByMe();
 
-        Log.d("TweetData",isRetweetable + "retweet");
+        MediaEntity[] entities = status.getMediaEntities();
+        if(entities != null) {
+            this.mediaURLs = new String[entities.length];
+            for (int i = 0; i < entities.length; i++) {
+                mediaURLs[i] = entities[i].getMediaURL();
+                Log.d("tag",entities[i].getMediaURL());
+            }
+        }
+
+    }
+
+    public TweetData setIsQuoted(boolean isQuoted) {
+        this.isQuoted = isQuoted;
+        return this;
     }
 
     public long getTweetId() {
@@ -92,5 +108,9 @@ public class TweetData implements Serializable{
 
     public TweetData getQuotedTweetData() {
         return quotedTweetData;
+    }
+
+    public String[] getMediaURLs() {
+        return mediaURLs;
     }
 }

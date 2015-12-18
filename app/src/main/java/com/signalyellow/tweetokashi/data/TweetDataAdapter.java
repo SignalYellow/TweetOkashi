@@ -2,6 +2,7 @@ package com.signalyellow.tweetokashi.data;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,10 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
             viewHolder.textRetweetedCount = (TextView)view.findViewById(R.id.RTcount);
             viewHolder.textFavoritedCount = (TextView)view.findViewById(R.id.FAVCount);
             viewHolder.setQuotedTweetView((ViewGroup) view.findViewById(R.id.quoted_tweet_layout));
+            viewHolder.imageGroupLayout = (ViewGroup)view.findViewById(R.id.picture_group_layout);
+            viewHolder.imageView = (ImageView)view.findViewById(R.id.imageView1);
+
+
 
             view.setTag(viewHolder);
         }else{
@@ -65,8 +70,9 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         viewHolder.textDate.setText(TimeUtils.getRelativeTime(data.getDate()));
 
         setQuotedTweetData(data, viewHolder);
-        setRetweetedCount(data,viewHolder);
-        setFavoritedCount(data,viewHolder);
+        setRetweetedCount(data, viewHolder);
+        setFavoritedCount(data, viewHolder);
+        setPictures(data, viewHolder);
 
         viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
         mLoadBitmapManager.downloadBitmap(viewHolder.imageThumbnail, data.getProfileImageURL());
@@ -110,6 +116,21 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         }
 
         holder.textFavoritedCount.setVisibility(View.GONE);
+    }
+
+    private void setPictures(TweetData data, ListItemViewHolder holder){
+        if(data.getMediaURLs() == null || data.getMediaURLs().length == 0){
+            holder.imageView.setVisibility(View.GONE);
+            return;
+        }
+
+        holder.imageView.setVisibility(View.VISIBLE);
+        String[] urls  = data.getMediaURLs();
+
+        holder.imageView.setTag(urls[0]);
+        mLoadBitmapManager.downloadBitmap(holder.imageView,urls[0]);
+
+
     }
 
 }
