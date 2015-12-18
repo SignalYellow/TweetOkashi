@@ -65,18 +65,8 @@ public class TwitterUtils {
         }
 
         return conf;
-
     }
 
-    public static AsyncTwitter getAsyncTwitterInstance(Context context){
-        AsyncTwitter twitter = new AsyncTwitterFactory().getInstance();
-        twitter.setOAuthConsumer(Key.getConsumerKey(),Key.getConsumerSecret());
-
-        if(hasAccessToken(context)){
-            twitter.setOAuthAccessToken(loadAccessToken(context));
-        }
-        return twitter;
-    }
 
     public static void storeAccessToken(Context context, AccessToken accessToken){
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);

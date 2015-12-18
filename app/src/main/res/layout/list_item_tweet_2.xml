@@ -92,15 +92,34 @@
         android:textSize="@dimen/text_date_size"
         android:textColor="@color/text_date_color"/>
 
+
+
+
+    <include layout="@layout/quoted_tweet_layout"
+        android:layout_below="@+id/text"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+
+
+
+
+
+
+
+
     <TextView
         android:id="@+id/haikutext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/datetime"
+        android:layout_below="@+id/quoted_tweet_layout"
         android:text="@string/test_haiku_long"
         android:textSize="@dimen/text_haiku_size"
         android:textStyle="bold"
-        android:gravity="center"/>
+        android:gravity="center" />
+
+
 
 
 

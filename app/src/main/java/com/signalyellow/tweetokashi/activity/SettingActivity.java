@@ -72,9 +72,7 @@ public class SettingActivity extends Activity {
             case android.R.id.home:
                 finish();
                 return true;
-
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

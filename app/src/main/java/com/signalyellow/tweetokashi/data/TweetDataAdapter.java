@@ -52,6 +52,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
             viewHolder.textDate = (TextView)view.findViewById(R.id.datetime);
             viewHolder.textRetweetedCount = (TextView)view.findViewById(R.id.RTcount);
             viewHolder.textFavoritedCount = (TextView)view.findViewById(R.id.FAVCount);
+            viewHolder.setQuotedTweetView((ViewGroup) view.findViewById(R.id.quoted_tweet_layout));
 
             view.setTag(viewHolder);
         }else{
@@ -62,15 +63,30 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         viewHolder.textUserName.setText(data.getName());
         viewHolder.textContent.setText(data.getText());
 
+        setQuotedTweetData(data,viewHolder);
 
-        viewHolder.imageThumbnail.setTag(data.profileImageURL);
-        mLoadBitmapManager.downloadBitmap(viewHolder.imageThumbnail, data.profileImageURL);
+        viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
+        mLoadBitmapManager.downloadBitmap(viewHolder.imageThumbnail, data.getProfileImageURL());
 
         viewHolder.textHaiku.setTag(data.getTweetId());
         mHaikuManager.createHaiku(viewHolder.textHaiku,data);
 
         return view;
     }
+
+    private void setQuotedTweetData(TweetData data, ListItemViewHolder holder){
+
+        TweetData q = data.getQuotedTweetData();
+        if(q == null){
+            holder.quotedTweetLayout.setVisibility(View.GONE);
+        }else{
+            holder.setQuotedTweet(q);
+            holder.quotedTweetLayout.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+
 
 
 

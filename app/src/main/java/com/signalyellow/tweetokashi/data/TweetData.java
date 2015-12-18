@@ -10,15 +10,25 @@ import twitter4j.User;
  * Created by shohei on 15/11/21.
  */
 public class TweetData implements Serializable{
-    long tweetId;
-    String name;
-    String screenName;
-    String profileImageURL;
-    String text;
-    int retweetedCount;
-    boolean isRetweeted;
-    int favoriteCount;
-    Date date;
+
+    private long userId;
+    private String name;
+    private String screenName;
+    private String profileImageURL;
+
+    private long tweetId;
+    private String text;
+    private int retweetedCount;
+    private boolean isRetweeted;
+    private int favoriteCount;
+    private Date date;
+    private TweetData quotedTweetData;
+    private String videoURL;
+    private String[] mediaURLs;
+
+    private boolean isDeletable;
+    private boolean isRetweetable;
+
 
     String haiku;
 
@@ -35,6 +45,8 @@ public class TweetData implements Serializable{
         this.tweetId = status.getId();
         this.isRetweeted = status.isRetweeted();
         this.text = status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT",""): status.getText();
+        this.quotedTweetData = status.getQuotedStatus() == null ? null : new TweetData(status.getQuotedStatus());
+        this.isRetweetable = !status.isRetweetedByMe();
 
     }
 
@@ -72,5 +84,9 @@ public class TweetData implements Serializable{
 
     public Date getDate() {
         return date;
+    }
+
+    public TweetData getQuotedTweetData() {
+        return quotedTweetData;
     }
 }

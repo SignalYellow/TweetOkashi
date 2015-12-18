@@ -1,4 +1,4 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -178,7 +178,6 @@ public class SearchActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d(TAG,"text");
                 return false;
             }
         });

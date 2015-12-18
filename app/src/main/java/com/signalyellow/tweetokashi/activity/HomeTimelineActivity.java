@@ -93,10 +93,6 @@ public class HomeTimelineActivity extends AppCompatActivity
         mStream = TwitterUtils.getTwitterStreamInstance(getApplicationContext());
         mStream.addListener(new MyUserStreamAdapter());
         mStream.user();
-
-
-
-
     }
 
 
@@ -138,10 +134,7 @@ public class HomeTimelineActivity extends AppCompatActivity
                     mAdapter.add(new TweetData(s));
                 }
             }
-
             setRefreshing(false);
-
-
         }
     }
 
