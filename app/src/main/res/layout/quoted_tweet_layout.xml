@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/quoted_tweet_layout"
-    android:background="@drawable/quoted_tweet_frame">
+    android:background="@drawable/quoted_tweet_frame"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/quoted_user_name"
