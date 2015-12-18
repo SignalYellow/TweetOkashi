@@ -63,7 +63,6 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         viewHolder.textUserName.setText(data.getName());
         viewHolder.textContent.setText(data.getText());
         viewHolder.textDate.setText(TimeUtils.getRelativeTime(data.getDate()));
-
         setQuotedTweetData(data, viewHolder);
 
         viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
@@ -84,11 +83,6 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
             holder.setQuotedTweet(q);
             holder.quotedTweetLayout.setVisibility(View.VISIBLE);
         }
-
     }
-
-
-
-
 
 }

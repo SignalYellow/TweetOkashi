@@ -76,6 +76,4 @@ public class SimpleTweetData implements Serializable {
     public static String getURL(Status status){
         return "https://twitter.com/" + status.getUser().getScreenName() +"/status/" + status.getId();
     }
-
-
 }

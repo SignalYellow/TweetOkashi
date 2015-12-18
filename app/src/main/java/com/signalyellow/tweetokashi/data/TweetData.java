@@ -1,5 +1,7 @@
 package com.signalyellow.tweetokashi.data;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -35,18 +37,37 @@ public class TweetData implements Serializable{
 
 
     public TweetData(Status status){
-        User user = status.getUser();
-        this.name = user.getName();
-        this.screenName = user.getScreenName();
-        this.profileImageURL = user.getProfileImageURL();
-        this.retweetedCount = status.getRetweetCount();
-        this.favoriteCount = status.getFavoriteCount();
-        this.date = status.getCreatedAt();
-        this.tweetId = status.getId();
-        this.isRetweeted = status.isRetweeted();
-        this.text = status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT",""): status.getText();
-        this.quotedTweetData = status.getQuotedStatus() == null ? null : new TweetData(status.getQuotedStatus());
-        this.isRetweetable = !status.isRetweetedByMe();
+        if(status.getRetweetedStatus() != null){
+            Status s = status.getRetweetedStatus();
+            User user = s.getUser();
+            this.name = user.getName();
+            this.screenName = user.getScreenName();
+            this.profileImageURL = user.getProfileImageURL();
+            this.retweetedCount = s.getRetweetCount();
+            this.favoriteCount = s.getFavoriteCount();
+            this.date = s.getCreatedAt();
+            this.tweetId = s.getId();
+            this.isRetweeted = s.isRetweeted();
+            this.text = s.getText();
+            this.quotedTweetData = s.getQuotedStatus() == null ? null : new TweetData(s.getQuotedStatus());
+            this.isRetweetable = !s.isRetweetedByMe();
+        }else {
+            User user = status.getUser();
+            this.name = user.getName();
+            this.screenName = user.getScreenName();
+            this.profileImageURL = user.getProfileImageURL();
+            this.retweetedCount = status.getRetweetCount();
+            this.favoriteCount = status.getFavoriteCount();
+            this.date = status.getCreatedAt();
+            this.tweetId = status.getId();
+            this.isRetweeted = status.isRetweeted();
+            this.text = /*status.getRetweetedStatus() != null ? status.getText().replaceFirst("RT", "") :*/ status.getText();
+            this.quotedTweetData = status.getQuotedStatus() == null ? null : new TweetData(status.getQuotedStatus());
+            this.isRetweetable = !status.isRetweetedByMe();
+        }
+
+        Log.d("TweetData",isRetweetable + "retweet");
+
 
     }
 

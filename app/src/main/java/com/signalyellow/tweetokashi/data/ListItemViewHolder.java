@@ -39,6 +39,6 @@ public class ListItemViewHolder {
         this.textQuotedText.setText(data.getText());
         this.textQuotedDate.setText("");
         this.textQuotedUserName.setText(data.getName());
-        this.textQuotedScreenName.setText(data.getScreenName());
+        this.textQuotedScreenName.setText("@" + data.getScreenName());
     }
 }

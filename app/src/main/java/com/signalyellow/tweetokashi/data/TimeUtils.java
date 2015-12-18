@@ -1,9 +1,7 @@
 package com.signalyellow.tweetokashi.data;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 
 public class TimeUtils {
     static final String YEAR = "年";
