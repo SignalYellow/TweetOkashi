@@ -62,8 +62,9 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         viewHolder.textScreenName.setText("@" + data.getScreenName());
         viewHolder.textUserName.setText(data.getName());
         viewHolder.textContent.setText(data.getText());
+        viewHolder.textDate.setText(TimeUtils.getRelativeTime(data.getDate()));
 
-        setQuotedTweetData(data,viewHolder);
+        setQuotedTweetData(data, viewHolder);
 
         viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
         mLoadBitmapManager.downloadBitmap(viewHolder.imageThumbnail, data.getProfileImageURL());
