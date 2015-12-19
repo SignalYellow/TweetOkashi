@@ -1,6 +1,5 @@
 package com.signalyellow.tweetokashi.activity;
 
-
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -120,9 +119,5 @@ public class HomeActivity extends FragmentActivity{
         startActivity(intent);
         finish();
     }
-
-
-
-
 
 }

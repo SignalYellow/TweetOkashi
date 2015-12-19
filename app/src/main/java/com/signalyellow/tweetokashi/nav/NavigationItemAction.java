@@ -15,6 +15,7 @@ public enum  NavigationItemAction
     TWEET(R.id.nav_tweet,new TweetActionHandler()),
     SEARCH(R.id.nav_search,new SearchActionHandler()),
     SETTING(R.id.nav_setting, new SettingsActionHandler()),
+    LOGOUT(R.id.nav_logout, new LogoutActionHandler()),
     UNKNOWN(-1,new UnKnownActionHandler());
 
     private final int mMenuId;

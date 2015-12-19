@@ -6,7 +6,10 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="main_color">#8C1274</color>
+    <color name="accent_color">@color/kimidori</color>
     <color name="glycine">#D775C0</color>
+
+    <color name="kimidori">#b8d200</color>
 
     <color name="text_name_color">@color/kikyonezu</color>
     <color name="text_date_color">@color/kikyonezu</color>
