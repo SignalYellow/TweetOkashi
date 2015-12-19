@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/test_name_long"
                 android:textSize="@dimen/text_name_size"
+                android:textColor="@color/black"
                 />
 
             <RelativeLayout
@@ -101,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/test_text"
-
+                android:textColor="@color/black"
                 />
 
 
@@ -120,12 +121,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/top_layout"
+        android:layout_marginTop="8dp"
         android:text="@string/test_haiku_long"
         android:textSize="@dimen/text_haiku_size"
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:gravity="center" />
 
     <LinearLayout
+        android:layout_marginTop="6dp"
         android:id="@+id/picture_group_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -136,28 +140,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/sgoo"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/sgoo"
             android:visibility="gone"/>
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/sgoo"
             android:visibility="gone"/>
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/sgoo"
             android:visibility="gone"/>
     </LinearLayout>
 

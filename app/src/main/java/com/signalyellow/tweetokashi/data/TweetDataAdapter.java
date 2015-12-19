@@ -2,7 +2,6 @@ package com.signalyellow.tweetokashi.data;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
 import com.signalyellow.tweetokashi.manager.LoadBitmapManager;
+
+import twitter4j.MediaEntity;
 
 
 /**
@@ -42,7 +43,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
 
         if(view == null){
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_item_tweet_2,null);
+            view = inflater.inflate(R.layout.item_tweet,null);
             viewHolder = new ListItemViewHolder();
 
             viewHolder.textUserName = (TextView)view.findViewById(R.id.name);
@@ -56,8 +57,6 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
             viewHolder.setQuotedTweetView((ViewGroup) view.findViewById(R.id.quoted_tweet_layout));
             viewHolder.imageGroupLayout = (ViewGroup)view.findViewById(R.id.picture_group_layout);
             viewHolder.imageView = (ImageView)view.findViewById(R.id.imageView1);
-
-
 
             view.setTag(viewHolder);
         }else{
@@ -125,12 +124,11 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         }
 
         holder.imageView.setVisibility(View.VISIBLE);
-        String[] urls  = data.getMediaURLs();
 
-        holder.imageView.setTag(urls[0]);
-        mLoadBitmapManager.downloadBitmap(holder.imageView,urls[0]);
-
+        MediaEntity[] entities  = data.getMediaURLs();
+        MediaEntity entity = entities[0];
+        holder.imageView.setTag(entity.getMediaURL());
+        mLoadBitmapManager.downloadBitmap(holder.imageView, entity.getMediaURL());
 
     }
-
 }

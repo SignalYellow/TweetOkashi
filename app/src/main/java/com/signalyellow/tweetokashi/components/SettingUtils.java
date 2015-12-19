@@ -15,7 +15,7 @@ public class SettingUtils {
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(CAN_HAIKU,possibility);
-        editor.commit();
+        editor.apply();
     }
 
     public static boolean canCreateHaiku(Context context){

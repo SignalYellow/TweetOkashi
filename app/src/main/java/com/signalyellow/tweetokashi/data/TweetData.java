@@ -27,7 +27,7 @@ public class TweetData implements Serializable{
     private Date date;
     private TweetData quotedTweetData;
     private String videoURL;
-    private String[] mediaURLs;
+    private MediaEntity[] mediaURLs;
 
     private boolean isDeletable;
     private boolean isRetweetable;
@@ -53,16 +53,7 @@ public class TweetData implements Serializable{
         this.text =  status.getText();
         this.quotedTweetData = status.getQuotedStatus() == null && !isQuoted  ? null : new TweetData(status.getQuotedStatus()).setIsQuoted(true);
         this.isRetweetable = !status.isRetweetedByMe();
-
-        MediaEntity[] entities = status.getMediaEntities();
-        if(entities != null) {
-            this.mediaURLs = new String[entities.length];
-            for (int i = 0; i < entities.length; i++) {
-                mediaURLs[i] = entities[i].getMediaURL();
-                Log.d("tag",entities[i].getMediaURL());
-            }
-        }
-
+        this.mediaURLs = status.getMediaEntities();
     }
 
     public TweetData setIsQuoted(boolean isQuoted) {
@@ -110,7 +101,7 @@ public class TweetData implements Serializable{
         return quotedTweetData;
     }
 
-    public String[] getMediaURLs() {
+    public MediaEntity[] getMediaURLs() {
         return mediaURLs;
     }
 }

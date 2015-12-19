@@ -11,8 +11,10 @@ import com.signalyellow.tweetokashi.R;
  */
 public enum  NavigationItemAction
 {
+    HOME(R.id.nav_home,new HomeActionHandler()),
     TWEET(R.id.nav_tweet,new TweetActionHandler()),
     SEARCH(R.id.nav_search,new SearchActionHandler()),
+    SETTING(R.id.nav_setting, new SettingsActionHandler()),
     UNKNOWN(-1,new UnKnownActionHandler());
 
     private final int mMenuId;

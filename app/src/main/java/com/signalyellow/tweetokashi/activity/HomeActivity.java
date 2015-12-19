@@ -30,11 +30,6 @@ public class HomeActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        if(true) {
-            startActivity(new Intent(getApplicationContext(), HomeTimelineActivity.class));
-            finish();
-        }
-
 
         ActionBar actionBar = getActionBar();
         if(actionBar != null) actionBar.setSubtitle(R.string.app_name_ja);

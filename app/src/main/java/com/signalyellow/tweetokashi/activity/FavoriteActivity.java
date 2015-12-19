@@ -35,7 +35,6 @@ public class FavoriteActivity extends Activity {
             } catch (TwitterException e) {
                 return TwitterUtils.TWITTER_STATUS.ERROR;
             }
-
         }
 
         @Override
@@ -53,6 +52,4 @@ public class FavoriteActivity extends Activity {
     private void showToast(String text){
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
-
-
 }

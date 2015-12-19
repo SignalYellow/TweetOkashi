@@ -1,5 +1,7 @@
 package com.signalyellow.tweetokashi.activity;
 
+import android.app.ActionBar;
+import android.app.Notification;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,6 +50,9 @@ public class HomeTimelineActivity extends AppCompatActivity
         setContentView(R.layout.activity_home_timeline);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setSubtitle(getString(R.string.app_name_ja));
+
+
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color,android.R.color.holo_orange_dark);

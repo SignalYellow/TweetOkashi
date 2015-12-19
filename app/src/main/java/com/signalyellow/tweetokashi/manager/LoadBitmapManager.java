@@ -18,7 +18,7 @@ public class LoadBitmapManager {
 
     static final String TAG = "LoadBitmapManager";
 
-    private static final int MEM_CACHE_SIZE = 3*1024*1024; //3MB
+    private static final int MEM_CACHE_SIZE = 3*1024*1024; // MB
     private static final int THREAD_MAX_NUM = 3;
 
     private static BlockingQueue<LoadBitmapItem> downloadQueue;
@@ -81,26 +81,19 @@ public class LoadBitmapManager {
                 LoadBitmapItem item;
 
                 try {
-                    /*
-                     * キューに値が入ったら呼び出される
-                     * nullの状態ではwaitしている
-                     */
                     item = downloadQueue.take();
-                } catch (Exception ex){
-                    Log.e("ERROR", "", ex);
+                } catch (Exception e){
+                    Log.e(TAG, "", e);
                     continue;
                 }
 
-                /*
-                 * ダウンロード
-                 */
                 try{
                     BufferedInputStream in = new BufferedInputStream(
                             (InputStream) (new URL(item.getUrl())).getContent());
                     bitmap = BitmapFactory.decodeStream(in);
                     in.close();
-                } catch (Exception ex){
-                    Log.e("ERROR", "", ex);
+                } catch (Exception e){
+                    Log.e(TAG, "", e);
                 }
                 item.setBitmap(bitmap);
 
