@@ -44,7 +44,7 @@ public class HomeTimelineActivity extends AppCompatActivity
     private TweetDataAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private TwitterStream mStream;
-    private TweetOkashiApplication app;
+    private TweetOkashiApplication mApp;
 
     private boolean mIsRefreshing = false;
 
@@ -56,7 +56,8 @@ public class HomeTimelineActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         toolbar.setSubtitle(getString(R.string.app_name_ja));
 
-        app= (TweetOkashiApplication)getApplicationContext();
+        mApp= (TweetOkashiApplication)getApplicationContext();
+        mApp.setActivity(this);
         mTwitter = TwitterUtils.getTwitterInstance(this);
 
 
@@ -104,9 +105,6 @@ public class HomeTimelineActivity extends AppCompatActivity
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
         mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this, mAdapter));
 
-
-
-
         new TimelineAsyncTask().execute();
 
         mStream = TwitterUtils.getTwitterStreamInstance(getApplicationContext());
@@ -114,7 +112,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         mStream.user();
     }
 
-
+    // TODO: 15/12/19 mStream の停止処理 
 
     class UserAsyncTask extends AsyncTask<Void,Void, User>{
         private ImageView mImageView;

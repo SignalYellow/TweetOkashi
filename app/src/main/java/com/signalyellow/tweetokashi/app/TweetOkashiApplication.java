@@ -2,6 +2,7 @@ package com.signalyellow.tweetokashi.app;
 
 import android.app.Application;
 
+import com.signalyellow.tweetokashi.activity.HomeTimelineActivity;
 import com.signalyellow.tweetokashi.keys.Key;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
 import com.signalyellow.tweetokashi.manager.LoadBitmapManager;
@@ -15,6 +16,7 @@ public class TweetOkashiApplication extends Application{
 
     private LoadBitmapManager mLoadBitmapManger;
     private HaikuManager mHaikuManger;
+    private HomeTimelineActivity mActivity;
 
     @Override
     public void onCreate() {
@@ -29,5 +31,13 @@ public class TweetOkashiApplication extends Application{
 
     public HaikuManager getHaikuManger() {
         return mHaikuManger;
+    }
+
+    public void setActivity(HomeTimelineActivity activity) {
+        this.mActivity = activity;
+    }
+
+    public HomeTimelineActivity getActivity() {
+        return mActivity;
     }
 }
