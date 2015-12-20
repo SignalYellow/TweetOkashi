@@ -23,7 +23,7 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.TweetDataAdapter;
-import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollCheckable;
+import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.nav.NavigationItemAction;
 
@@ -33,7 +33,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 public class SearchActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollCheckable, SwipeRefreshLayout.OnRefreshListener{
+        implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollable, SwipeRefreshLayout.OnRefreshListener{
 
     static final String TAG = "SearchActivity";
 
@@ -43,6 +43,7 @@ public class SearchActivity extends AppCompatActivity
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private boolean mIsRefreshing = false;
+    private boolean mIsScrollable = true;
     private String mQueryString;
 
     @Override
@@ -76,9 +77,9 @@ public class SearchActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ListView mListView = (ListView)findViewById(R.id.listView);
-        mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
-        mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this, mAdapter));
+        ListView listView = (ListView)findViewById(R.id.listView);
+        listView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
+        listView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this, mAdapter));
 
     }
 
@@ -108,6 +109,8 @@ public class SearchActivity extends AppCompatActivity
         TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
         new SearchAsyncTask(mQueryString,lastData.getTweetId() - 1).execute();
     }
+
+
 
     private class SearchAsyncTask extends AsyncTask<Void,Void,QueryResult> {
 

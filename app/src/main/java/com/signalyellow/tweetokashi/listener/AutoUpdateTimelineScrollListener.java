@@ -11,9 +11,9 @@ public class AutoUpdateTimelineScrollListener implements AbsListView.OnScrollLis
 
     private TweetDataAdapter mAdapter;
 
-    private AutoUpdateTimelineScrollCheckable mScroll;
+    private AutoUpdateTimelineScrollable mScroll;
 
-    public AutoUpdateTimelineScrollListener(AutoUpdateTimelineScrollCheckable scroll,TweetDataAdapter adapter) {
+    public AutoUpdateTimelineScrollListener(AutoUpdateTimelineScrollable scroll,TweetDataAdapter adapter) {
         mAdapter = adapter;
         mScroll = scroll;
     }
@@ -25,7 +25,7 @@ public class AutoUpdateTimelineScrollListener implements AbsListView.OnScrollLis
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if(totalItemCount > visibleItemCount &&
-                totalItemCount == firstVisibleItem + visibleItemCount && !mScroll.isRefreshing()){
+                totalItemCount == firstVisibleItem + visibleItemCount && !mScroll.isRefreshing() ){
             mScroll.scrolled();
         }
     }

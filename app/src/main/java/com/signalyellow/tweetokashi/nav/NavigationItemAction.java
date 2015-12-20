@@ -2,7 +2,6 @@ package com.signalyellow.tweetokashi.nav;
 
 
 import android.view.MenuItem;
-
 import com.signalyellow.tweetokashi.R;
 
 /**
@@ -14,6 +13,7 @@ public enum  NavigationItemAction
     HOME(R.id.nav_home,new HomeActionHandler()),
     TWEET(R.id.nav_tweet,new TweetActionHandler()),
     SEARCH(R.id.nav_search,new SearchActionHandler()),
+    FAVORITE_LIST(R.id.nav_favorite, new FavoriteListActionHandler()),
     SETTING(R.id.nav_setting, new SettingsActionHandler()),
     LOGOUT(R.id.nav_logout, new LogoutActionHandler()),
     UNKNOWN(-1,new UnKnownActionHandler());

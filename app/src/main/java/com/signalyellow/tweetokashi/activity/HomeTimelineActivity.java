@@ -1,7 +1,5 @@
 package com.signalyellow.tweetokashi.activity;
 
-import android.app.ActionBar;
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -26,7 +24,7 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.sub.UiHandler;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
-import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollCheckable;
+import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.nav.NavigationItemAction;
 import com.signalyellow.tweetokashi.data.TweetData;
@@ -36,7 +34,7 @@ import com.signalyellow.tweetokashi.sub.TweetPostActivity;
 import twitter4j.*;
 
 public class HomeTimelineActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollCheckable {
+        implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollable ,SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "HomeTimeline";
 
@@ -64,15 +62,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color, android.R.color.holo_orange_dark);
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                TweetOkashiApplication app = (TweetOkashiApplication) getApplicationContext();
-                app.getHaikuManger().refresh();
-                new TimelineAsyncTask().execute();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -93,13 +83,13 @@ public class HomeTimelineActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        {
+            ImageView imageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_image);
+            TextView textView1 = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_main_text);
+            TextView textView2 = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_sub_text);
 
-            ImageView imageView = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.nav_image);
-            TextView textView1 = (TextView)navigationView.getHeaderView(0).findViewById(R.id.nav_main_text);
-            TextView textView2 = (TextView)navigationView.getHeaderView(0).findViewById(R.id.nav_sub_text);
-
-            new UserAsyncTask(imageView,textView1,textView2,getApplicationContext()).execute();
-
+            new UserAsyncTask(imageView, textView1, textView2, getApplicationContext()).execute();
+        }
 
         ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
@@ -112,7 +102,14 @@ public class HomeTimelineActivity extends AppCompatActivity
         mStream.user();
     }
 
-    // TODO: 15/12/19 mStream の停止処理 
+    @Override
+    public void onRefresh() {
+        TweetOkashiApplication app = (TweetOkashiApplication) getApplicationContext();
+        app.getHaikuManger().refresh();
+        new TimelineAsyncTask().execute();
+    }
+
+    // TODO: 15/12/19 mStream の停止処理
 
     class UserAsyncTask extends AsyncTask<Void,Void, User>{
         private ImageView mImageView;
@@ -150,9 +147,6 @@ public class HomeTimelineActivity extends AppCompatActivity
 
             mImageView.setTag(user.getProfileImageURL());
             mApp.getLoadBitmapManger().downloadBitmap(mImageView,user.getProfileImageURL());
-
-
-
         }
     }
 
@@ -237,6 +231,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         new TimelineAsyncTask(paging).execute();
 
     }
+
 
     @Override
     public void onBackPressed() {
