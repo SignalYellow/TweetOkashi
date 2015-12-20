@@ -85,6 +85,8 @@ public class SearchActivity extends AppCompatActivity
 
     }
 
+
+
     @Override
     public void onRefresh() {
         if(mQueryString == null){
@@ -173,8 +175,14 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_with_search, menu);
-        SearchView  view = (SearchView)menu.findItem(R.id.menu_search).getActionView();
-        view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        SearchView  searchView = (SearchView)menu.findItem(R.id.menu_search).getActionView();
+
+        if(mAdapter.getCount() == 0){
+            searchView.setIconified(false);
+        }else{
+            searchView.clearFocus();
+        }
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 new SearchAsyncTask(mQueryString = query).execute();
@@ -209,6 +217,5 @@ public class SearchActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
 
         return action.getHandler().handle(this, null);
-
     }
 }

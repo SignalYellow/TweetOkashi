@@ -18,8 +18,8 @@ public class MainActivity extends Activity {
             finish();
         }else{
             TweetOkashiApplication app = (TweetOkashiApplication)getApplicationContext();
-            if(app.getActivity() != null){
-                app.getActivity().finish();
+            if(app.getHomeActivity() != null){
+                app.getHomeActivity().finish();
             }
             startActivity(new Intent(this, HomeTimelineActivity.class));
             finish();

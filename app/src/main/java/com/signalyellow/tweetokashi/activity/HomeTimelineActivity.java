@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ import com.signalyellow.tweetokashi.sub.TweetPostActivity;
 import twitter4j.*;
 
 public class HomeTimelineActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollable ,SwipeRefreshLayout.OnRefreshListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollable ,SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "HomeTimeline";
 
@@ -55,7 +56,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         toolbar.setSubtitle(getString(R.string.app_name_ja));
 
         mApp= (TweetOkashiApplication)getApplicationContext();
-        mApp.setActivity(this);
+        mApp.setHomeActivity(this);
         mTwitter = TwitterUtils.getTwitterInstance(this);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
@@ -92,6 +93,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
         mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this));
+        mListView.setOnItemClickListener(this);
 
         new TimelineAsyncTask().execute();
 
@@ -101,6 +103,11 @@ public class HomeTimelineActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        TweetData data = (TweetData)adapterView.getItemAtPosition(position);
+        Log.d(TAG,position + " " + data.getName());
+    }
 
     @Override
     public void onRefresh() {
@@ -150,7 +157,11 @@ public class HomeTimelineActivity extends AppCompatActivity
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mStream.shutdown();
+    }
 
     private class TimelineAsyncTask extends AsyncTask<Void,Void,ResponseList<twitter4j.Status>>{
 
