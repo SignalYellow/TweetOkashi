@@ -26,7 +26,7 @@ import com.signalyellow.tweetokashi.sub.UiHandler;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
-import com.signalyellow.tweetokashi.nav.NavigationItemAction;
+import com.signalyellow.tweetokashi.activity.nav.NavigationItemAction;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.sub.TweetPostActivity;
@@ -57,8 +57,6 @@ public class HomeTimelineActivity extends AppCompatActivity
         mApp= (TweetOkashiApplication)getApplicationContext();
         mApp.setActivity(this);
         mTwitter = TwitterUtils.getTwitterInstance(this);
-
-
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color, android.R.color.holo_orange_dark);
@@ -93,7 +91,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         ListView mListView = (ListView)findViewById(R.id.listView);
         mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
-        mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this, mAdapter));
+        mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this));
 
         new TimelineAsyncTask().execute();
 
@@ -101,6 +99,8 @@ public class HomeTimelineActivity extends AppCompatActivity
         mStream.addListener(new MyUserStreamAdapter());
         mStream.user();
     }
+
+
 
     @Override
     public void onRefresh() {

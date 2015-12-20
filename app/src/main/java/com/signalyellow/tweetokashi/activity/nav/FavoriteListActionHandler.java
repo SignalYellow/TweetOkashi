@@ -1,9 +1,9 @@
-package com.signalyellow.tweetokashi.nav;
+package com.signalyellow.tweetokashi.activity.nav;
 
 import android.content.Context;
 import android.content.Intent;
 
-import com.signalyellow.tweetokashi.sub.FavoriteListActivity;
+import com.signalyellow.tweetokashi.activity.FavoriteListActivity;
 
 /**
  * Created by shohei on 15/12/20.

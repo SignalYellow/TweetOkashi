@@ -1,8 +1,7 @@
-package com.signalyellow.tweetokashi.nav;
+package com.signalyellow.tweetokashi.activity.nav;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.activity.MainActivity;

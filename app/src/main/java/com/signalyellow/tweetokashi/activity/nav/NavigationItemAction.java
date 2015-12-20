@@ -1,4 +1,4 @@
-package com.signalyellow.tweetokashi.nav;
+package com.signalyellow.tweetokashi.activity.nav;
 
 
 import android.view.MenuItem;

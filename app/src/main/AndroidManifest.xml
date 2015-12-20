@@ -92,8 +92,11 @@
             android:name=".sub.RetweetListActivity"
             android:label="@string/title_activity_retweet_list" />
         <activity
-            android:name=".sub.FavoriteListActivity"
-            android:label="@string/title_activity_favorite_list"></activity>
+            android:name=".activity.FavoriteListActivity"
+            android:label="@string/title_activity_favorite_list" />
+        <activity
+            android:name=".activity.base.BaseListActivity"
+            android:label="@string/title_activity_base_list"></activity>
     </application>
 
 </manifest>

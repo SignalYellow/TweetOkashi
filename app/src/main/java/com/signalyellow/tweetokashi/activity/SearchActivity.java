@@ -1,5 +1,6 @@
 package com.signalyellow.tweetokashi.activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,12 +21,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
+import com.signalyellow.tweetokashi.sub.TweetPostActivity;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
-import com.signalyellow.tweetokashi.nav.NavigationItemAction;
+import com.signalyellow.tweetokashi.activity.nav.NavigationItemAction;
 
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -63,8 +65,8 @@ public class SearchActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(), TweetPostActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -79,7 +81,7 @@ public class SearchActivity extends AppCompatActivity
 
         ListView listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
-        listView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this, mAdapter));
+        listView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this));
 
     }
 

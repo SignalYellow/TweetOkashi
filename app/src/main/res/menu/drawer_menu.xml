@@ -19,11 +19,7 @@
             android:title="Search"
             />
 
-        <item
-            android:id="@+id/nav_retweet"
-            android:icon="@drawable/icon_retweet"
-            android:title="Retweet List"
-            />
+
 
         <item
             android:id="@+id/nav_favorite"
