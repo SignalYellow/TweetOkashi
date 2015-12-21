@@ -1,5 +1,6 @@
 package com.signalyellow.tweetokashi.activity;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
+import com.signalyellow.tweetokashi.sub.TweetDataDialogFragment;
 import com.signalyellow.tweetokashi.sub.UiHandler;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
@@ -106,6 +108,7 @@ public class HomeTimelineActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         TweetData data = (TweetData)adapterView.getItemAtPosition(position);
+        TweetDataDialogFragment.newInstance(data).show(getFragmentManager(),"dialog" + data.getTweetId());
         Log.d(TAG,position + " " + data.getName());
     }
 
