@@ -1,6 +1,7 @@
 package com.signalyellow.tweetokashi.manager;
 
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.LruCache;
@@ -43,7 +44,7 @@ public class HaikuManager {
 
         if(haiku == null){
             textView.setText("");
-            new HaikuAsyncTask(textView,data.getTweetId()).execute(data.getText());
+            new HaikuAsyncTask(textView,data).execute(data.getText());
             return;
         }
 
@@ -55,13 +56,14 @@ public class HaikuManager {
         textView.setText(haiku);
     }
 
-    class HaikuAsyncTask extends AsyncTask<String,Void,String>{
+    private class HaikuAsyncTask extends AsyncTask<String,Void,String>{
 
-        long id;
         TextView mTextView;
+        TweetData mData;
 
-        public HaikuAsyncTask(TextView textView,Long id){
-            mCache.put(this.id = id, "");
+        public HaikuAsyncTask(TextView textView,TweetData data){
+            mData = data;
+            mCache.put(mData.getTweetId(), "");
             mTextView = textView;
         }
 
@@ -80,14 +82,15 @@ public class HaikuManager {
         @Override
         protected void onPostExecute(String s) {
             if(s == null){
-                mCache.put(id,makeNoHaikuMessage);
+                mCache.put(mData.getTweetId(),makeNoHaikuMessage);
                 mTextView.setVisibility(View.GONE);
                 return;
             }else {
-                mCache.put(id, s);
+                mCache.put(mData.getTweetId(), s);
+                mData.setHaiku(s);
                 mTextView.setVisibility(View.VISIBLE);
             }
-            mTextView.setText(mCache.get(id));
+            mTextView.setText(mCache.get(mData.getTweetId()));
         }
     }
 

@@ -2,18 +2,12 @@ package com.signalyellow.tweetokashi.async;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
 import com.signalyellow.tweetokashi.data.TweetData;
-import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
 
-/**
- * Created by shohei on 15/12/23.
- */
 public class RetweetAsyncTask extends AsyncTask<Void,Void, Status> {
-
     private static final String TAG = "RetweetAsync";
 
     public enum RETWEET_STATUS{
@@ -25,7 +19,7 @@ public class RetweetAsyncTask extends AsyncTask<Void,Void, Status> {
     TweetData mData;
     RETWEET_STATUS mStatus;
 
-    public RetweetAsyncTask(Twitter twitter, TweetData data,RETWEET_STATUS status) {
+    public RetweetAsyncTask(Twitter twitter, TweetData data, RETWEET_STATUS status) {
         mData = data;
         mTwitter = twitter;
         mStatus = status;
@@ -50,9 +44,20 @@ public class RetweetAsyncTask extends AsyncTask<Void,Void, Status> {
 
     @Override
     protected void onPostExecute(twitter4j.Status status) {
-        if(status == null) {Log.e(TAG,"error retweet!");
+        if(status == null) {
+            Log.e(TAG,"status is null!");
             return;
         }
-        Log.d(TAG,"complete!" + status.getId() + status.getUser().getName());
+
+        switch (mStatus){
+            case RETWEET:
+                mData.successRetweet(status.getId());
+                return;
+            case DELETE:
+                mData.successCancelRetweet();
+                return;
+            default:
+                Log.e(TAG,"in switch" + mStatus);
+        }
     }
 }

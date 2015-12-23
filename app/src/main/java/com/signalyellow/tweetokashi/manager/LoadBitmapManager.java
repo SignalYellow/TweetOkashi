@@ -41,6 +41,10 @@ public class LoadBitmapManager {
         mHandler = new LoadBitmapHandler();
     }
 
+    public Bitmap getCachedBitmap(String url){
+        return mLruCache.get(url);
+    }
+
     private class LoadBitmapHandler extends Handler{
         @Override
         public void handleMessage(Message msg) {

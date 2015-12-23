@@ -1,12 +1,12 @@
 package com.signalyellow.tweetokashi.data;
 
-import android.util.Log;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 import twitter4j.User;
 
 /**
@@ -14,31 +14,34 @@ import twitter4j.User;
  */
 public class TweetData implements Serializable{
 
+    private static final String HAIKU_TAG = " @tweetokashi #ついいとおかし ";
+
     private long userId;
     private String name;
     private String screenName;
     private String profileImageURL;
 
     private long tweetId;
-    private String text;
+    public String text;
     private int retweetedCount;
     private boolean isRetweeted;
     private int favoriteCount;
     private Date date;
     private TweetData quotedTweetData;
+    private long quotedStatusId;
     private String videoURL;
     private MediaEntity[] mediaURLs;
+    private URLEntity[] urlEntities;
     private Status status;
 
-    private boolean isDeletable;
-    private boolean isRetweetable;
     private long retweetId;
 
     private boolean isFavoritedByMe;
+    private boolean isRetweetedByMe;
 
     private boolean isQuoted = false;
 
-    String haiku;
+    private String haiku;
 
     public TweetData(Status status){
 
@@ -60,12 +63,26 @@ public class TweetData implements Serializable{
         this.favoriteCount = status.getFavoriteCount();
         this.date = status.getCreatedAt();
         this.isRetweeted = status.isRetweeted();
-        this.text =  status.getText();
-        this.quotedTweetData = status.getQuotedStatus() == null && !isQuoted  ? null : new TweetData(status.getQuotedStatus()).setIsQuoted(true);
-        this.isRetweetable = !status.isRetweetedByMe();
+        this.isRetweetedByMe = status.isRetweetedByMe();
         this.isFavoritedByMe = status.isFavorited();
         this.mediaURLs = status.getMediaEntities();
+        this.urlEntities = status.getURLEntities();
+        this.quotedStatusId = status.getQuotedStatusId();
 
+        this.text =  trimText(status.getText(),this.urlEntities,this.quotedStatusId);
+        this.quotedTweetData = status.getQuotedStatus() == null && !isQuoted  ? null : new TweetData(status.getQuotedStatus()).setIsQuoted(true);
+
+
+    }
+
+    private String trimText(String text, URLEntity[] entities, Long quotedId){
+        if(quotedId == null || quotedId <= 0) return text;
+        for(URLEntity entity: entities){
+            if(entity.getExpandedURL().contains(quotedId.toString())){
+                return text.replace(entity.getURL(),"");
+            }
+        }
+        return text;
     }
 
     public TweetData setIsQuoted(boolean isQuoted) {
@@ -117,9 +134,7 @@ public class TweetData implements Serializable{
         return mediaURLs;
     }
 
-    public boolean isRetweetable() {
-        return isRetweetable;
-    }
+
 
     public long getRetweetId() {
         return retweetId;
@@ -127,5 +142,43 @@ public class TweetData implements Serializable{
 
     public boolean isFavoritedByMe() {
         return isFavoritedByMe;
+    }
+
+    public boolean isRetweetedByMe() {
+        return isRetweetedByMe;
+    }
+
+    public void successFavorite(){
+        this.isFavoritedByMe = true;
+        this.favoriteCount++;
+    }
+
+    public void successCancelFavorite(){
+        this.isFavoritedByMe = false;
+        this.favoriteCount--;
+    }
+
+    public void successRetweet(long retweetId){
+        this.isRetweetedByMe = true;
+        this.retweetedCount++;
+        this.retweetId = retweetId;
+    }
+
+    public void successCancelRetweet(){
+        this.isRetweetedByMe = false;
+        this.retweetedCount--;
+        this.retweetId = 0;
+    }
+
+    public String getUrlForQuote(){
+        return "https://twitter.com/" + this.screenName +"/status/" + this.tweetId;
+    }
+
+    public void setHaiku(String haiku) {
+        this.haiku = haiku;
+    }
+
+    public String getHaikuRetweetText(){
+        return haiku + HAIKU_TAG + getUrlForQuote();
     }
 }

@@ -8,12 +8,8 @@ import com.signalyellow.tweetokashi.data.TweetData;
 import twitter4j.Status;
 import twitter4j.Twitter;
 
-/**
- * Created by shohei on 15/12/23.
- */
 public class FavoriteAsyncTask extends AsyncTask<Void,Void, Status> {
     private static final String TAG = "FavoriteAsync";
-
 
     public enum FAVORITE_STATUS{
         FAVORITE, DELETE
@@ -21,7 +17,7 @@ public class FavoriteAsyncTask extends AsyncTask<Void,Void, Status> {
 
     Twitter mTwitter;
     TweetData mData;
-    private final FAVORITE_STATUS mStatus;
+    FAVORITE_STATUS mStatus;
 
     public FavoriteAsyncTask(Twitter twitter, TweetData data ,FAVORITE_STATUS status) {
         mTwitter = twitter;
@@ -40,8 +36,8 @@ public class FavoriteAsyncTask extends AsyncTask<Void,Void, Status> {
                 default:
                     return null;
             }
-
         }catch (Exception e){
+            Log.e(TAG,e.toString());
             return null;
         }
     }
@@ -49,9 +45,19 @@ public class FavoriteAsyncTask extends AsyncTask<Void,Void, Status> {
     @Override
     protected void onPostExecute(twitter4j.Status status) {
         if(status == null){
-            Log.d(TAG,"error favorite");
+            Log.d(TAG,"status is null!");
             return;
         }
-        Log.d(TAG,"success favorite");
+
+        switch (mStatus){
+            case FAVORITE:
+                mData.successFavorite();
+                return;
+            case DELETE:
+                mData.successCancelFavorite();
+                return;
+            default:
+                Log.e(TAG,"in switch" + mStatus);
+        }
     }
 }

@@ -12,8 +12,11 @@ import android.util.Log;
 import com.signalyellow.tweetokashi.activity.FavoriteListActivity;
 import com.signalyellow.tweetokashi.async.FavoriteAsyncTask;
 import com.signalyellow.tweetokashi.async.RetweetAsyncTask;
+import com.signalyellow.tweetokashi.async.TweetAsyncTask;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
+
+import twitter4j.Twitter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,14 +78,15 @@ public class TweetDataDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        CharSequence[] items = {"リツイート","いいね","マイリストに保存","詳細"};
-        if(!mData.isRetweetable()){
+        CharSequence[] items = {"リツイート","いいね","俳句リツイート","詳細"};
+        if(mData.isRetweetedByMe()){
             items[0] = "リツイート解除";
         }
         if(mData.isFavoritedByMe()){
             items[1] = "いいね取り消し";
         }
 
+        final Twitter twitter = TwitterUtils.getTwitterInstance(getActivity());
         return new AlertDialog.Builder(getActivity())
                 .setTitle(mData.getName())
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -91,9 +95,9 @@ public class TweetDataDialogFragment extends DialogFragment {
                         switch (i){
                             case 0:
                                 Log.d(TAG,"リツイート");
-                                new RetweetAsyncTask(TwitterUtils.getTwitterInstance(getActivity()),
+                                new RetweetAsyncTask(twitter,
                                         mData,
-                                        !mData.isRetweetable() ? RetweetAsyncTask.RETWEET_STATUS.DELETE : RetweetAsyncTask.RETWEET_STATUS.RETWEET).execute();
+                                        mData.isRetweetedByMe() ? RetweetAsyncTask.RETWEET_STATUS.DELETE : RetweetAsyncTask.RETWEET_STATUS.RETWEET).execute();
                                 break;
                             case 1:
                                 Log.d(TAG,"いいね");
@@ -102,7 +106,8 @@ public class TweetDataDialogFragment extends DialogFragment {
                                         mData.isFavoritedByMe() ? FavoriteAsyncTask.FAVORITE_STATUS.DELETE : FavoriteAsyncTask.FAVORITE_STATUS.FAVORITE).execute();
                                 break;
                             case 2:
-                                Log.d(TAG,"リスト追加");
+                                Log.d(TAG,"俳句リツイート");
+                                if(mData.getHaiku() != null) new TweetAsyncTask(twitter).execute(mData.getHaikuRetweetText());
                                 break;
                             case 3:
                                 Log.d(TAG,"詳細");

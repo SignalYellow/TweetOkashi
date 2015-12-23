@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
+import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.sub.TweetDataDialogFragment;
 import com.signalyellow.tweetokashi.sub.UiHandler;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
@@ -107,8 +109,9 @@ public class HomeTimelineActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         TweetData data = (TweetData)adapterView.getItemAtPosition(position);
-        TweetDataDialogFragment.newInstance(data).show(getFragmentManager(),"dialog" + data.getTweetId());
-        Log.d(TAG,position + " " + data.getName());
+        TweetDataDialogFragment.newInstance(data).show(getFragmentManager(), "dialog" + data.getTweetId());
+        Log.d(TAG, position + " " + data.getName());
+
     }
 
     @Override
@@ -136,9 +139,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         @Override
         protected User doInBackground(Void... params) {
             try {
-
                 return mTwitter.verifyCredentials();
-
             } catch (TwitterException e) {
                 return null;
             }
@@ -149,6 +150,8 @@ public class HomeTimelineActivity extends AppCompatActivity
             if(user == null){
                 return;
             }
+
+            mApp.setUserData(new UserData(user));
 
             mMainTextView.setText(user.getName());
             mSubTextView.setText("@" + user.getScreenName());
@@ -184,7 +187,6 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         @Override
         protected ResponseList<twitter4j.Status> doInBackground(Void... voids) {
-
             try {
                 return mPaging == null ? mTwitter.getHomeTimeline() : mTwitter.getHomeTimeline(mPaging);
             } catch (TwitterException e) {
@@ -212,6 +214,10 @@ public class HomeTimelineActivity extends AppCompatActivity
         public void onStatus(final Status status) {
             super.onStatus(status);
             Log.d(TAG, status.getUser().getName() + " " + status.getText());
+            if(status.getRetweetedStatus() != null  && mApp.getUserData() != null
+                    && mApp.getUserData().getUserId() == status.getUser().getId()){
+                return;
+            }
             new UiHandler(){
                 @Override
                 public void run() {
@@ -236,15 +242,20 @@ public class HomeTimelineActivity extends AppCompatActivity
 
     @Override
     public void scrolled() {
-        Log.d(TAG, "scrolled");
-
         Paging paging = new Paging();
         TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
         paging.setMaxId(lastData.getTweetId() -1);
         new TimelineAsyncTask(paging).execute();
-
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+
+            return true;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
 
     @Override
     public void onBackPressed() {

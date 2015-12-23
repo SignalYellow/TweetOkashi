@@ -14,13 +14,14 @@ public class MainActivity extends Activity {
 
         if(!TwitterUtils.hasAccessToken(this)) {
             Intent intent = new Intent(this, TwitterOAuthActivity.class);
-            startActivity(intent);
-            finish();
-        }else{
             TweetOkashiApplication app = (TweetOkashiApplication)getApplicationContext();
             if(app.getHomeActivity() != null){
                 app.getHomeActivity().finish();
             }
+            startActivity(intent);
+            finish();
+        }else{
+
             startActivity(new Intent(this, HomeTimelineActivity.class));
             finish();
         }
