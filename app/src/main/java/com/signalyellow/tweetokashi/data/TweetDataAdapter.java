@@ -72,12 +72,11 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         setRetweetedCount(data, viewHolder);
         setFavoritedCount(data, viewHolder);
         setPictures(data, viewHolder);
+        setHaiku(data,viewHolder);
 
         viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
         mLoadBitmapManager.downloadBitmap(viewHolder.imageThumbnail, data.getProfileImageURL());
 
-        viewHolder.textHaiku.setTag(data.getTweetId());
-        mHaikuManager.createHaiku(viewHolder.textHaiku,data);
 
         return view;
     }
@@ -129,6 +128,16 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         MediaEntity entity = entities[0];
         holder.imageView.setTag(entity.getMediaURL());
         mLoadBitmapManager.downloadBitmap(holder.imageView, entity.getMediaURL());
+    }
+
+    private void setHaiku(TweetData data, ListItemViewHolder holder){
+
+        if(data.isHaikuRetweet()){
+            holder.textHaiku.setVisibility(View.GONE);
+            return;
+        }
+        holder.textHaiku.setTag(data.getTweetId());
+        mHaikuManager.createHaiku(holder.textHaiku,data);
 
     }
 }

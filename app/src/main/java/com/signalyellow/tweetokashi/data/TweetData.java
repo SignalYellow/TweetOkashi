@@ -1,6 +1,5 @@
 package com.signalyellow.tweetokashi.data;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,14 +8,10 @@ import twitter4j.Status;
 import twitter4j.URLEntity;
 import twitter4j.User;
 
-/**
- * Created by shohei on 15/11/21.
- */
 public class TweetData implements Serializable{
 
     private static final String HAIKU_TAG = " @tweetokashi #ついいとおかし ";
 
-    private long userId;
     private String name;
     private String screenName;
     private String profileImageURL;
@@ -38,6 +33,7 @@ public class TweetData implements Serializable{
 
     private boolean isFavoritedByMe;
     private boolean isRetweetedByMe;
+    private boolean isHaikuRetweet = false;
 
     private boolean isQuoted = false;
 
@@ -45,14 +41,12 @@ public class TweetData implements Serializable{
 
     public TweetData(Status status){
 
-
         this.status = status;
         this.retweetId = status.getCurrentUserRetweetId();
         if(status.getRetweetedStatus() != null){
             this.retweetId = status.getId();
             status = status.getRetweetedStatus();
         }
-
 
         this.tweetId = status.getId();
         User user = status.getUser();
@@ -69,9 +63,13 @@ public class TweetData implements Serializable{
         this.urlEntities = status.getURLEntities();
         this.quotedStatusId = status.getQuotedStatusId();
 
-        this.text =  trimText(status.getText(),this.urlEntities,this.quotedStatusId);
-        this.quotedTweetData = status.getQuotedStatus() == null && !isQuoted  ? null : new TweetData(status.getQuotedStatus()).setIsQuoted(true);
 
+        this.text =  trimText(status.getText(),this.urlEntities,this.quotedStatusId);
+        if(text.contains(HAIKU_TAG)){
+            this.text = text.replace(HAIKU_TAG,"");
+            this.isHaikuRetweet = true;
+        }
+        this.quotedTweetData = status.getQuotedStatus() == null && !isQuoted  ? null : new TweetData(status.getQuotedStatus()).setIsQuoted(true);
 
     }
 
@@ -146,6 +144,10 @@ public class TweetData implements Serializable{
 
     public boolean isRetweetedByMe() {
         return isRetweetedByMe;
+    }
+
+    public boolean isHaikuRetweet() {
+        return isHaikuRetweet;
     }
 
     public void successFavorite(){
