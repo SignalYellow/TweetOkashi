@@ -12,14 +12,6 @@
         android:paddingBottom="3dp"
         >
         <TextView
-            android:id="@+id/RTbyText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ついいとおかしついいとおかしついいとおかしついいとおかし"
-            android:textColor="@color/main_color"
-            android:singleLine="true"
-            android:layout_toLeftOf="@id/retweetText"/>
-        <TextView
             android:id="@+id/retweetText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,6 +19,15 @@
             android:text="さんがリツイート"
             android:layout_alignParentRight="true"
             />
+        <TextView
+            android:id="@+id/RTbyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ついいとおかしついいとおかしついいとおかしついいとおかし"
+            android:textColor="@color/main_color"
+            android:singleLine="true"
+            android:layout_toLeftOf="@id/retweetText"/>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -47,41 +48,52 @@
                 android:layout_height="@dimen/icon_size"
                 android:src="@mipmap/ic_launcher"/>
 
-            <TextView
-                android:id="@+id/RT"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/RTGroup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_retweet"
-                android:textSize="@dimen/text_RT_size"
-                android:textColor="@color/text_date_color"
-                />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/RT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_retweet"
+                    android:textSize="@dimen/text_RT_size"
+                    android:textColor="@color/text_date_color"
+                    />
 
-            <TextView
-                android:id="@+id/RTcount"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/RTcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_rtcount"
+                    android:textColor="@color/text_date_color"
+
+                    android:textSize="@dimen/text_RT_size"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/FavGroup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/test_rtcount"
-                android:textColor="@color/text_date_color"
-
-                android:textSize="@dimen/text_RT_size"/>
-
-            <TextView
-                android:id="@+id/FAV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_favorite"
-                android:textColor="@color/text_date_color"
-                android:textSize="@dimen/text_RT_size"
-                />
-            <TextView
-                android:id="@+id/FAVCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_RT_size"
-                android:text="@string/test_favcount"
-                android:textColor="@color/text_date_color"
-                />
-
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/FAV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_favorite"
+                    android:textColor="@color/text_date_color"
+                    android:textSize="@dimen/text_RT_size"
+                    />
+                <TextView
+                    android:id="@+id/FAVCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_RT_size"
+                    android:text="@string/test_favcount"
+                    android:textColor="@color/text_date_color"
+                    />
+                </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -89,9 +101,8 @@
             android:orientation="vertical"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
+            android:paddingRight="4dp"
             android:layout_toRightOf="@id/top_left_layout">
-
-
 
             <TextView
                 android:id="@+id/name"
@@ -100,6 +111,7 @@
                 android:text="@string/test_name_long"
                 android:textSize="@dimen/text_name_size"
                 android:textColor="@color/black"
+                android:singleLine="true"
                 />
 
             <RelativeLayout
@@ -113,8 +125,8 @@
                     android:text="@string/test_screenname_long"
                     android:textSize="@dimen/text_name_size"
                     android:textColor="@color/text_name_color"
+                    android:singleLine="true"
                     />
-
 
                 <TextView
                     android:id="@+id/datetime"
@@ -123,6 +135,7 @@
                     android:text="@string/test_date"
                     android:gravity="right"
                     android:textSize="@dimen/text_date_size"
+                    android:singleLine="true"
                     android:textColor="@color/text_date_color"/>
             </RelativeLayout>
 

@@ -11,7 +11,7 @@ import com.signalyellow.tweetokashi.R;
 /**
  * Created by shohei on 15/12/14.
  */
-public class ListItemViewHolder {
+class ListItemViewHolder {
     public TextView textUserName;
     public TextView textScreenName;
     public TextView textDate;

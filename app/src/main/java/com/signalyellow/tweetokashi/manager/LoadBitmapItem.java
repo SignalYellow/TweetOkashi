@@ -6,7 +6,7 @@ import android.widget.ImageView;
 /**
  * Created by shohei on 15/12/15.
  */
-public class LoadBitmapItem {
+class LoadBitmapItem {
 
     private ImageView mImageView;
     private String mUrl;

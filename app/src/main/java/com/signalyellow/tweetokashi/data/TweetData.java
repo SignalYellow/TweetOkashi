@@ -65,21 +65,25 @@ public class TweetData implements Serializable{
 
 
         this.text =  trimText(status.getText(),this.urlEntities,this.quotedStatusId);
-        if(text.contains(HAIKU_TAG)){
-            this.text = text.replace(HAIKU_TAG,"");
-            this.isHaikuRetweet = true;
-        }
+
         this.quotedTweetData = status.getQuotedStatus() == null && !isQuoted  ? null : new TweetData(status.getQuotedStatus()).setIsQuoted(true);
 
     }
 
     private String trimText(String text, URLEntity[] entities, Long quotedId){
         if(quotedId == null || quotedId <= 0) return text;
+
+        if(text.contains(HAIKU_TAG)){
+            this.text = text.replace(HAIKU_TAG,"");
+            this.isHaikuRetweet = true;
+        }
+
         for(URLEntity entity: entities){
             if(entity.getExpandedURL().contains(quotedId.toString())){
                 return text.replace(entity.getURL(),"");
             }
         }
+
         return text;
     }
 

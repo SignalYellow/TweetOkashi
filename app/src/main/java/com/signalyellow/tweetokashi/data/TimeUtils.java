@@ -3,7 +3,7 @@ package com.signalyellow.tweetokashi.data;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TimeUtils {
+class TimeUtils {
     static final String YEAR = "年";
     static final String DAY = "日";
     static final String HOUR = "時間";

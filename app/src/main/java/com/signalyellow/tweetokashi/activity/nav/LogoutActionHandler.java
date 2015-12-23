@@ -10,7 +10,7 @@ import com.signalyellow.tweetokashi.activity.MainActivity;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
-public class LogoutActionHandler implements ItemActionHandler<Void> {
+class LogoutActionHandler implements ItemActionHandler<Void> {
     @Override
     public boolean handle(Context context,Void entity ) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

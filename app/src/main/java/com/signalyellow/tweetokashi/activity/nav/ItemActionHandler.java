@@ -6,5 +6,5 @@ import android.content.Context;
  * Created by shohei on 15/12/16.
  */
 public interface ItemActionHandler<E> {
-    public boolean handle(Context context, E entity);
+    boolean handle(Context context, E entity);
 }
