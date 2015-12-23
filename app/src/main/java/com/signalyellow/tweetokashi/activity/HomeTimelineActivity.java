@@ -1,6 +1,5 @@
 package com.signalyellow.tweetokashi.activity;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -115,7 +114,7 @@ public class HomeTimelineActivity extends AppCompatActivity
     @Override
     public void onRefresh() {
         TweetOkashiApplication app = (TweetOkashiApplication) getApplicationContext();
-        app.getHaikuManger().refresh();
+        //app.getHaikuManger().refresh();
         new TimelineAsyncTask().execute();
     }
 

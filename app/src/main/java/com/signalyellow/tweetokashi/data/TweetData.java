@@ -28,9 +28,13 @@ public class TweetData implements Serializable{
     private TweetData quotedTweetData;
     private String videoURL;
     private MediaEntity[] mediaURLs;
+    private Status status;
 
     private boolean isDeletable;
     private boolean isRetweetable;
+    private long retweetId;
+
+    private boolean isFavoritedByMe;
 
     private boolean isQuoted = false;
 
@@ -38,9 +42,16 @@ public class TweetData implements Serializable{
 
     public TweetData(Status status){
 
+
+        this.status = status;
+        this.retweetId = status.getCurrentUserRetweetId();
         if(status.getRetweetedStatus() != null){
+            this.retweetId = status.getId();
             status = status.getRetweetedStatus();
         }
+
+
+        this.tweetId = status.getId();
         User user = status.getUser();
         this.name = user.getName();
         this.screenName = user.getScreenName();
@@ -48,12 +59,13 @@ public class TweetData implements Serializable{
         this.retweetedCount = status.getRetweetCount();
         this.favoriteCount = status.getFavoriteCount();
         this.date = status.getCreatedAt();
-        this.tweetId = status.getId();
         this.isRetweeted = status.isRetweeted();
         this.text =  status.getText();
         this.quotedTweetData = status.getQuotedStatus() == null && !isQuoted  ? null : new TweetData(status.getQuotedStatus()).setIsQuoted(true);
         this.isRetweetable = !status.isRetweetedByMe();
+        this.isFavoritedByMe = status.isFavorited();
         this.mediaURLs = status.getMediaEntities();
+
     }
 
     public TweetData setIsQuoted(boolean isQuoted) {
@@ -103,5 +115,17 @@ public class TweetData implements Serializable{
 
     public MediaEntity[] getMediaURLs() {
         return mediaURLs;
+    }
+
+    public boolean isRetweetable() {
+        return isRetweetable;
+    }
+
+    public long getRetweetId() {
+        return retweetId;
+    }
+
+    public boolean isFavoritedByMe() {
+        return isFavoritedByMe;
     }
 }

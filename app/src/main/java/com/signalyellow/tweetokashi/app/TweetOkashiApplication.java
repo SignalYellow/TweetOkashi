@@ -6,6 +6,8 @@ import com.signalyellow.tweetokashi.activity.HomeTimelineActivity;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
 import com.signalyellow.tweetokashi.manager.LoadBitmapManager;
 
+import twitter4j.Twitter;
+
 /**
  * Created by shohei on 15/12/15.
  * Application class
