@@ -296,6 +296,7 @@
     <string name="title_activity_retweet_list">RetweetListActivity</string>
     <string name="title_activity_favorite_list">FavoriteListActivity</string>
     <string name="title_activity_base_list">BaseListActivity</string>
+    <string name="title_activity_pra">PraActivity</string>
 
 
 </resources>

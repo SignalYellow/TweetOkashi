@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,31 +24,23 @@ import android.widget.TextView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.UserData;
-import com.signalyellow.tweetokashi.sub.SettingsActivity;
-import com.signalyellow.tweetokashi.sub.TweetDataDialogFragment;
-import com.signalyellow.tweetokashi.sub.UiHandler;
-import com.signalyellow.tweetokashi.twitter.TwitterUtils;
-import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
-import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
+import com.signalyellow.tweetokashi.sub.HomeTimelineFragment;
 import com.signalyellow.tweetokashi.activity.nav.NavigationItemAction;
 import com.signalyellow.tweetokashi.data.TweetData;
-import com.signalyellow.tweetokashi.data.TweetDataAdapter;
+import com.signalyellow.tweetokashi.sub.TweetDataDialogFragment;
 import com.signalyellow.tweetokashi.sub.TweetPostActivity;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.*;
 
 public class HomeTimelineActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AutoUpdateTimelineScrollable ,SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener , HomeTimelineFragment.OnHomeTimelineFragmentListener {
 
     private static final String TAG = "HomeTimeline";
 
     private Twitter mTwitter;
-    private TweetDataAdapter mAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private TwitterStream mStream;
     private TweetOkashiApplication mApp;
 
-    private boolean mIsRefreshing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +52,16 @@ public class HomeTimelineActivity extends AppCompatActivity
 
 
         mApp= (TweetOkashiApplication)getApplicationContext();
-        mApp.setHomeActivity(this);
         mTwitter = TwitterUtils.getTwitterInstance(this);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color, android.R.color.holo_orange_dark);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        if (findViewById(R.id.fragment_container) != null) {
+            Log.d(TAG, "container not null");
 
+            HomeTimelineFragment fragment = new HomeTimelineFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment).commit();
+
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +78,8 @@ public class HomeTimelineActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -95,37 +91,12 @@ public class HomeTimelineActivity extends AppCompatActivity
             new UserAsyncTask(imageView, textView1, textView2, getApplicationContext()).execute();
         }
 
-        ListView mListView = (ListView)findViewById(R.id.listView);
-        mListView.setAdapter(mAdapter = new TweetDataAdapter(getApplicationContext()));
-        mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this));
-        mListView.setOnItemClickListener(this);
-
-        new TimelineAsyncTask().execute();
-
-        mStream = TwitterUtils.getTwitterStreamInstance(getApplicationContext());
-        mStream.addListener(new MyUserStreamAdapter());
-        mStream.user();
     }
 
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        TweetData data = (TweetData)adapterView.getItemAtPosition(position);
-        TweetDataDialogFragment.newInstance(data).show(getFragmentManager(), "dialog" + data.getTweetId());
-        Log.d(TAG, position + " " + data.getName());
+// TODO: 15/12/19 mStream の停止処理
 
-    }
-
-    @Override
-    public void onRefresh() {
-        TweetOkashiApplication app = (TweetOkashiApplication) getApplicationContext();
-        //app.getHaikuManger().refresh();
-        new TimelineAsyncTask().execute();
-    }
-
-    // TODO: 15/12/19 mStream の停止処理
-
-    class UserAsyncTask extends AsyncTask<Void,Void, User>{
+    class UserAsyncTask extends AsyncTask<Void, Void, User> {
         private ImageView mImageView;
         private TextView mMainTextView;
         private TextView mSubTextView;
@@ -135,7 +106,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             mImageView = imageView;
             mMainTextView = mainTextView;
             mSubTextView = subTextView;
-            mApp = (TweetOkashiApplication)context;
+            mApp = (TweetOkashiApplication) context;
         }
 
         @Override
@@ -149,7 +120,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(User user) {
-            if(user == null){
+            if (user == null) {
                 return;
             }
 
@@ -160,103 +131,29 @@ public class HomeTimelineActivity extends AppCompatActivity
             Log.d(TAG, user.getProfileBackgroundColor() + " " + user.getProfileSidebarFillColor() + " " + user.getProfileTextColor());
 
             mImageView.setTag(user.getProfileImageURL());
-            mApp.getLoadBitmapManger().downloadBitmap(mImageView,user.getProfileImageURL());
+            mApp.getLoadBitmapManger().downloadBitmap(mImageView, user.getProfileImageURL());
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mStream.shutdown();
     }
 
-    private class TimelineAsyncTask extends AsyncTask<Void,Void,ResponseList<twitter4j.Status>>{
-
-        Paging mPaging;
-
-        public TimelineAsyncTask(){
-            mPaging = null;
-        }
-
-        public TimelineAsyncTask(Paging paging) {
-            mPaging = paging;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            setRefreshing(true);
-        }
-
-        @Override
-        protected ResponseList<twitter4j.Status> doInBackground(Void... voids) {
-            try {
-                return mPaging == null ? mTwitter.getHomeTimeline() : mTwitter.getHomeTimeline(mPaging);
-            } catch (TwitterException e) {
-                Log.e(TAG,e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
-
-            if(statuses != null){
-                if(mPaging == null) mAdapter.clear();
-                for(twitter4j.Status s : statuses){
-                    mAdapter.add(new TweetData(s));
-                }
-            }
-            setRefreshing(false);
-        }
-    }
-
-
-    class MyUserStreamAdapter extends UserStreamAdapter{
-        @Override
-        public void onStatus(final Status status) {
-            super.onStatus(status);
-            Log.d(TAG, status.getUser().getName() + " " + status.getText());
-            if(status.getRetweetedStatus() != null  && mApp.getUserData() != null
-                    && mApp.getUserData().getUserId() == status.getUser().getId()){
-                return;
-            }
-            new UiHandler(){
-                @Override
-                public void run() {
-                    mAdapter.insert(new TweetData(status), 0);
-
-                }
-            }.post();
-
-        }
-    }
 
     @Override
-    public void setRefreshing(boolean refreshing) {
-        mIsRefreshing = refreshing;
-        mSwipeRefreshLayout.setRefreshing(refreshing);
-    }
-
-    @Override
-    public boolean isRefreshing() {
-        return mIsRefreshing;
-    }
-
-    @Override
-    public void scrolled() {
-        Paging paging = new Paging();
-        TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
-        paging.setMaxId(lastData.getTweetId() -1);
-        new TimelineAsyncTask(paging).execute();
+    public void onTimelineItemClicked(TweetData data) {
+        Log.d(TAG, data.getName());
+        TweetDataDialogFragment.newInstance(data).show(getFragmentManager(), "dialog" + data.getTweetId());
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
 
             return true;
         }
-        return super.onKeyDown(keyCode,event);
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -295,6 +192,6 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return action.getHandler().handle(this,null);
+        return action.getHandler().handle(this, null);
     }
 }
