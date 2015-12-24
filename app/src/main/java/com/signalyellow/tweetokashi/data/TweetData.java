@@ -12,39 +12,50 @@ public class TweetData implements Serializable{
 
     private static final String HAIKU_TAG = " @tweetokashi #ついいとおかし ";
 
+    //basic
     private String name;
     private String screenName;
     private String profileImageURL;
-
     private long tweetId;
     public String text;
-    private int retweetedCount;
-    private boolean isRetweeted;
-    private int favoriteCount;
     private Date date;
+
+    private Status status;
+
+    //favorite
+    private boolean isFavoritedByMe;
+    private int favoriteCount;
+
+    //Retweet
+    private long retweetId;
+    private boolean isRetweetedByMe;
+    private int retweetedCount;
+    private String retweetUserName;
+    private boolean isRetweeted;
+
+    //Haiku
+    private String haiku;
+    private boolean isHaikuRetweet = false;
+
+    //Quote
     private TweetData quotedTweetData;
     private long quotedStatusId;
+    private boolean isQuoted = false;
+
+    //Media & URL
     private String videoURL;
     private MediaEntity[] mediaURLs;
     private URLEntity[] urlEntities;
-    private Status status;
-
-    private long retweetId;
-
-    private boolean isFavoritedByMe;
-    private boolean isRetweetedByMe;
-    private boolean isHaikuRetweet = false;
-
-    private boolean isQuoted = false;
-
-    private String haiku;
 
     public TweetData(Status status){
 
         this.status = status;
         this.retweetId = status.getCurrentUserRetweetId();
+
         if(status.getRetweetedStatus() != null){
             this.retweetId = status.getId();
+            this.retweetUserName = status.getUser().getName();
+            this.isRetweeted = true;
             status = status.getRetweetedStatus();
         }
 
@@ -56,7 +67,6 @@ public class TweetData implements Serializable{
         this.retweetedCount = status.getRetweetCount();
         this.favoriteCount = status.getFavoriteCount();
         this.date = status.getCreatedAt();
-        this.isRetweeted = status.isRetweeted();
         this.isRetweetedByMe = status.isRetweetedByMe();
         this.isFavoritedByMe = status.isFavorited();
         this.mediaURLs = status.getMediaEntities();
@@ -136,8 +146,6 @@ public class TweetData implements Serializable{
         return mediaURLs;
     }
 
-
-
     public long getRetweetId() {
         return retweetId;
     }
@@ -182,6 +190,14 @@ public class TweetData implements Serializable{
 
     public void setHaiku(String haiku) {
         this.haiku = haiku;
+    }
+
+    public boolean isRetweeted() {
+        return isRetweeted;
+    }
+
+    public String getRetweetUserName() {
+        return retweetUserName;
     }
 
     public String getHaikuRetweetText(){

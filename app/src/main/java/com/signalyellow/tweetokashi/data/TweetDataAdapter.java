@@ -2,6 +2,7 @@ package com.signalyellow.tweetokashi.data;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,11 +53,12 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
             viewHolder.textHaiku = (TextView)view.findViewById(R.id.haikutext);
             viewHolder.imageThumbnail = (ImageView)view.findViewById(R.id.icon);
             viewHolder.textDate = (TextView)view.findViewById(R.id.datetime);
-            viewHolder.textRetweetedCount = (TextView)view.findViewById(R.id.RTcount);
-            viewHolder.textFavoritedCount = (TextView)view.findViewById(R.id.FAVCount);
             viewHolder.setQuotedTweetView((ViewGroup) view.findViewById(R.id.quoted_tweet_layout));
             viewHolder.imageGroupLayout = (ViewGroup)view.findViewById(R.id.picture_group_layout);
             viewHolder.imageView = (ImageView)view.findViewById(R.id.imageView1);
+            viewHolder.setRTbyView((ViewGroup)view.findViewById(R.id.RTbyTextGroup));
+            viewHolder.setRTViewGroup((ViewGroup) view.findViewById(R.id.RTGroup));
+            viewHolder.setFAVViewGroup((ViewGroup)view.findViewById(R.id.FavGroup));
 
             view.setTag(viewHolder);
         }else{
@@ -73,6 +75,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         setFavoritedCount(data, viewHolder);
         setPictures(data, viewHolder);
         setHaiku(data,viewHolder);
+        setRetweetedByText(data,viewHolder);
 
         viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
         mLoadBitmapManager.downloadBitmap(viewHolder.imageThumbnail, data.getProfileImageURL());
@@ -87,33 +90,61 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         if(q == null){
             holder.quotedTweetLayout.setVisibility(View.GONE);
         }else{
-            holder.setQuotedTweet(q);
+            holder.textQuotedText.setText(q.getText());
+            holder.textQuotedDate.setText(TimeUtils.getRelativeTime(q.getDate()));
+            holder.textQuotedUserName.setText(q.getName());
+            holder.textQuotedScreenName.setText("@" + q.getScreenName());
             holder.quotedTweetLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setRetweetedByText(TweetData data, ListItemViewHolder holder){
+
+        if(data.isRetweeted()){
+            holder.RTbyTextGroup.setVisibility(View.VISIBLE);
+            holder.textRTbyUserName.setText(data.getRetweetUserName());
+            return;
+        }
+        holder.RTbyTextGroup.setVisibility(View.GONE);
+
     }
 
     private void setRetweetedCount(TweetData data, ListItemViewHolder holder){
         int count = data.getRetweetedCount();
 
         if(count > 0) {
+            holder.RTViewGroup.setVisibility(View.VISIBLE);
+            if(data.isRetweetedByMe()){
+                holder.textRetweetTitle.setText("RT済");
+                holder.textRetweetTitle.setTextColor(Color.RED);
+            }else{
+                holder.textRetweetTitle.setText("RT");
+                holder.textRetweetTitle.setTextColor(Color.BLACK);
+            }
             holder.textRetweetedCount.setText(String.valueOf(count));
-            holder.textRetweetedCount.setVisibility(View.VISIBLE);
             return;
         }
 
-        holder.textRetweetedCount.setVisibility(View.GONE);
+        holder.RTViewGroup.setVisibility(View.GONE);
     }
 
     private void setFavoritedCount(TweetData data, ListItemViewHolder holder){
         int count = data.getFavoriteCount();
 
-        if(count > 0){
+        if( count > 0 ){
+            holder.FAVViewGroup.setVisibility(View.VISIBLE);
+            if(data.isFavoritedByMe()) {
+                holder.textFavoritedTitle.setText("FAV済");
+                holder.textFavoritedTitle.setTextColor(Color.RED);
+            }else {
+                holder.textFavoritedTitle.setText("FAV");
+                holder.textFavoritedTitle.setTextColor(Color.BLACK);
+            }
             holder.textFavoritedCount.setText(String.valueOf(count));
-            holder.textFavoritedCount.setVisibility(View.VISIBLE);
             return;
         }
 
-        holder.textFavoritedCount.setVisibility(View.GONE);
+        holder.FAVViewGroup.setVisibility(View.GONE);
     }
 
     private void setPictures(TweetData data, ListItemViewHolder holder){

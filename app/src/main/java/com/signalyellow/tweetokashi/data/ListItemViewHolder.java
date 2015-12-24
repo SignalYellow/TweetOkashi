@@ -16,19 +16,48 @@ class ListItemViewHolder {
     public TextView textScreenName;
     public TextView textDate;
     public TextView textContent;
+
+    public ViewGroup RTbyTextGroup;
+    public TextView textRTbyUserName;
+
+    public ViewGroup RTViewGroup;
+    public TextView textRetweetTitle;
     public TextView textRetweetedCount;
+
+    public ViewGroup FAVViewGroup;
+    public TextView textFavoritedTitle;
     public TextView textFavoritedCount;
+
     public TextView textHaiku;
+
     public ImageView imageThumbnail;
+
     public ViewGroup quotedTweetLayout;
     public TextView textQuotedUserName;
     public TextView textQuotedScreenName;
     public TextView textQuotedDate;
     public TextView textQuotedText;
+
     public ViewGroup imageGroupLayout;
     public ImageView imageView;
 
 
+    public void setRTbyView(ViewGroup viewGroup){
+        this.RTbyTextGroup = viewGroup;
+        this.textRTbyUserName = (TextView)viewGroup.findViewById(R.id.RTbyUserNameText);
+    }
+
+    public void setRTViewGroup(ViewGroup viewGroup){
+        this.RTViewGroup = viewGroup;
+        this.textRetweetTitle = (TextView)viewGroup.findViewById(R.id.RTtitle);
+        this.textRetweetedCount = (TextView)viewGroup.findViewById(R.id.RTcount);
+    }
+
+    public void setFAVViewGroup(ViewGroup viewGroup){
+        this.FAVViewGroup = viewGroup;
+        this.textFavoritedTitle = (TextView)viewGroup.findViewById(R.id.FAVtitle);
+        this.textFavoritedCount = (TextView)viewGroup.findViewById(R.id.FAVcount);
+    }
 
     public ViewGroup setQuotedTweetView(ViewGroup viewGroup){
         this.quotedTweetLayout = viewGroup;
@@ -39,13 +68,5 @@ class ListItemViewHolder {
 
         return viewGroup;
     }
-
-    public void setQuotedTweet(TweetData data){
-        this.textQuotedText.setText(data.getText());
-        this.textQuotedDate.setText(TimeUtils.getRelativeTime(data.getDate()));
-        this.textQuotedUserName.setText(data.getName());
-        this.textQuotedScreenName.setText("@" + data.getScreenName());
-    }
-
 
 }

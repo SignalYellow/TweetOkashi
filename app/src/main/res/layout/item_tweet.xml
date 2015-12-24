@@ -12,7 +12,7 @@
         android:paddingBottom="3dp"
         >
         <TextView
-            android:id="@+id/retweetText"
+            android:id="@+id/RTbyText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -20,13 +20,13 @@
             android:layout_alignParentRight="true"
             />
         <TextView
-            android:id="@+id/RTbyText"
+            android:id="@+id/RTbyUserNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ついいとおかしついいとおかしついいとおかしついいとおかし"
             android:textColor="@color/main_color"
             android:singleLine="true"
-            android:layout_toLeftOf="@id/retweetText"/>
+            android:layout_toLeftOf="@id/RTbyText"/>
 
     </RelativeLayout>
 
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/RT"
+                    android:id="@+id/RTtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_retweet"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/FAV"
+                    android:id="@+id/FAVtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_favorite"
@@ -86,7 +86,7 @@
                     android:textSize="@dimen/text_RT_size"
                     />
                 <TextView
-                    android:id="@+id/FAVCount"
+                    android:id="@+id/FAVcount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_RT_size"

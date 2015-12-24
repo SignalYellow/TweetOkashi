@@ -7,7 +7,6 @@
             android:icon="@drawable/icon_home"
             android:title="Home"
             />
-
         <item
             android:id="@+id/nav_tweet"
             android:icon="@drawable/icon_tweet"
@@ -18,20 +17,10 @@
             android:icon="@drawable/icon_search"
             android:title="Search"
             />
-
-
-
         <item
             android:id="@+id/nav_favorite"
             android:icon="@drawable/icon_heart"
             android:title="Favorite List"
-            />
-
-
-        <item
-            android:id="@+id/nav_list"
-            android:icon="@drawable/icon_books"
-            android:title="リスト"
             />
     </group>
 
