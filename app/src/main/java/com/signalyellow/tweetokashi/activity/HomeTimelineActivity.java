@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.UserData;
+import com.signalyellow.tweetokashi.sub.SettingsActivity;
 import com.signalyellow.tweetokashi.sub.TweetDataDialogFragment;
 import com.signalyellow.tweetokashi.sub.UiHandler;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
@@ -57,6 +58,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setSubtitle(getString(R.string.app_name_ja));
+
 
         mApp= (TweetOkashiApplication)getApplicationContext();
         mApp.setHomeActivity(this);

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="make_haiku"
+        android:summary="俳句の生成に関して"
+        android:summaryOn="俳句を生成します"
+        android:summaryOff="俳句を生成しません"
+        android:title="俳句"
+        />
+</PreferenceScreen>

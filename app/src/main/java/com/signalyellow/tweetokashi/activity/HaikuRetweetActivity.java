@@ -8,7 +8,6 @@ import android.widget.Toast;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.components.SimpleTweetData;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
-import com.signalyellow.tweetokashi.twitter.TwitterUtils.TWITTER_STATUS;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -37,19 +36,19 @@ public class HaikuRetweetActivity extends Activity {
     }
 
 
-    private class TweetAsyncTask extends AsyncTask<String,Void,TWITTER_STATUS> {
+    private class TweetAsyncTask extends AsyncTask<String,Void,TwitterUtils.TWITTER_STATUS> {
         @Override
-        protected TWITTER_STATUS doInBackground(String... params) {
+        protected TwitterUtils.TWITTER_STATUS doInBackground(String... params) {
             try {
                 mTwitter.updateStatus(params[0]);
-                return TWITTER_STATUS.SUCCESS;
+                return TwitterUtils.TWITTER_STATUS.SUCCESS;
             } catch (TwitterException e) {
-                return TWITTER_STATUS.ERROR;
+                return TwitterUtils.TWITTER_STATUS.ERROR;
             }
         }
 
         @Override
-        protected void onPostExecute(TWITTER_STATUS twitter_status) {
+        protected void onPostExecute(TwitterUtils.TWITTER_STATUS twitter_status) {
 
             switch (twitter_status){
                 case SUCCESS:

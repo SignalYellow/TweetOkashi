@@ -28,7 +28,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
     private HaikuManager mHaikuManager;
 
     public TweetDataAdapter(Context context){
-        super(context, R.layout.list_item_tweet);
+        super(context, R.layout.item_tweet);
 
         TweetOkashiApplication application = (TweetOkashiApplication)context.getApplicationContext();
         mLoadBitmapManager = application.getLoadBitmapManger();
