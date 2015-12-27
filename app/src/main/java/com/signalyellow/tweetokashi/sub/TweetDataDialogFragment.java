@@ -3,6 +3,7 @@ package com.signalyellow.tweetokashi.sub;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -68,12 +69,6 @@ public class TweetDataDialogFragment extends DialogFragment {
         return inflater.inflate(R.layout.fragment_tweet_data_dialog, container, false);
     }*/
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -110,7 +105,10 @@ public class TweetDataDialogFragment extends DialogFragment {
                                 if(mData.getHaiku() != null) new TweetAsyncTask(twitter).execute(mData.getHaikuRetweetText());
                                 break;
                             case 3:
-                                Log.d(TAG,"詳細");
+                                Log.d(TAG, "詳細");
+                                Intent intent = new Intent(getActivity(),UserTimelineActivity.class);
+                                intent.putExtra("a",mData);
+                                startActivity(intent);
                                 break;
                             default:
                                 Log.e(TAG,"Error!");
@@ -141,7 +139,6 @@ public class TweetDataDialogFragment extends DialogFragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

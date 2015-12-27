@@ -16,15 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.UserData;
-import com.signalyellow.tweetokashi.sub.HomeTimelineFragment;
+import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
 import com.signalyellow.tweetokashi.activity.nav.NavigationItemAction;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.sub.TweetDataDialogFragment;
@@ -55,7 +53,6 @@ public class HomeTimelineActivity extends AppCompatActivity
         mTwitter = TwitterUtils.getTwitterInstance(this);
 
         if (findViewById(R.id.fragment_container) != null) {
-            Log.d(TAG, "container not null");
 
             HomeTimelineFragment fragment = new HomeTimelineFragment();
             getSupportFragmentManager().beginTransaction()
@@ -78,8 +75,6 @@ public class HomeTimelineActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -93,8 +88,6 @@ public class HomeTimelineActivity extends AppCompatActivity
 
     }
 
-
-// TODO: 15/12/19 mStream の停止処理
 
     class UserAsyncTask extends AsyncTask<Void, Void, User> {
         private ImageView mImageView;

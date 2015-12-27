@@ -6,6 +6,7 @@ import com.signalyellow.tweetokashi.activity.HomeTimelineActivity;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
 import com.signalyellow.tweetokashi.manager.LoadBitmapManager;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.Twitter;
 
@@ -26,6 +27,10 @@ public class TweetOkashiApplication extends Application{
         super.onCreate();
         mHaikuManger = new HaikuManager();
         mLoadBitmapManger = new LoadBitmapManager();
+    }
+
+    public Twitter getTwitterInstance(){
+        return TwitterUtils.getTwitterInstance(this);
     }
 
     public LoadBitmapManager getLoadBitmapManger() {

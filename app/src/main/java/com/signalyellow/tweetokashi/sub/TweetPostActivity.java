@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.signalyellow.tweetokashi.R;
+import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
 
 public class TweetPostActivity extends AppCompatActivity {
 
@@ -18,14 +19,14 @@ public class TweetPostActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        if (findViewById(R.id.fragment_container) != null) {
+            TweetFragment fragment = new TweetFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment).commit();
+
+        }
+
+
     }
 
 }

@@ -54,9 +54,7 @@
         <activity
             android:name=".activity.FavoriteListActivity"
             android:label="@string/title_activity_favorite_list" />
-        <activity
-            android:name=".sub.PraActivity"
-            android:label="@string/title_activity_pra"></activity>
+        <activity android:name=".sub.UserTimelineActivity" />
     </application>
 
 </manifest>

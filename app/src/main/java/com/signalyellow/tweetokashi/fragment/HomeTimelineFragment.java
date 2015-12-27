@@ -1,4 +1,4 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.fragment;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -18,15 +18,10 @@ import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
+import com.signalyellow.tweetokashi.sub.UiHandler;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
-import twitter4j.Paging;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterStream;
-import twitter4j.UserStreamAdapter;
+import twitter4j.*;
 
 
 public class HomeTimelineFragment extends Fragment
@@ -57,13 +52,14 @@ public class HomeTimelineFragment extends Fragment
         mStream.addListener(new MyUserStreamAdapter());
         mStream.user();
 
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_home_timeline, container, false);
-
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color, android.R.color.holo_orange_dark);
@@ -99,6 +95,7 @@ public class HomeTimelineFragment extends Fragment
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if(mStream != null) mStream.shutdown();
     }
 
 
@@ -169,10 +166,7 @@ public class HomeTimelineFragment extends Fragment
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         TweetData data = (TweetData)adapterView.getItemAtPosition(position);
-        //TweetDataDialogFragment.newInstance(data).show(getFragmentManager(), "dialog" + data.getTweetId());
-        Log.d(TAG, position + " " + data.getName());
         mListener.onTimelineItemClicked(data);
-
     }
 
     class MyUserStreamAdapter extends UserStreamAdapter {
@@ -193,7 +187,6 @@ public class HomeTimelineFragment extends Fragment
 
         }
     }
-
 
     public interface OnHomeTimelineFragmentListener {
         void onTimelineItemClicked(TweetData data);

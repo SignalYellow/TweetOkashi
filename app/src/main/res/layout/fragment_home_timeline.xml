@@ -2,6 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.signalyellow.tweetokashi.sub.HomeTimelineFragment">
+    tools:context=".fragment.HomeTimelineFragment">
     <include layout="@layout/content_timeline" />
 </FrameLayout>

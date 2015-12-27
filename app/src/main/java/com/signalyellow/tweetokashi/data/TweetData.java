@@ -10,7 +10,7 @@ import twitter4j.User;
 
 public class TweetData implements Serializable{
 
-    private static final String HAIKU_TAG = " @tweetokashi #ついいとおかし ";
+    public static final String HAIKU_TAG = " @tweetokashi #ついいとおかし ";
 
     //basic
     private String name;
@@ -21,6 +21,8 @@ public class TweetData implements Serializable{
     private Date date;
 
     private Status status;
+    public UserData userData;
+
 
     //favorite
     private boolean isFavoritedByMe;
@@ -73,18 +75,18 @@ public class TweetData implements Serializable{
         this.urlEntities = status.getURLEntities();
         this.quotedStatusId = status.getQuotedStatusId();
 
-
-        this.text =  trimText(status.getText(),this.urlEntities,this.quotedStatusId);
+        this.text =  trimText(status.getText(), this.urlEntities, this.quotedStatusId);
 
         this.quotedTweetData = status.getQuotedStatus() == null && !isQuoted  ? null : new TweetData(status.getQuotedStatus()).setIsQuoted(true);
 
+        this.userData = new UserData(status.getUser());
     }
 
     private String trimText(String text, URLEntity[] entities, Long quotedId){
         if(quotedId == null || quotedId <= 0) return text;
 
         if(text.contains(HAIKU_TAG)){
-            this.text = text.replace(HAIKU_TAG,"");
+            text = text.replace(HAIKU_TAG,"");
             this.isHaikuRetweet = true;
         }
 
@@ -93,7 +95,6 @@ public class TweetData implements Serializable{
                 return text.replace(entity.getURL(),"");
             }
         }
-
         return text;
     }
 
