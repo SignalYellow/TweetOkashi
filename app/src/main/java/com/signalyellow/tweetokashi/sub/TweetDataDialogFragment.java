@@ -102,7 +102,7 @@ public class TweetDataDialogFragment extends DialogFragment {
                                 break;
                             case 2:
                                 Log.d(TAG,"俳句リツイート");
-                                if(mData.getHaiku() != null) new TweetAsyncTask(twitter).execute(mData.getHaikuRetweetText());
+                                if(mData.getHaiku() != null) new TweetAsyncTask(twitter,mData.getHaikuRetweetText()).execute();
                                 break;
                             case 3:
                                 Log.d(TAG, "詳細");

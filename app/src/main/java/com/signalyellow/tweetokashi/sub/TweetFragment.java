@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -19,36 +18,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.async.TweetAsyncTask;
 import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.view.DeletableImageView;
 
-import org.w3c.dom.Text;
 
 import java.io.File;
-import java.net.URI;
-import java.util.concurrent.locks.AbstractOwnableSynchronizer;
+import java.util.ArrayList;
+import java.util.List;
 
 import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 
-public class TweetFragment extends Fragment {
+public class TweetFragment extends Fragment implements DeletableImageView.OnViewDeleteListener{
 
     private static final String TAG = "TweetFragment";
 
     static final int SELECT_PIC = 1;
-    private File pic;
-
 
     FloatingActionButton tweetButton;
     FloatingActionButton imageButton;
-    ImageView imageView;
+
     EditText tweetEditText;
     TextView countTextView;
+    LinearLayout parentLayout;
+
+    List<String> imgStringList = new ArrayList<>();
 
     TweetOkashiApplication mApp;
 
@@ -70,9 +70,9 @@ public class TweetFragment extends Fragment {
         tweetButton = (FloatingActionButton)view.findViewById(R.id.tweet_button);
         imageButton = (FloatingActionButton)view.findViewById(R.id.img_add_button);
         tweetEditText = (EditText)view.findViewById(R.id.tweet_edit_text);
-        imageView = (ImageView)view.findViewById(R.id.image);
         countTextView = (TextView)view.findViewById(R.id.count_text);
         tweetEditText.addTextChangedListener(new TextCountWatcher(countTextView));
+        parentLayout = (LinearLayout)view.findViewById(R.id.parent_layout);
 
         tweetButton.setOnClickListener(new OnTweetButtonClickListener());
         imageButton.setOnClickListener(new OnImageAddButtonClickListener());
@@ -84,17 +84,31 @@ public class TweetFragment extends Fragment {
     private class OnTweetButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            Log.d(TAG,"tweetButton");
             String text = tweetEditText.getText().toString();
-            new TweetAsyncTask(mApp.getTwitterInstance()).execute(text);
+
+            if(text.length() > 140){
+                Toast.makeText(getActivity(),"文字数オーバー(140字までです)",Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(text.length() <= 0){
+                Toast.makeText(getActivity(),"文字を入力してください",Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            TweetAsyncTask tweetAsyncTask = new TweetAsyncTask(mApp.getTwitterInstance(), text);
+
+            if(imgStringList.size() == 0) {
+                tweetAsyncTask.execute();
+            }else{
+                tweetAsyncTask.execute((String[])imgStringList.toArray(new String[0]));
+            }
         }
     }
 
     private class OnImageAddButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            Log.d(TAG,"image button");
-            startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI),SELECT_PIC);
+            startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), SELECT_PIC);
         }
     }
 
@@ -134,48 +148,23 @@ public class TweetFragment extends Fragment {
                 Cursor cursor = resolver.query(uri,columns,null,null,null);
                 if(cursor == null) return;
                 cursor.moveToFirst();
-                pic = new File(cursor.getString(0));
+
+                DeletableImageView imageView = new DeletableImageView(getActivity());
                 imageView.setImageURI(uri);
+                imageView.setOnViewDeleteListener(this);
+
+                String path = cursor.getString(0);
+                imgStringList.add(path);
+                imageView.setTag(path);
+                parentLayout.addView(imageView);
                 cursor.close();
             }
         }
     }
 
-
-    private class SelfQuoteTweetAsyncTask extends AsyncTask<String,Void, Status>{
-
-        Twitter mTwitter;
-
-        public SelfQuoteTweetAsyncTask(Twitter twitter) {
-            mTwitter = twitter;
-        }
-
-        @Override
-        protected twitter4j.Status doInBackground(String... params) {
-            if(params.length != 2) return null;
-
-            String text = params[0];
-            String haiku = params[1];
-
-            try{
-                twitter4j.Status status = mTwitter.updateStatus(text);
-                String quote = " https://twitter.com/" + status.getUser().getScreenName() +"/status/" + status.getId();
-                return mTwitter.updateStatus(haiku + TweetData.HAIKU_TAG + quote);
-            }catch (TwitterException e){
-                Log.e(TAG,e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(twitter4j.Status status) {
-            super.onPostExecute(status);
-            if(status == null){
-                Log.e(TAG,"error post execute");
-                return;
-            }
-            Log.d(TAG,"success");
-        }
+    @Override
+    public void OnDelete(View v) {
+        parentLayout.removeView(v);
     }
 
     @Override
