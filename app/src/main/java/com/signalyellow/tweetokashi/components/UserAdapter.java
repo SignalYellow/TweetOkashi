@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 
-import twitter4j.Status;
 import twitter4j.User;
 
 /**
@@ -48,7 +47,7 @@ public class UserAdapter extends ArrayAdapter<HaikuUserStatus>{
         SmartImageView icon = (SmartImageView)convertView.findViewById(R.id.icon);
         icon.setImageUrl(user.getProfileImageURL());
 
-        TextView haikuText = (TextView)convertView.findViewById(R.id.haikutext);
+        TextView haikuText = (TextView)convertView.findViewById(R.id.haiku_text);
         haikuText.setText(status.getHaikuText());
 
         return convertView;

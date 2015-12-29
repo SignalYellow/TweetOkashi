@@ -1,4 +1,4 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.fragment;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -89,8 +89,8 @@ public class UserTimelineFragment extends Fragment
         if (context instanceof OnUserTimelineFragmentListener) {
             mListener = (OnUserTimelineFragmentListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            /*throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");*/
         }
     }
 

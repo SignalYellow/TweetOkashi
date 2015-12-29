@@ -1,18 +1,15 @@
 package com.signalyellow.tweetokashi.activity;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.signalyellow.tweetokashi.R;
-import com.signalyellow.tweetokashi.components.SettingUtils;
+import com.signalyellow.tweetokashi.data.SettingUtils;
 
 public class SettingActivity extends Activity {
     static final String TAG = "SettingActivity";

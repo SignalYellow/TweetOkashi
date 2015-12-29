@@ -65,7 +65,7 @@
             android:textColor="@color/text_date_color"/>
 
         <TextView
-            android:id="@+id/haikutext"
+            android:id="@+id/haiku_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/datetime"

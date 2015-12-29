@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,16 +18,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.UserData;
+import com.signalyellow.tweetokashi.fragment.FollowUserFragment;
+import com.signalyellow.tweetokashi.fragment.FollowerFragment;
 import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
 import com.signalyellow.tweetokashi.activity.nav.NavigationItemAction;
 import com.signalyellow.tweetokashi.data.TweetData;
-import com.signalyellow.tweetokashi.sub.TweetDataDialogFragment;
-import com.signalyellow.tweetokashi.sub.TweetPostActivity;
+import com.signalyellow.tweetokashi.fragment.TweetDataDialogFragment;
+import com.signalyellow.tweetokashi.fragment.UserTimelineFragment;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.*;
@@ -38,6 +42,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
     private Twitter mTwitter;
     private TweetOkashiApplication mApp;
+    private View mHeaderView;
 
 
     @Override
@@ -65,7 +70,13 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), TweetPostActivity.class);
-                startActivity(intent);
+
+                FollowUserFragment fragment = new FollowUserFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                //startActivity(intent);
             }
         });
 
@@ -78,27 +89,81 @@ public class HomeTimelineActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        {
-            ImageView imageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_image);
-            TextView textView1 = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_main_text);
-            TextView textView2 = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_sub_text);
+        mHeaderView = navigationView.getHeaderView(0);
+        new UserAsyncTask(getApplicationContext()).execute();
 
-            new UserAsyncTask(imageView, textView1, textView2, getApplicationContext()).execute();
-        }
 
+    }
+
+    private void setNavigationHeader(View headerView){
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,"a");
+
+            }
+        });
+
+        ImageView imageView = (ImageView)headerView.findViewById(R.id.nav_image);
+        TextView textViewName = (TextView)headerView.findViewById(R.id.nav_text_name);
+        TextView textViewScreenName = (TextView)headerView.findViewById(R.id.nav_text_screen_name);
+
+        RelativeLayout tweetCountLayout = (RelativeLayout)headerView.findViewById(R.id.nav_tweet_count_layout_group);
+        RelativeLayout followCountLayout = (RelativeLayout)headerView.findViewById(R.id.nav_follow_layout_group);
+        RelativeLayout followerCountLayout = (RelativeLayout)headerView.findViewById(R.id.nav_follower_layout_group);
+
+        tweetCountLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,"tweet layout");
+
+                UserTimelineFragment fragment = UserTimelineFragment.newInstance(mApp.getUserData());
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+            }
+        });
+
+        followCountLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,"follow");
+                FollowUserFragment fragment = new FollowUserFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        followerCountLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,"follower");
+                FollowerFragment fragment = new FollowerFragment();
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        UserData user = mApp.getUserData();
+        textViewName.setText(user.getUserName());
+        textViewScreenName.setText(user.getScreenName());
+        imageView.setTag(user.getProfileImageURL());
+        mApp.getLoadBitmapManger().downloadBitmap(imageView, user.getProfileImageURL());
     }
 
 
     class UserAsyncTask extends AsyncTask<Void, Void, User> {
-        private ImageView mImageView;
-        private TextView mMainTextView;
-        private TextView mSubTextView;
+
         private TweetOkashiApplication mApp;
 
-        public UserAsyncTask(ImageView imageView, TextView mainTextView, TextView subTextView, Context context) {
-            mImageView = imageView;
-            mMainTextView = mainTextView;
-            mSubTextView = subTextView;
+        public UserAsyncTask(Context context) {
             mApp = (TweetOkashiApplication) context;
         }
 
@@ -116,36 +181,19 @@ public class HomeTimelineActivity extends AppCompatActivity
             if (user == null) {
                 return;
             }
-
             mApp.setUserData(new UserData(user));
-
-            mMainTextView.setText(user.getName());
-            mSubTextView.setText("@" + user.getScreenName());
-            Log.d(TAG, user.getProfileBackgroundColor() + " " + user.getProfileSidebarFillColor() + " " + user.getProfileTextColor());
-
-            mImageView.setTag(user.getProfileImageURL());
-            mApp.getLoadBitmapManger().downloadBitmap(mImageView, user.getProfileImageURL());
+            setNavigationHeader(mHeaderView);
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-
-    @Override
     public void onTimelineItemClicked(TweetData data) {
-        Log.d(TAG, data.getName());
         TweetDataDialogFragment.newInstance(data).show(getFragmentManager(), "dialog" + data.getTweetId());
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            return true;
-        }
         return super.onKeyDown(keyCode, event);
     }
 

@@ -22,7 +22,6 @@ import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.activity.nav.NavigationItemAction;
-import com.signalyellow.tweetokashi.sub.TweetPostActivity;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.Paging;

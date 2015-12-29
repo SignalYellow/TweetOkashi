@@ -1,9 +1,10 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.fragment;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.async.TweetAsyncTask;
+import com.signalyellow.tweetokashi.data.SettingUtils;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.view.DeletableImageView;
 
@@ -86,6 +88,10 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
         public void onClick(View v) {
             String text = tweetEditText.getText().toString();
 
+            if(imgStringList.size() > 4){
+                Toast.makeText(getActivity(),"写真は4枚までです",Toast.LENGTH_LONG).show();
+            }
+
             if(text.length() > 140){
                 Toast.makeText(getActivity(),"文字数オーバー(140字までです)",Toast.LENGTH_LONG).show();
                 return;
@@ -108,7 +114,9 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
     private class OnImageAddButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
+
             startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), SELECT_PIC);
+
         }
     }
 
@@ -164,6 +172,8 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
 
     @Override
     public void OnDelete(View v) {
+        String tag = (String)v.getTag();
+        imgStringList.remove(tag);
         parentLayout.removeView(v);
     }
 

@@ -1,4 +1,4 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.activity;
 
 
 import android.annotation.TargetApi;

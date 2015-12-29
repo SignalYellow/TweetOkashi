@@ -1,8 +1,6 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,25 +9,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
+import com.signalyellow.tweetokashi.activity.TweetPostActivity;
 import com.signalyellow.tweetokashi.activity.nav.NavigationItemAction;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.TweetData;
-import com.signalyellow.tweetokashi.data.UserData;
-import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
+import com.signalyellow.tweetokashi.fragment.UserTimelineFragment;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.User;
 
 /**
  * Created by shohei on 15/12/27.

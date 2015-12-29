@@ -1,14 +1,11 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.signalyellow.tweetokashi.R;
-import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
+import com.signalyellow.tweetokashi.fragment.TweetFragment;
 
 public class TweetPostActivity extends AppCompatActivity {
 

@@ -57,7 +57,7 @@ public class ReplyActivity extends Activity {
 
     private void prepareForReply(SimpleTweetData data) {
 
-        TextView haikuTextView = (TextView)findViewById(R.id.haikutext);
+        TextView haikuTextView = (TextView)findViewById(R.id.haiku_text);
         haikuTextView.setText(data.getHaiku());
         TextView originalText = (TextView)findViewById(R.id.text);
         originalText.setText(data.getText());

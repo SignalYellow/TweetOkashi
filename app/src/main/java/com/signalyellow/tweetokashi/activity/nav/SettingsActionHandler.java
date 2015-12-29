@@ -3,7 +3,7 @@ package com.signalyellow.tweetokashi.activity.nav;
 import android.content.Context;
 import android.content.Intent;
 
-import com.signalyellow.tweetokashi.sub.SettingsActivity;
+import com.signalyellow.tweetokashi.activity.SettingsActivity;
 
 /**
  * Created by shohei on 15/12/19.

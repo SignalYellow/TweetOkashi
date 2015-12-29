@@ -1,4 +1,4 @@
-package com.signalyellow.tweetokashi.sub;
+package com.signalyellow.tweetokashi.fragment;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,11 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.signalyellow.tweetokashi.activity.FavoriteListActivity;
 import com.signalyellow.tweetokashi.async.FavoriteAsyncTask;
 import com.signalyellow.tweetokashi.async.RetweetAsyncTask;
 import com.signalyellow.tweetokashi.async.TweetAsyncTask;
 import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.activity.UserTimelineActivity;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.Twitter;

@@ -21,7 +21,6 @@ public class MainActivity extends Activity {
             startActivity(intent);
             finish();
         }else{
-
             startActivity(new Intent(this, HomeTimelineActivity.class));
             finish();
         }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -21,7 +20,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
-import com.signalyellow.tweetokashi.sub.TweetPostActivity;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.TweetDataAdapter;

@@ -13,14 +13,16 @@ public class UserData implements Serializable {
     private long userId;
     private String userName;
     private String screenName;
-    private String profileURL;
+    private String profileImageURL;
     private Bitmap bitmap;
+    private String description;
 
     public UserData(User user) {
         this.userId = user.getId();
         this.userName = user.getName();
         this.screenName = user.getScreenName();
-        this.profileURL = user.getProfileImageURL();
+        this.profileImageURL = user.getProfileImageURL();
+        this.description = user.getDescription();
     }
 
     public long getUserId() {
@@ -33,6 +35,14 @@ public class UserData implements Serializable {
 
     public String getScreenName() {
         return screenName;
+    }
+
+    public String getProfileImageURL() {
+        return profileImageURL;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Bitmap getBitmap() {

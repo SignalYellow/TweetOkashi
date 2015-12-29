@@ -160,7 +160,7 @@
 
 
     <TextView
-        android:id="@+id/haikutext"
+        android:id="@+id/haiku_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/top_layout"
@@ -177,7 +177,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/haikutext">
+        android:layout_below="@id/haiku_text">
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="0dp"

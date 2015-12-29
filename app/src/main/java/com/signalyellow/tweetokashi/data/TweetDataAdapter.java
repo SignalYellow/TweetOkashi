@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
@@ -40,17 +41,18 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
 
         final TweetData data = getItem(position);
 
-        ListItemViewHolder viewHolder;
+        TweetDataViewHolder viewHolder;
 
         if(view == null){
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.item_tweet,null);
-            viewHolder = new ListItemViewHolder();
+            RelativeLayout root = new RelativeLayout(getContext());
+            view = inflater.inflate(R.layout.item_tweet,root);
+            viewHolder = new TweetDataViewHolder();
 
             viewHolder.textUserName = (TextView)view.findViewById(R.id.name);
             viewHolder.textScreenName = (TextView)view.findViewById(R.id.screen_name);
             viewHolder.textContent = (TextView)view.findViewById(R.id.text);
-            viewHolder.textHaiku = (TextView)view.findViewById(R.id.haikutext);
+            viewHolder.textHaiku = (TextView)view.findViewById(R.id.haiku_text);
             viewHolder.imageThumbnail = (ImageView)view.findViewById(R.id.icon);
             viewHolder.textDate = (TextView)view.findViewById(R.id.datetime);
             viewHolder.setQuotedTweetView((ViewGroup) view.findViewById(R.id.quoted_tweet_layout));
@@ -62,7 +64,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
 
             view.setTag(viewHolder);
         }else{
-            viewHolder = (ListItemViewHolder)view.getTag();
+            viewHolder = (TweetDataViewHolder)view.getTag();
         }
 
         viewHolder.textScreenName.setText("@" + data.getScreenName());
@@ -84,7 +86,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         return view;
     }
 
-    private void setQuotedTweetData(TweetData data, ListItemViewHolder holder){
+    private void setQuotedTweetData(TweetData data, TweetDataViewHolder holder){
 
         TweetData q = data.getQuotedTweetData();
         if(q == null){
@@ -98,7 +100,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         }
     }
 
-    private void setRetweetedByText(TweetData data, ListItemViewHolder holder){
+    private void setRetweetedByText(TweetData data, TweetDataViewHolder holder){
 
         if(data.isRetweeted()){
             holder.RTbyTextGroup.setVisibility(View.VISIBLE);
@@ -109,7 +111,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
 
     }
 
-    private void setRetweetedCount(TweetData data, ListItemViewHolder holder){
+    private void setRetweetedCount(TweetData data, TweetDataViewHolder holder){
         int count = data.getRetweetedCount();
 
         if(count > 0) {
@@ -128,7 +130,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         holder.RTViewGroup.setVisibility(View.GONE);
     }
 
-    private void setFavoritedCount(TweetData data, ListItemViewHolder holder){
+    private void setFavoritedCount(TweetData data, TweetDataViewHolder holder){
         int count = data.getFavoriteCount();
 
         if( count > 0 ){
@@ -147,7 +149,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         holder.FAVViewGroup.setVisibility(View.GONE);
     }
 
-    private void setPictures(TweetData data, ListItemViewHolder holder){
+    private void setPictures(TweetData data, TweetDataViewHolder holder){
         if(data.getMediaURLs() == null || data.getMediaURLs().length == 0){
             holder.imageView.setVisibility(View.GONE);
             return;
@@ -161,7 +163,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         mLoadBitmapManager.downloadBitmap(holder.imageView, entity.getMediaURL());
     }
 
-    private void setHaiku(TweetData data, ListItemViewHolder holder){
+    private void setHaiku(TweetData data, TweetDataViewHolder holder){
 
         if(data.isHaikuRetweet()){
             holder.textHaiku.setVisibility(View.GONE);
