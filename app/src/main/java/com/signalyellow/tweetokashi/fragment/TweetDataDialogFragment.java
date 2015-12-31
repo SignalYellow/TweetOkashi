@@ -4,51 +4,61 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Debug;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.async.FavoriteAsyncTask;
 import com.signalyellow.tweetokashi.async.RetweetAsyncTask;
 import com.signalyellow.tweetokashi.async.TweetAsyncTask;
+import com.signalyellow.tweetokashi.data.DialogItem;
+import com.signalyellow.tweetokashi.data.DialogItemAdapter;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.activity.UserTimelineActivity;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import twitter4j.Twitter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TweetDataDialogFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TweetDataDialogFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class TweetDataDialogFragment extends DialogFragment {
 
-    private static final String TAG = "TweetDialog";
-    private static final String ARG_TWEET_DATA = "tweetData1";
+    private static final String TAG = "TweetDataDialogFragment";
+    private static final String ARG_TWEET_DATA = "tweetData";
 
     private TweetData mData;
-    private OnFragmentInteractionListener mListener;
+    private TweetOkashiApplication mApp;
+    private DialogItemAdapter mAdapter;
+
+    private DIALOG_STATUS[] statuses_list;
+
+    enum DIALOG_STATUS{
+        REPLY,
+        RETWEET,
+        UNRETWEET,
+        HAIKU_RETWEET,
+        FAVORITE,
+        UNFAVORITE,
+        DELETE,
+
+
+    }
 
     public TweetDataDialogFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @param data TweetData
-     * @return A new instance of fragment TweetDataDialogFragment.
-     */
     public static TweetDataDialogFragment newInstance(TweetData data) {
         TweetDataDialogFragment fragment = new TweetDataDialogFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_TWEET_DATA,data);
+        args.putSerializable(ARG_TWEET_DATA, data);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,16 +69,8 @@ public class TweetDataDialogFragment extends DialogFragment {
         if (getArguments() != null) {
             mData = (TweetData)getArguments().getSerializable(ARG_TWEET_DATA);
         }
+        mApp = (TweetOkashiApplication)getActivity().getApplicationContext();
     }
-
-    /*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tweet_data_dialog, container, false);
-    }*/
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -82,63 +84,61 @@ public class TweetDataDialogFragment extends DialogFragment {
         }
 
         final Twitter twitter = TwitterUtils.getTwitterInstance(getActivity());
-        return new AlertDialog.Builder(getActivity())
-                .setTitle(mData.getName())
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        switch (i){
-                            case 0:
-                                Log.d(TAG,"リツイート");
-                                new RetweetAsyncTask(twitter,
-                                        mData,
-                                        mData.isRetweetedByMe() ? RetweetAsyncTask.RETWEET_STATUS.DELETE : RetweetAsyncTask.RETWEET_STATUS.RETWEET).execute();
-                                break;
-                            case 1:
-                                Log.d(TAG,"いいね");
-                                new FavoriteAsyncTask(TwitterUtils.getTwitterInstance(getActivity()),
-                                        mData,
-                                        mData.isFavoritedByMe() ? FavoriteAsyncTask.FAVORITE_STATUS.DELETE : FavoriteAsyncTask.FAVORITE_STATUS.FAVORITE).execute();
-                                break;
-                            case 2:
-                                Log.d(TAG,"俳句リツイート");
-                                if(mData.getHaiku() != null) new TweetAsyncTask(twitter,mData.getHaikuRetweetText()).execute();
-                                break;
-                            case 3:
-                                Log.d(TAG, "詳細");
-                                Intent intent = new Intent(getActivity(),UserTimelineActivity.class);
-                                intent.putExtra("a",mData);
-                                startActivity(intent);
-                                break;
-                            default:
-                                Log.e(TAG,"Error!");
-                                break;
-                        }
-                    }
-                })
-                .create();
+
+        AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity());
+                builder
+                .setTitle(mData.getName());
+        ListView listView = new ListView(getActivity().getApplicationContext());
+
+        mAdapter = new DialogItemAdapter(getActivity().getApplicationContext());
+
+
+        setDataToAdapter(mAdapter);
+
+        listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DialogItem item = (DialogItem) parent.getItemAtPosition(position);
+                Log.d(TAG, position + item.getText());
+
+            }
+        });
+
+
+        builder.setView(listView);
+
+
+        return  builder.create();
     }
 
-    /*
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+    private void setDataToAdapter(DialogItemAdapter adapter){
+
+
+        if(mData.getRawUserId() == mApp.getUserData().getUserId()){
+            // my tweet
+            adapter.add(new DialogItem(DialogItem.STATUS.DELETE));
+
+        }else{
+            // not my tweet
+            if(mData.isRetweetedByMe()){
+                adapter.add(new DialogItem(DialogItem.STATUS.UNRETWEET));
+            }else {
+                adapter.add(new DialogItem(DialogItem.STATUS.RETWEET));
+            }
         }
-    }
-    */
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+        if(mData.isFavoritedByMe()){
+            adapter.add(new DialogItem(DialogItem.STATUS.UNFAV));
+        }else {
+            adapter.add(new DialogItem(DialogItem.STATUS.FAV));
+        }
+        adapter.add(new DialogItem(DialogItem.STATUS.REPLY));
+        adapter.add(new DialogItem(DialogItem.STATUS.DETAIL));
+
+
+
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
+
 }

@@ -71,6 +71,8 @@ public class FavoriteListActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
         ListView listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(mAdapter = new TweetDataAdapter(this));
         listView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this));
@@ -101,6 +103,7 @@ public class FavoriteListActivity extends AppCompatActivity
 
     @Override
     public void onRefresh() {
+        mIsScrollable = true;
         new FavoriteListAsyncTask().execute();
     }
 
@@ -132,7 +135,7 @@ public class FavoriteListActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
-            Log.d(TAG,"debug");
+
             if(statuses != null){
                 if(statuses.size() == 0) mIsScrollable = false;
                 if(mPaging == null ) mAdapter.clear();

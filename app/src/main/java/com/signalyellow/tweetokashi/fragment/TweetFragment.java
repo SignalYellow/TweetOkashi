@@ -62,6 +62,7 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApp = (TweetOkashiApplication)getActivity().getApplicationContext();
+        Log.d(TAG,"onCreate");
     }
 
     @Override
@@ -86,6 +87,7 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
     private class OnTweetButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
+            Log.d(TAG,"onClick");
             String text = tweetEditText.getText().toString();
 
             if(imgStringList.size() > 4){

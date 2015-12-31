@@ -3,7 +3,7 @@
     package="com.signalyellow.tweetokashi">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.TweetOkashiApplication"
@@ -32,6 +32,7 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -55,6 +56,9 @@
             android:name=".activity.FavoriteListActivity"
             android:label="@string/title_activity_favorite_list" />
         <activity android:name=".activity.UserTimelineActivity" />
+        <activity
+            android:name=".sub.MainActivity"
+            android:label="@string/title_activity_main"></activity>
     </application>
 
 </manifest>

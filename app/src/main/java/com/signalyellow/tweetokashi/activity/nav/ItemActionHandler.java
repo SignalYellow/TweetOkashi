@@ -1,5 +1,6 @@
 package com.signalyellow.tweetokashi.activity.nav;
 
+import android.app.Activity;
 import android.content.Context;
 
 /**

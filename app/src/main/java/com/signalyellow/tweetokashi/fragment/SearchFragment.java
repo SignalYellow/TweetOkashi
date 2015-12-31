@@ -1,6 +1,7 @@
 package com.signalyellow.tweetokashi.fragment;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
@@ -19,16 +21,22 @@ import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.fragment.listener.OnTimelineFragmentListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
-import com.signalyellow.tweetokashi.sub.UiHandler;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
-import twitter4j.*;
+import twitter4j.Paging;
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterStream;
 
 
-public class HomeTimelineFragment extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable, AdapterView.OnItemClickListener{
+public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable, AdapterView.OnItemClickListener {
 
-    private static final String TAG = "HomeTimelineFragment";
+    private static final String TAG = "SearchFragment";
+    private static final String ARG_QUERY = "Query";
+    private String mQuery;
+
 
     private Twitter mTwitter;
     private TweetDataAdapter mAdapter;
@@ -40,20 +48,27 @@ public class HomeTimelineFragment extends Fragment
 
     private OnTimelineFragmentListener mListener;
 
-    public HomeTimelineFragment() {
+    public SearchFragment() {
         // Required empty public constructor
+    }
+
+    public static SearchFragment newInstance(String searchQuery) {
+        SearchFragment fragment = new SearchFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_QUERY,searchQuery);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mQuery = getArguments().getString(ARG_QUERY);
+        }
 
         mApp= (TweetOkashiApplication)getActivity().getApplicationContext();
-        mTwitter = TwitterUtils.getTwitterInstance(getActivity());
-
-        mStream = TwitterUtils.getTwitterStreamInstance(getActivity());
-        mStream.addListener(new MyUserStreamAdapter());
-        mStream.user();
+        mTwitter = mApp.getTwitterInstance();
     }
 
     @Override
@@ -74,75 +89,32 @@ public class HomeTimelineFragment extends Fragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        new SearchAsyncTask(mQuery).execute();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnTimelineFragmentListener) {
             mListener = (OnTimelineFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnHomeTimelineFragmentListener");
+                    + " must implement OnTimelineFragmentListener");
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        new TimelineAsyncTask().execute();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if(mStream != null) mStream.shutdown();
     }
 
     @Override
     public void onRefresh() {
         mIsScrollable = true;
-        new TimelineAsyncTask().execute();
-    }
-
-    private class TimelineAsyncTask extends AsyncTask<Void,Void,ResponseList<Status>> {
-
-        Paging mPaging;
-
-        public TimelineAsyncTask(){
-            mPaging = null;
-        }
-
-        public TimelineAsyncTask(Paging paging) {
-            mPaging = paging;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            setRefreshing(true);
-        }
-
-        @Override
-        protected ResponseList<twitter4j.Status> doInBackground(Void... voids) {
-            try {
-                return mPaging == null ? mTwitter.getHomeTimeline() : mTwitter.getHomeTimeline(mPaging);
-            } catch (TwitterException e) {
-                Log.e(TAG, e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
-
-            if(statuses != null){
-                if(statuses.size() == 0) mIsScrollable = false;
-                if(mPaging == null) mAdapter.clear();
-
-                for(twitter4j.Status s : statuses){
-                    mAdapter.add(new TweetData(s));
-                }
-            }
-            setRefreshing(false);
-        }
+        new SearchAsyncTask(mQuery).execute();
     }
 
     @Override
@@ -157,37 +129,65 @@ public class HomeTimelineFragment extends Fragment
     }
 
     @Override
-    public void scrolled() {
-        if(!mIsScrollable) return;
-
-        Paging paging = new Paging();
-        TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
-        paging.setMaxId(lastData.getTweetId() -1);
-        new TimelineAsyncTask(paging).execute();
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         TweetData data = (TweetData)adapterView.getItemAtPosition(position);
         mListener.onTimelineItemClicked(data);
     }
 
-    class MyUserStreamAdapter extends UserStreamAdapter {
-        @Override
-        public void onStatus(final Status status) {
-            super.onStatus(status);
-            Log.d(TAG, status.getUser().getName() + " " + status.getText());
-            if(status.getRetweetedStatus() != null  && mApp.getUserData() != null
-                    && mApp.getUserData().getUserId() == status.getUser().getId()){
-                return;
-            }
-            new UiHandler(){
-                @Override
-                public void run() {
-                    mAdapter.insert(new TweetData(status), 0);
-                }
-            }.post();
+    @Override
+    public void scrolled() {
+        if(!mIsScrollable) return;
 
+        TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
+        long maxId = lastData.getTweetId() - 1;
+        new SearchAsyncTask(mQuery,maxId).execute();
+    }
+
+
+    private class SearchAsyncTask extends AsyncTask<Void,Void,QueryResult> {
+
+        Long mMaxId;
+        Query mQuery;
+
+        public SearchAsyncTask(String query){
+            mMaxId = null;
+            mQuery = new Query(query);
+        }
+
+        public SearchAsyncTask(String query, Long maxId) {
+            mMaxId = maxId;
+            mQuery = new Query(query);
+            mQuery.setMaxId(maxId);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            setRefreshing(true);
+        }
+
+        @Override
+        protected QueryResult doInBackground(Void... voids) {
+
+            try {
+                return mMaxId == null ? mTwitter.search(mQuery) : mTwitter.search(mQuery);
+            } catch (TwitterException e) {
+                Log.e(TAG, e.toString());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(QueryResult result) {
+
+            if(result != null){
+                if(result.getTweets().size() <= 0) mIsScrollable = false;
+                if(mMaxId == null) mAdapter.clear();
+
+                for(twitter4j.Status s : result.getTweets()){
+                    mAdapter.add(new TweetData(s));
+                }
+                setRefreshing(false);
+            }
         }
     }
 

@@ -46,7 +46,8 @@
                 android:id="@+id/icon"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_launcher"
+                android:contentDescription="icon"/>
 
             <LinearLayout
                 android:id="@+id/RTGroup"

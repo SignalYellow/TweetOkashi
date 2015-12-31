@@ -297,6 +297,7 @@
     <string name="title_activity_favorite_list">FavoriteListActivity</string>
     <string name="title_activity_base_list">BaseListActivity</string>
     <string name="title_activity_pra">PraActivity</string>
+    <string name="title_activity_main">MainActivity</string>
 
 
 </resources>

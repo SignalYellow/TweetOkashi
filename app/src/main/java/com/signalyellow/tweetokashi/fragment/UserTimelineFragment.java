@@ -63,7 +63,7 @@ public class UserTimelineFragment extends Fragment
             mUserData = (UserData)getArguments().getSerializable(ARG_USER_DATA);
         }
         mApp= (TweetOkashiApplication)getActivity().getApplicationContext();
-        mTwitter = TwitterUtils.getTwitterInstance(getActivity());
+        mTwitter = mApp.getTwitterInstance();
     }
 
     @Override
@@ -132,6 +132,7 @@ public class UserTimelineFragment extends Fragment
         protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
             super.onPostExecute(statuses);
             if(statuses != null){
+                if(statuses.size() == 0) mIsRefreshing = false;
                 if(mPaging == null) mAdapter.clear();
                 for(twitter4j.Status s : statuses){
                     mAdapter.add(new TweetData(s));
@@ -150,7 +151,6 @@ public class UserTimelineFragment extends Fragment
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TweetData data = (TweetData)parent.getItemAtPosition(position);
-        mListener.onUserTimelineItemClicked(data);
     }
 
     @Override

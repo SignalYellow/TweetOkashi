@@ -23,6 +23,8 @@ public class TweetData implements Serializable{
     private Status status;
     public UserData userData;
 
+    private long rawUserId;
+
 
     //favorite
     private boolean isFavoritedByMe;
@@ -53,6 +55,7 @@ public class TweetData implements Serializable{
 
         this.status = status;
         this.retweetId = status.getCurrentUserRetweetId();
+        this.rawUserId = status.getUser().getId();
 
         if(status.getRetweetedStatus() != null){
             this.retweetId = status.getId();
@@ -74,6 +77,7 @@ public class TweetData implements Serializable{
         this.mediaURLs = status.getMediaEntities();
         this.urlEntities = status.getURLEntities();
         this.quotedStatusId = status.getQuotedStatusId();
+
 
         this.text =  trimText(status.getText(), this.urlEntities, this.quotedStatusId);
 
@@ -161,6 +165,10 @@ public class TweetData implements Serializable{
 
     public boolean isHaikuRetweet() {
         return isHaikuRetweet;
+    }
+
+    public long getRawUserId() {
+        return rawUserId;
     }
 
     public void successFavorite(){

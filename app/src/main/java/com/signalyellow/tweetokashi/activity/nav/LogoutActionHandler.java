@@ -1,5 +1,6 @@
 package com.signalyellow.tweetokashi.activity.nav;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +13,7 @@ import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 class LogoutActionHandler implements ItemActionHandler<Void> {
     @Override
-    public boolean handle(Context context,Void entity ) {
+    public boolean handle(Context context, Void entity ) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("確認　--　ログアウト")
                 .setCancelable(true)

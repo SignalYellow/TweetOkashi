@@ -2,6 +2,7 @@ package com.signalyellow.tweetokashi.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 
@@ -15,6 +16,8 @@ public class SettingUtils {
     public static boolean shouldAskPermission(){
         return(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
+
+
 
     public static void storeHaikuCreationBool(Context context, boolean possibility){
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
