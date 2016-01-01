@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SearchView;
@@ -43,6 +44,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
     private static final String TAG = "HomeTimeline";
     private TweetOkashiApplication mApp;
+    private SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +58,10 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         if (findViewById(R.id.fragment_container) != null) {
             HomeTimelineFragment fragment = new HomeTimelineFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, fragment, HomeTimelineFragment.class.getSimpleName())
+                    .commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -77,7 +81,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 TweetFragment fragment = new TweetFragment();
-                replaceFragment(fragment);
+                replaceFragment(fragment, TweetFragment.class.getSimpleName());
             }
         });
     }
@@ -100,7 +104,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 UserTimelineFragment fragment = UserTimelineFragment.newInstance(mApp.getUserData());
-                replaceFragment(fragment);
+                replaceFragment(fragment,UserTimelineFragment.class.getSimpleName() + mApp.getUserData().getScreenName());
             }
         });
 
@@ -108,7 +112,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 FollowUserFragment fragment = new FollowUserFragment();
-                replaceFragment(fragment);
+                replaceFragment(fragment,FollowUserFragment.class.getSimpleName());
             }
         });
 
@@ -116,7 +120,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 FollowerFragment fragment = new FollowerFragment();
-                replaceFragment(fragment);
+                replaceFragment(fragment,FollowUserFragment.class.getSimpleName());
             }
         });
 
@@ -132,9 +136,12 @@ public class HomeTimelineActivity extends AppCompatActivity
         mApp.getLoadBitmapManger().downloadBitmap(imageView, user.getProfileImageURL());
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment, String tag){
+        if(!tag.equals(SearchFragment.class.getSimpleName()))
+        mSearchView.setIconified(true);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
+        transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -193,13 +200,12 @@ public class HomeTimelineActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_with_search, menu);
-        SearchView searchView = (SearchView)menu.findItem(R.id.menu_search).getActionView();
+        mSearchView = (SearchView)menu.findItem(R.id.menu_search).getActionView();
 
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                replaceFragment(SearchFragment.newInstance(query));
+                replaceFragment(SearchFragment.newInstance(query), SearchFragment.class.getSimpleName());
                 return false;
             }
 
@@ -232,13 +238,27 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         switch (item.getItemId()){
             case R.id.nav_home:
-                replaceFragment(new HomeTimelineFragment());
+                HomeTimelineFragment fragment = (HomeTimelineFragment)getSupportFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName());
+                if(fragment == null){
+                    fragment = new HomeTimelineFragment();
+                }
+                replaceFragment(fragment,HomeTimelineFragment.class.getSimpleName());
                 return true;
             case R.id.nav_favorite:
-                replaceFragment(new FavoriteListFragment());
+                replaceFragment(new FavoriteListFragment(),FavoriteListFragment.class.getSimpleName());
                 return true;
             case R.id.nav_tweet:
-                replaceFragment(new TweetFragment());
+                replaceFragment(new TweetFragment(),TweetFragment.class.getSimpleName());
+                return true;
+            case R.id.nav_search:
+                SearchFragment searchFragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
+                if(searchFragment != null){
+                    replaceFragment(searchFragment,SearchFragment.class.getSimpleName());
+                }
+
+                if(mSearchView.getQuery().toString().equals("")){
+                    mSearchView.setIconified(false);
+                }
                 return true;
 
 

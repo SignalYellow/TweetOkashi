@@ -108,6 +108,8 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public void scrolled() {
+        if(!mIsScrollable) return;
+
         TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
         new SearchAsyncTask(mQueryString,lastData.getTweetId() - 1).execute();
     }

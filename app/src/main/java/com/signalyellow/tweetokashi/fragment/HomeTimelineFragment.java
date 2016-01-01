@@ -1,5 +1,6 @@
 package com.signalyellow.tweetokashi.fragment;
 
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import twitter4j.*;
 public class HomeTimelineFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable, AdapterView.OnItemClickListener{
 
-    private static final String TAG = "HomeTimelineFragment";
+    private static final String TAG = HomeTimelineFragment.class.getSimpleName();
 
     private Twitter mTwitter;
     private TweetDataAdapter mAdapter;
@@ -47,7 +48,7 @@ public class HomeTimelineFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG,"onCreate");
         mApp= (TweetOkashiApplication)getActivity().getApplicationContext();
         mTwitter = TwitterUtils.getTwitterInstance(getActivity());
 
@@ -60,13 +61,13 @@ public class HomeTimelineFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_home_timeline, container, false);
-
+        Log.d(TAG,"onCreateView");
         mSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color, android.R.color.holo_orange_dark);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         ListView mListView = (ListView)view.findViewById(R.id.listView);
-        mListView.setAdapter(mAdapter = new TweetDataAdapter(getActivity()));
+        mListView.setAdapter(mAdapter == null ? mAdapter = new TweetDataAdapter(getActivity()) : mAdapter);
         mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this));
         mListView.setOnItemClickListener(this);
 
@@ -76,6 +77,7 @@ public class HomeTimelineFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(TAG, "onAttach");
         if (context instanceof OnTimelineFragmentListener) {
             mListener = (OnTimelineFragmentListener) context;
         } else {
@@ -87,12 +89,15 @@ public class HomeTimelineFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart");
+        if(mAdapter != null && mAdapter.getCount() == 0)
         new TimelineAsyncTask().execute();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d(TAG, "onDetach");
         mListener = null;
         if(mStream != null) mStream.shutdown();
     }

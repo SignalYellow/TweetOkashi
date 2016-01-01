@@ -19,8 +19,8 @@ public class TweetOkashiApplication extends Application{
 
     private LoadBitmapManager mLoadBitmapManger;
     private HaikuManager mHaikuManger;
-    private HomeTimelineActivity mHomeTimelineActivity;
     private UserData mUserData;
+    private Twitter mTwitter;
 
     @Override
     public void onCreate() {
@@ -30,7 +30,8 @@ public class TweetOkashiApplication extends Application{
     }
 
     public Twitter getTwitterInstance(){
-        return TwitterUtils.getTwitterInstance(this);
+        return mTwitter == null ? mTwitter = TwitterUtils.getTwitterInstance(this)
+                                : mTwitter;
     }
 
     public LoadBitmapManager getLoadBitmapManger() {
@@ -39,14 +40,6 @@ public class TweetOkashiApplication extends Application{
 
     public HaikuManager getHaikuManger() {
         return mHaikuManger;
-    }
-
-    public void setHomeActivity(HomeTimelineActivity activity) {
-        this.mHomeTimelineActivity = activity;
-    }
-
-    public HomeTimelineActivity getHomeActivity() {
-        return mHomeTimelineActivity;
     }
 
     public UserData getUserData() {
