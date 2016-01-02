@@ -17,9 +17,9 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.TweetDataAdapter;
-import com.signalyellow.tweetokashi.fragment.listener.OnTimelineFragmentListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
+import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 import com.signalyellow.tweetokashi.sub.UiHandler;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
@@ -39,7 +39,7 @@ public class HomeTimelineFragment extends Fragment
     private boolean mIsRefreshing = false;
     protected boolean mIsScrollable = true;
 
-    private OnTimelineFragmentListener mListener;
+    private OnFragmentResultListener mListener;
 
     public HomeTimelineFragment() {
         // Required empty public constructor
@@ -82,8 +82,8 @@ public class HomeTimelineFragment extends Fragment
     public void onAttach(Context context) {
         super.onAttach(context);
         Log.d(TAG, "onAttach");
-        if (context instanceof OnTimelineFragmentListener) {
-            mListener = (OnTimelineFragmentListener) context;
+        if (context instanceof OnFragmentResultListener) {
+            mListener = (OnFragmentResultListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnHomeTimelineFragmentListener");

@@ -16,9 +16,9 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.TweetDataAdapter;
-import com.signalyellow.tweetokashi.fragment.listener.OnTimelineFragmentListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
+import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -39,7 +39,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private boolean mIsRefreshing = false;
     private boolean mIsScrollable = true;
 
-    private OnTimelineFragmentListener mListener;
+    private OnFragmentResultListener mListener;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -93,8 +93,8 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnTimelineFragmentListener) {
-            mListener = (OnTimelineFragmentListener) context;
+        if (context instanceof OnFragmentResultListener) {
+            mListener = (OnFragmentResultListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnTimelineFragmentListener");

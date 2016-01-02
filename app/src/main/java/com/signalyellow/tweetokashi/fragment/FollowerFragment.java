@@ -14,7 +14,7 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.data.UserDataAdapter;
-import com.signalyellow.tweetokashi.fragment.listener.OnUserFragmentListener;
+import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
@@ -28,7 +28,7 @@ public class FollowerFragment extends Fragment {
 
 
 
-    private OnUserFragmentListener mListener;
+    private OnFragmentResultListener mListener;
 
     public FollowerFragment() {
         // Required empty public constructor
@@ -71,8 +71,8 @@ public class FollowerFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnUserFragmentListener) {
-            mListener = (OnUserFragmentListener) context;
+        if (context instanceof OnFragmentResultListener) {
+            mListener = (OnFragmentResultListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");

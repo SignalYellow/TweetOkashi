@@ -18,9 +18,9 @@ import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.data.UserData;
-import com.signalyellow.tweetokashi.fragment.listener.OnTimelineFragmentListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
+import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.Paging;
 import twitter4j.ResponseList;
@@ -43,7 +43,7 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
     protected boolean mIsScrollable = true;
     private Twitter mTwitter;
 
-    private OnTimelineFragmentListener mListener;
+    private OnFragmentResultListener mListener;
 
     public FavoriteListFragment() {
         // Required empty public constructor
@@ -89,8 +89,8 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnTimelineFragmentListener) {
-            mListener = (OnTimelineFragmentListener) context;
+        if (context instanceof OnFragmentResultListener) {
+            mListener = (OnFragmentResultListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnHomeTimelineFragmentListener");

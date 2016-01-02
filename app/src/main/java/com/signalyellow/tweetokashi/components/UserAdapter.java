@@ -28,7 +28,7 @@ public class UserAdapter extends ArrayAdapter<HaikuUserStatus>{
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null){
-            convertView = mInflater.inflate(R.layout.list_item_user,null);
+            convertView = mInflater.inflate(R.layout.item_user,null);
         }
 
         HaikuUserStatus status = getItem(position);

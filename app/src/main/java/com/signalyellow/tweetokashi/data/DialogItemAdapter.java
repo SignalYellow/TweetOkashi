@@ -21,7 +21,6 @@ public class DialogItemAdapter extends ArrayAdapter<DialogItem>{
 
     public DialogItemAdapter(Context context, int resource) {
         super(context, resource);
-
     }
 
     @Override
@@ -42,14 +41,4 @@ public class DialogItemAdapter extends ArrayAdapter<DialogItem>{
 
         return view;
     }
-
-    class ViewHolder{
-        public ViewHolder() {
-        }
-
-        public TextView textView;
-        public ImageView imageView;
-    }
-
-
 }

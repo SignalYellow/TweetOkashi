@@ -19,6 +19,7 @@ import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
+import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 
 import twitter4j.Paging;
@@ -41,7 +42,7 @@ public class UserTimelineFragment extends Fragment
 
     boolean mIsRefreshing = false;
 
-    private OnUserTimelineFragmentListener mListener;
+    private OnFragmentResultListener mListener;
 
     public UserTimelineFragment() {
         // Required empty public constructor
@@ -86,11 +87,11 @@ public class UserTimelineFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnUserTimelineFragmentListener) {
-            mListener = (OnUserTimelineFragmentListener) context;
+        if (context instanceof OnFragmentResultListener) {
+            mListener = (OnFragmentResultListener) context;
         } else {
-            /*throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");*/
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -151,6 +152,7 @@ public class UserTimelineFragment extends Fragment
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TweetData data = (TweetData)parent.getItemAtPosition(position);
+        mListener.onTimelineItemClick(data);
     }
 
     @Override
@@ -178,7 +180,5 @@ public class UserTimelineFragment extends Fragment
         mListener = null;
     }
 
-    public interface OnUserTimelineFragmentListener {
-        void onUserTimelineItemClicked(TweetData data);
-    }
+
 }

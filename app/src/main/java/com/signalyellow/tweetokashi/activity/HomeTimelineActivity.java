@@ -38,13 +38,12 @@ import com.signalyellow.tweetokashi.fragment.SearchFragment;
 import com.signalyellow.tweetokashi.fragment.TweetDataDialogFragment;
 import com.signalyellow.tweetokashi.fragment.TweetFragment;
 import com.signalyellow.tweetokashi.fragment.UserTimelineFragment;
-import com.signalyellow.tweetokashi.fragment.listener.OnTimelineFragmentListener;
-import com.signalyellow.tweetokashi.fragment.listener.OnUserFragmentListener;
+import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.*;
 
 public class HomeTimelineActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , OnTimelineFragmentListener, OnUserFragmentListener {
+        implements NavigationView.OnNavigationItemSelectedListener , OnFragmentResultListener {
 
     private static final String TAG = "HomeTimeline";
     private TweetOkashiApplication mApp;
@@ -209,6 +208,11 @@ public class HomeTimelineActivity extends AppCompatActivity
     }
 
     @Override
+    public void onDialogResult() {
+
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -228,6 +232,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             public boolean onQueryTextSubmit(String query) {
                 if(query == null || query.equals("")){
                     Toast.makeText(getApplicationContext(),"検索文字を入力してください",Toast.LENGTH_SHORT).show();
+                    return false;
                 }
 
                 String searchTag = SearchFragment.class.getSimpleName();
