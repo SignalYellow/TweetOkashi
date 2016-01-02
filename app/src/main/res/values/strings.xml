@@ -8,6 +8,13 @@
     <string name="twitter_callback_url">callback://TwitterOAuthActivity</string>
 
 
+    <!-- システム View -->
+    <string name="image_view_icon_description">icon</string>
+    <string name="title_tweet_count">ツイート</string>
+    <string name="title_follow_count">フォロー</string>
+    <string name="title_follower_count">フォロワー</string>
+
+
     <!-- page name -->
     <string name="timeline_page_name">TIMELINE</string>
 

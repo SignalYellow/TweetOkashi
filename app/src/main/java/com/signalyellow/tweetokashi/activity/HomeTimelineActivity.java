@@ -121,7 +121,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 FollowerFragment fragment = new FollowerFragment();
-                replaceFragment(fragment, FollowUserFragment.class.getSimpleName());
+                replaceFragment(fragment, FollowerFragment.class.getSimpleName());
             }
         });
 
@@ -129,10 +129,16 @@ public class HomeTimelineActivity extends AppCompatActivity
         ImageView imageView = (ImageView)headerView.findViewById(R.id.nav_image);
         TextView textViewName = (TextView)headerView.findViewById(R.id.nav_text_name);
         TextView textViewScreenName = (TextView)headerView.findViewById(R.id.nav_text_screen_name);
+        TextView textViewTweetCount = (TextView)headerView.findViewById(R.id.nav_text_tweet_count);
+        TextView textViewFollowCount = (TextView)headerView.findViewById(R.id.nav_text_follow_count);
+        TextView textViewFollowerCount = (TextView)headerView.findViewById(R.id.nav_text_follower_count);
 
         UserData user = mApp.getUserData();
         textViewName.setText(user.getUserName());
-        textViewScreenName.setText(user.getScreenName());
+        textViewScreenName.setText(user.getAtScreenName());
+        textViewFollowCount.setText(String.valueOf(user.getFollowCount()));
+        textViewFollowerCount.setText(String.valueOf(user.getFollowerCount()));
+        textViewTweetCount.setText(String.valueOf(user.getTweetCount()));
         imageView.setTag(user.getProfileImageURL());
         mApp.getLoadBitmapManger().downloadBitmap(imageView, user.getProfileImageURL());
     }

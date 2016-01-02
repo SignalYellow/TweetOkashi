@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#9e27b2</color>
+    <color name="colorPrimaryDark">#b1680079</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorNavHeader">#AB47BC</color>
 
     <color name="main_color">#8C1274</color>
     <color name="accent_color">@color/kimidori</color>
     <color name="glycine">#D775C0</color>
+
+    <color name="kyomurasaki">#9d5b8b</color>
 
     <color name="kimidori">#b8d200</color>
 

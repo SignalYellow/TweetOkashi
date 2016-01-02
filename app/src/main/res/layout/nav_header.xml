@@ -7,65 +7,75 @@
     android:paddingBottom="6dp"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="16dp"
+    android:background="@color/main_color"
     android:theme="@style/AppTheme.Dark">
 
     <RelativeLayout
         android:id="@+id/nav_head_profile_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="6dp"
+        android:paddingBottom="9dp"
+        
         >
         <ImageView
             android:id="@+id/nav_image"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@android:drawable/sym_def_app_icon"
-            android:layout_marginRight="9dp"/>
-
-
+            android:contentDescription="@string/image_view_icon_description"
+            android:layout_marginRight="9dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginLeft="9dp"
+            android:layout_marginStart="9dp" />
+        
         <TextView
             android:id="@+id/nav_text_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:layout_toRightOf="@id/nav_image"
-            android:text="Android Studio"
+            android:layout_toEndOf="@+id/nav_image"
+            android:textStyle="bold"
             />
 
         <TextView
             android:id="@+id/nav_text_screen_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="android"
             android:layout_toRightOf="@id/nav_image"
+            android:layout_toEndOf="@+id/nav_image"
             android:layout_below="@id/nav_text_name"
 
             />
     </RelativeLayout>
 
 
+        
+        
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:baselineAligned="false">
         <RelativeLayout
             android:id="@+id/nav_tweet_count_layout_group"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:background="@drawable/alpha_background"
             android:layout_weight="1">
             <TextView
                 android:id="@+id/nav_title_tweet_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="ツイート"/>
+                android:text="@string/title_tweet_count"
+                />
             <TextView
                 android:id="@+id/nav_text_tweet_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="9999"
+                android:textStyle="bold"
                 android:layout_below="@id/nav_title_tweet_count"
                 />
         </RelativeLayout>
@@ -73,6 +83,7 @@
             android:id="@+id/nav_follow_layout_group"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:background="@drawable/alpha_background"
             android:layout_weight="1"
             >
             <TextView
@@ -80,13 +91,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="フォロー"/>
+                android:text="@string/title_follow_count"
+                />
             <TextView
                 android:id="@+id/nav_text_follow_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="700"
+                android:textStyle="bold"
                 android:layout_below="@id/nav_title_follow_count"
                 />
         </RelativeLayout>
@@ -95,19 +107,21 @@
             android:id="@+id/nav_follower_layout_group"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:background="@drawable/alpha_background"
             android:layout_weight="1">
             <TextView
                 android:id="@+id/nav_title_follower_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="フォロワー"/>
+                android:text="@string/title_follower_count"
+                />
             <TextView
                 android:id="@+id/nav_text_follower_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="600"
+                android:textStyle="bold"
                 android:layout_below="@id/nav_title_follower_count"
                 />
         </RelativeLayout>
