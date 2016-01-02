@@ -1,14 +1,11 @@
 package com.signalyellow.tweetokashi.data;
 
-import android.graphics.Bitmap;
 
 import java.io.Serializable;
 
 import twitter4j.User;
 
-/**
- * Created by shohei on 15/12/23.
- */
+
 public class UserData implements Serializable {
     private long userId;
     private String userName;
@@ -17,7 +14,6 @@ public class UserData implements Serializable {
     private int tweetCount;
     private int followCount;
     private int followerCount;
-    private Bitmap bitmap;
     private String description;
 
     public UserData(User user) {
@@ -65,11 +61,4 @@ public class UserData implements Serializable {
         return followerCount;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
 }

@@ -2,7 +2,6 @@ package com.signalyellow.tweetokashi.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +14,7 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.data.UserDataAdapter;
+import com.signalyellow.tweetokashi.fragment.listener.OnUserFragmentListener;
 
 import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
@@ -28,7 +28,7 @@ public class FollowerFragment extends Fragment {
 
 
 
-    private OnFragmentInteractionListener mListener;
+    private OnUserFragmentListener mListener;
 
     public FollowerFragment() {
         // Required empty public constructor
@@ -71,11 +71,11 @@ public class FollowerFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnUserFragmentListener) {
+            mListener = (OnUserFragmentListener) context;
         } else {
-            /*throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");*/
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -116,8 +116,5 @@ public class FollowerFragment extends Fragment {
     }
 
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }

@@ -1,5 +1,7 @@
 package com.signalyellow.tweetokashi.data;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -55,8 +57,13 @@ public class TweetData implements Serializable{
 
         this.status = status;
         this.retweetId = status.getCurrentUserRetweetId();
-        this.rawUserId = status.getUser().getId();
+        try {
+            this.rawUserId = status.getUser().getId();
+        }catch (Exception e){
+            this.rawUserId = -1;
+            Log.e("aaa",status.getText());
 
+        }
         if(status.getRetweetedStatus() != null){
             this.retweetId = status.getId();
             this.retweetUserName = status.getUser().getName();

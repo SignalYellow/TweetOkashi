@@ -2,6 +2,7 @@ package com.signalyellow.tweetokashi.activity;
 
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
@@ -37,11 +39,12 @@ import com.signalyellow.tweetokashi.fragment.TweetDataDialogFragment;
 import com.signalyellow.tweetokashi.fragment.TweetFragment;
 import com.signalyellow.tweetokashi.fragment.UserTimelineFragment;
 import com.signalyellow.tweetokashi.fragment.listener.OnTimelineFragmentListener;
+import com.signalyellow.tweetokashi.fragment.listener.OnUserFragmentListener;
 
 import twitter4j.*;
 
 public class HomeTimelineActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , OnTimelineFragmentListener {
+        implements NavigationView.OnNavigationItemSelectedListener , OnTimelineFragmentListener, OnUserFragmentListener {
 
     private static final String TAG = "HomeTimeline";
     private TweetOkashiApplication mApp;
@@ -55,15 +58,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         toolbar.setSubtitle(getString(R.string.app_name_ja));
 
-        mApp= (TweetOkashiApplication)getApplicationContext();
-
-        if (findViewById(R.id.fragment_container) != null) {
-            HomeTimelineFragment fragment = new HomeTimelineFragment();
-            getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, fragment, HomeTimelineFragment.class.getSimpleName())
-                    .commit();
-        }
+        mApp = (TweetOkashiApplication) getApplicationContext();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -74,8 +69,23 @@ public class HomeTimelineActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        View headerView = navigationView.getHeaderView(0);
-        new UserAsyncTask(getApplicationContext(),headerView).execute();
+
+        if(mApp.getUserData() == null) {
+            new UserAsyncTask(getApplicationContext(), navigationView.getHeaderView(0)).execute();
+        }else{
+            setNavigationHeader(navigationView.getHeaderView(0));
+        }
+
+
+        if (savedInstanceState == null) {
+            if (findViewById(R.id.fragment_container) != null
+                    && getFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName()) == null) {
+                getFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, new HomeTimelineFragment(), HomeTimelineFragment.class.getSimpleName())
+                        .commit();
+            }
+        }
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -88,13 +98,6 @@ public class HomeTimelineActivity extends AppCompatActivity
     }
 
     private void setNavigationHeader(View headerView){
-        headerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "a");
-
-            }
-        });
 
         //nav header layout
         RelativeLayout tweetCountLayout = (RelativeLayout)headerView.findViewById(R.id.nav_tweet_count_layout_group);
@@ -143,18 +146,16 @@ public class HomeTimelineActivity extends AppCompatActivity
         mApp.getLoadBitmapManger().downloadBitmap(imageView, user.getProfileImageURL());
     }
 
-
-
     private void replaceFragment(Fragment fragment, String tag){
-        if(!tag.equals(SearchFragment.class.getSimpleName())){
-            mSearchView.setIconified(true);
-        }
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if(getFragmentManager().findFragmentByTag(tag) != null){
-            fragment = getFragmentManager().findFragmentByTag(tag);
-        }
+        replaceFragment(fragment,tag,null);
+    }
 
+    private void replaceFragment(Fragment fragment, String tag, Fragment deleteFragment){
+        mSearchView.setIconified(true);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
+        if(deleteFragment != null) transaction.remove(deleteFragment);
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -163,6 +164,8 @@ public class HomeTimelineActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
     }
+
+
 
     class UserAsyncTask extends AsyncTask<Void, Void, User> {
 
@@ -196,8 +199,13 @@ public class HomeTimelineActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTimelineItemClicked(TweetData data) {
+    public void onTimelineItemClick(TweetData data) {
         TweetDataDialogFragment.newInstance(data).show(getFragmentManager(), "dialog" + data.getTweetId());
+    }
+
+    @Override
+    public void onUserItemClick(UserData data) {
+
     }
 
     @Override
@@ -218,7 +226,24 @@ public class HomeTimelineActivity extends AppCompatActivity
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                replaceFragment(SearchFragment.newInstance(query), SearchFragment.class.getSimpleName());
+                if(query == null || query.equals("")){
+                    Toast.makeText(getApplicationContext(),"検索文字を入力してください",Toast.LENGTH_SHORT).show();
+                }
+
+                String searchTag = SearchFragment.class.getSimpleName();
+                SearchFragment fragment = (SearchFragment) getFragmentManager()
+                        .findFragmentByTag(searchTag);
+                if (fragment == null) {
+                    fragment = SearchFragment.newInstance(query);
+                    replaceFragment(fragment, searchTag);
+                    return false;
+                }
+                if (!fragment.getQuery().equals(query)) {
+                    SearchFragment searchFragment = SearchFragment.newInstance(query);
+                    replaceFragment(searchFragment,searchTag,fragment);
+                    return false;
+                }
+                replaceFragment(fragment, searchTag);
                 return false;
             }
 
@@ -257,24 +282,46 @@ public class HomeTimelineActivity extends AppCompatActivity
                 }
                 replaceFragment(fragment, HomeTimelineFragment.class.getSimpleName());
                 return true;
-            case R.id.nav_favorite:
-                replaceFragment(new FavoriteListFragment(), FavoriteListFragment.class.getSimpleName());
-                return true;
-            case R.id.nav_tweet:
-                replaceFragment(new TweetFragment(), TweetFragment.class.getSimpleName());
-                return true;
-            case R.id.nav_search:
-                SearchFragment searchFragment = (SearchFragment)getFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
-                if(searchFragment != null){
-                    replaceFragment(searchFragment, SearchFragment.class.getSimpleName());
-                }
 
-                if(mSearchView.getQuery().toString().equals("")){
-                    mSearchView.setIconified(false);
-                }
+            case R.id.nav_favorite:
+                String favTag = FavoriteListFragment.class.getSimpleName();
+                FavoriteListFragment favoriteListFragment = (FavoriteListFragment)getFragmentManager()
+                        .findFragmentByTag(favTag);
+                if(favoriteListFragment == null){favoriteListFragment = new FavoriteListFragment();}
+                replaceFragment(favoriteListFragment, favTag);
                 return true;
+
+            case R.id.nav_tweet:
+                String tweetTag = TweetFragment.class.getSimpleName();
+                TweetFragment tweetFragment = (TweetFragment)getFragmentManager()
+                        .findFragmentByTag(tweetTag);
+                if(tweetFragment == null){tweetFragment = new TweetFragment();}
+                replaceFragment(tweetFragment, tweetTag);
+                return true;
+
+            case R.id.nav_search:
+                String searchTag = SearchFragment.class.getSimpleName();
+                SearchFragment searchFragment = (SearchFragment)getFragmentManager()
+                        .findFragmentByTag(searchTag);
+                if(searchFragment != null){
+                    replaceFragment(searchFragment, searchTag);
+                    return true;
+                }
+                mSearchView.setIconified(false);
+                return true;
+
             case R.id.nav_setting:
-                replaceFragment(new HaikuSettingFragment(),HaikuSettingFragment.class.getSimpleName());
+                String settingTag = HaikuSettingFragment.class.getSimpleName();
+                HaikuSettingFragment haikuSettingFragment = (HaikuSettingFragment)getFragmentManager()
+                        .findFragmentByTag(settingTag);
+                if(haikuSettingFragment != null){
+                    replaceFragment(haikuSettingFragment,settingTag);
+                    return true;
+                }
+                replaceFragment(new HaikuSettingFragment(),settingTag);
+                return true;
+
+            case R.id.nav_logout:
                 return true;
         }
         return false;

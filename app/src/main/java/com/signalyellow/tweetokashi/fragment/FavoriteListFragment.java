@@ -131,7 +131,7 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         TweetData data = (TweetData)adapterView.getItemAtPosition(position);
-        mListener.onTimelineItemClicked(data);
+        mListener.onTimelineItemClick(data);
     }
 
     @Override

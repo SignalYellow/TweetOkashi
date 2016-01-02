@@ -48,9 +48,11 @@ public class HomeTimelineFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"onCreate");
+        Log.d(TAG, "onCreate");
+        setRetainInstance(true);
+
         mApp= (TweetOkashiApplication)getActivity().getApplicationContext();
-        mTwitter = TwitterUtils.getTwitterInstance(getActivity());
+        mTwitter = mApp.getTwitterInstance();
 
         if(mStream == null) {
             mStream = TwitterUtils.getTwitterStreamInstance(getActivity());
@@ -92,8 +94,10 @@ public class HomeTimelineFragment extends Fragment
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
-        if(mAdapter != null && mAdapter.getCount() == 0)
-        new TimelineAsyncTask().execute();
+
+        if (mAdapter != null && mAdapter.getCount() == 0) {
+            new TimelineAsyncTask().execute();
+        }
     }
 
     @Override
@@ -101,6 +105,11 @@ public class HomeTimelineFragment extends Fragment
         super.onDetach();
         Log.d(TAG, "onDetach");
         mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if(mStream != null) mStream.shutdown();
     }
 
@@ -175,8 +184,9 @@ public class HomeTimelineFragment extends Fragment
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        TweetData data = (TweetData)adapterView.getItemAtPosition(position);
-        mListener.onTimelineItemClicked(data);
+        TweetData data = (TweetData) adapterView.getItemAtPosition(position);
+
+        mListener.onTimelineItemClick(data);
     }
 
     class MyUserStreamAdapter extends UserStreamAdapter {

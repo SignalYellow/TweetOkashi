@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
@@ -20,30 +19,25 @@ import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.fragment.listener.OnTimelineFragmentListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
-import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
-import twitter4j.Paging;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterStream;
 
 
 public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable, AdapterView.OnItemClickListener {
 
-    private static final String TAG = "SearchFragment";
+    private static final String TAG = SearchFragment.class.getSimpleName();
+
     private static final String ARG_QUERY = "Query";
     private String mQuery;
 
-
-    private Twitter mTwitter;
     private TweetDataAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private TwitterStream mStream;
     private TweetOkashiApplication mApp;
     private boolean mIsRefreshing = false;
-    protected boolean mIsScrollable = true;
+    private boolean mIsScrollable = true;
 
     private OnTimelineFragmentListener mListener;
 
@@ -62,12 +56,12 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         if (getArguments() != null) {
             mQuery = getArguments().getString(ARG_QUERY);
         }
 
         mApp= (TweetOkashiApplication)getActivity().getApplicationContext();
-        mTwitter = mApp.getTwitterInstance();
     }
 
     @Override
@@ -80,7 +74,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         ListView mListView = (ListView)view.findViewById(R.id.listView);
-        mListView.setAdapter(mAdapter = new TweetDataAdapter(getActivity()));
+        mListView.setAdapter(mAdapter == null ? mAdapter = new TweetDataAdapter(getActivity().getApplicationContext()) : mAdapter);
         mListView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this));
         mListView.setOnItemClickListener(this);
 
@@ -90,7 +84,10 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onStart() {
         super.onStart();
-        new SearchAsyncTask(mQuery).execute();
+        if (mAdapter != null && mAdapter.getCount() == 0 ) {
+            mIsScrollable = true;
+            new SearchAsyncTask(mQuery).execute();
+        }
     }
 
     @Override
@@ -130,7 +127,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         TweetData data = (TweetData)adapterView.getItemAtPosition(position);
-        mListener.onTimelineItemClicked(data);
+        mListener.onTimelineItemClick(data);
     }
 
     @Override
@@ -142,21 +139,25 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         new SearchAsyncTask(mQuery,maxId).execute();
     }
 
+    public String getQuery() {
+        return mQuery;
+    }
 
     private class SearchAsyncTask extends AsyncTask<Void,Void,QueryResult> {
 
         Long mMaxId;
         Query mQuery;
+        Twitter mTwitter;
 
         public SearchAsyncTask(String query){
-            mMaxId = null;
-            mQuery = new Query(query);
+            this(query,null);
         }
 
         public SearchAsyncTask(String query, Long maxId) {
             mMaxId = maxId;
             mQuery = new Query(query);
-            mQuery.setMaxId(maxId);
+            if(maxId != null) mQuery.setMaxId(maxId);
+            mTwitter = mApp.getTwitterInstance();
         }
 
         @Override
@@ -168,7 +169,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         protected QueryResult doInBackground(Void... voids) {
 
             try {
-                return mMaxId == null ? mTwitter.search(mQuery) : mTwitter.search(mQuery);
+                return mTwitter.search(mQuery);
             } catch (TwitterException e) {
                 Log.e(TAG, e.toString());
                 return null;
