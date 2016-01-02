@@ -93,10 +93,6 @@ public class HaikuRegenerateActivity extends Activity {
     }
 
     private void doHaikuRetweet(){
-        Intent intent = new Intent(getApplicationContext(),HaikuRetweetActivity.class);
-        intent.putExtra(TwitterUtils.INTENT_TAG_TWEETDATA,
-                data);
-        startActivity(intent);
     }
 
     /**

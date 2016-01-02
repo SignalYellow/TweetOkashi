@@ -13,13 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
-import com.signalyellow.tweetokashi.async.FavoriteAsyncTask;
-import com.signalyellow.tweetokashi.async.RetweetAsyncTask;
-import com.signalyellow.tweetokashi.async.TweetAsyncTask;
 import com.signalyellow.tweetokashi.data.DialogItem;
 import com.signalyellow.tweetokashi.data.DialogItemAdapter;
 import com.signalyellow.tweetokashi.data.TweetData;
-import com.signalyellow.tweetokashi.activity.UserTimelineActivity;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import java.util.ArrayList;

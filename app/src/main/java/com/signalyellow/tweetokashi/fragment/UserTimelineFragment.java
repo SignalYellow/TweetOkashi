@@ -1,9 +1,9 @@
 package com.signalyellow.tweetokashi.fragment;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import com.signalyellow.tweetokashi.data.TweetDataAdapter;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
-import com.signalyellow.tweetokashi.twitter.TwitterUtils;
+
 
 import twitter4j.Paging;
 import twitter4j.ResponseList;

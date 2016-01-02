@@ -25,15 +25,12 @@ import twitter4j.MediaEntity;
  */
 public class TweetDataAdapter extends ArrayAdapter<TweetData>{
 
-    private LoadBitmapManager mLoadBitmapManager;
-    private HaikuManager mHaikuManager;
+    private TweetOkashiApplication mApp;
 
     public TweetDataAdapter(Context context){
         super(context, R.layout.item_tweet);
 
-        TweetOkashiApplication application = (TweetOkashiApplication)context.getApplicationContext();
-        mLoadBitmapManager = application.getLoadBitmapManger();
-        mHaikuManager = application.getHaikuManger();
+        mApp = (TweetOkashiApplication)context.getApplicationContext();
     }
 
     @Override
@@ -80,7 +77,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         setRetweetedByText(data,viewHolder);
 
         viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
-        mLoadBitmapManager.downloadBitmap(viewHolder.imageThumbnail, data.getProfileImageURL());
+        mApp.getLoadBitmapManger().downloadBitmap(viewHolder.imageThumbnail, data.getProfileImageURL());
 
 
         return view;
@@ -160,17 +157,17 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         MediaEntity[] entities  = data.getMediaURLs();
         MediaEntity entity = entities[0];
         holder.imageView.setTag(entity.getMediaURL());
-        mLoadBitmapManager.downloadBitmap(holder.imageView, entity.getMediaURL());
+        mApp.getLoadBitmapManger().downloadBitmap(holder.imageView, entity.getMediaURL());
     }
 
     private void setHaiku(TweetData data, TweetDataViewHolder holder){
 
-        if(data.isHaikuRetweet()){
+        if(!mApp.doesMakeHaiku() || data.isHaikuRetweet()){
             holder.textHaiku.setVisibility(View.GONE);
             return;
         }
         holder.textHaiku.setTag(data.getTweetId());
-        mHaikuManager.createHaiku(holder.textHaiku,data);
+        mApp.getHaikuManger().createHaiku(holder.textHaiku,data);
 
     }
 }

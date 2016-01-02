@@ -1,13 +1,13 @@
 package com.signalyellow.tweetokashi.activity;
 
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +29,7 @@ import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.fragment.FavoriteListFragment;
 import com.signalyellow.tweetokashi.fragment.FollowUserFragment;
 import com.signalyellow.tweetokashi.fragment.FollowerFragment;
+import com.signalyellow.tweetokashi.fragment.HaikuSettingFragment;
 import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.fragment.SearchFragment;
@@ -58,7 +59,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         if (findViewById(R.id.fragment_container) != null) {
             HomeTimelineFragment fragment = new HomeTimelineFragment();
-            getSupportFragmentManager()
+            getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, fragment, HomeTimelineFragment.class.getSimpleName())
                     .commit();
@@ -104,7 +105,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 UserTimelineFragment fragment = UserTimelineFragment.newInstance(mApp.getUserData());
-                replaceFragment(fragment,UserTimelineFragment.class.getSimpleName() + mApp.getUserData().getScreenName());
+                replaceFragment(fragment, UserTimelineFragment.class.getSimpleName() + mApp.getUserData().getScreenName());
             }
         });
 
@@ -112,7 +113,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 FollowUserFragment fragment = new FollowUserFragment();
-                replaceFragment(fragment,FollowUserFragment.class.getSimpleName());
+                replaceFragment(fragment, FollowUserFragment.class.getSimpleName());
             }
         });
 
@@ -120,7 +121,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 FollowerFragment fragment = new FollowerFragment();
-                replaceFragment(fragment,FollowUserFragment.class.getSimpleName());
+                replaceFragment(fragment, FollowUserFragment.class.getSimpleName());
             }
         });
 
@@ -136,11 +137,17 @@ public class HomeTimelineActivity extends AppCompatActivity
         mApp.getLoadBitmapManger().downloadBitmap(imageView, user.getProfileImageURL());
     }
 
-    private void replaceFragment(Fragment fragment, String tag){
-        if(!tag.equals(SearchFragment.class.getSimpleName()))
-        mSearchView.setIconified(true);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+    private void replaceFragment(Fragment fragment, String tag){
+        if(!tag.equals(SearchFragment.class.getSimpleName())){
+            mSearchView.setIconified(true);
+        }
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        if(getFragmentManager().findFragmentByTag(tag) != null){
+            fragment = getFragmentManager().findFragmentByTag(tag);
+        }
+
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -238,30 +245,31 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         switch (item.getItemId()){
             case R.id.nav_home:
-                HomeTimelineFragment fragment = (HomeTimelineFragment)getSupportFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName());
+                HomeTimelineFragment fragment = (HomeTimelineFragment)getFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName());
                 if(fragment == null){
                     fragment = new HomeTimelineFragment();
                 }
-                replaceFragment(fragment,HomeTimelineFragment.class.getSimpleName());
+                replaceFragment(fragment, HomeTimelineFragment.class.getSimpleName());
                 return true;
             case R.id.nav_favorite:
-                replaceFragment(new FavoriteListFragment(),FavoriteListFragment.class.getSimpleName());
+                replaceFragment(new FavoriteListFragment(), FavoriteListFragment.class.getSimpleName());
                 return true;
             case R.id.nav_tweet:
-                replaceFragment(new TweetFragment(),TweetFragment.class.getSimpleName());
+                replaceFragment(new TweetFragment(), TweetFragment.class.getSimpleName());
                 return true;
             case R.id.nav_search:
-                SearchFragment searchFragment = (SearchFragment)getSupportFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
+                SearchFragment searchFragment = (SearchFragment)getFragmentManager().findFragmentByTag(SearchFragment.class.getSimpleName());
                 if(searchFragment != null){
-                    replaceFragment(searchFragment,SearchFragment.class.getSimpleName());
+                    replaceFragment(searchFragment, SearchFragment.class.getSimpleName());
                 }
 
                 if(mSearchView.getQuery().toString().equals("")){
                     mSearchView.setIconified(false);
                 }
                 return true;
-
-
+            case R.id.nav_setting:
+                replaceFragment(new HaikuSettingFragment(),HaikuSettingFragment.class.getSimpleName());
+                return true;
         }
         return false;
     }

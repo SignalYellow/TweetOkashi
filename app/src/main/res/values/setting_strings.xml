@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- preference -->
+    <string name="pref_key_haiku_generate" >KEY_HAIKU_GENERATE</string>
+
+</resources>

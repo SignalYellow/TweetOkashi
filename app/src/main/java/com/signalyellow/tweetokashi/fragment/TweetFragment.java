@@ -1,16 +1,15 @@
 package com.signalyellow.tweetokashi.fragment;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,16 +24,11 @@ import android.widget.Toast;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.async.TweetAsyncTask;
-import com.signalyellow.tweetokashi.data.SettingUtils;
-import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.view.DeletableImageView;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import twitter4j.Status;
 
 public class TweetFragment extends Fragment implements DeletableImageView.OnViewDeleteListener{
 

@@ -1,7 +1,10 @@
 package com.signalyellow.tweetokashi.app;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
+import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.activity.HomeTimelineActivity;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
@@ -32,6 +35,11 @@ public class TweetOkashiApplication extends Application{
     public Twitter getTwitterInstance(){
         return mTwitter == null ? mTwitter = TwitterUtils.getTwitterInstance(this)
                                 : mTwitter;
+    }
+
+    public boolean doesMakeHaiku(){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        return pref.getBoolean(this.getString(R.string.pref_key_haiku_generate),false);
     }
 
     public LoadBitmapManager getLoadBitmapManger() {
