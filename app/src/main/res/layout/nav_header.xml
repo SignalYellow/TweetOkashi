@@ -8,7 +8,7 @@
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
     android:paddingTop="16dp"
-    android:background="@color/main_color"
+    android:background="@color/colorPrimary"
     android:theme="@style/AppTheme.Dark">
 
     <RelativeLayout

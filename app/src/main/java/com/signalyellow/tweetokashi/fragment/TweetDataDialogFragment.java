@@ -2,9 +2,9 @@ package com.signalyellow.tweetokashi.fragment;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,9 +13,10 @@ import android.widget.ListView;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
-import com.signalyellow.tweetokashi.data.DialogItem;
 import com.signalyellow.tweetokashi.data.DialogItemAdapter;
+import com.signalyellow.tweetokashi.data.STATUS;
 import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 
 public class TweetDataDialogFragment extends DialogFragment {
@@ -25,20 +26,8 @@ public class TweetDataDialogFragment extends DialogFragment {
 
     private TweetData mData;
     private TweetOkashiApplication mApp;
-    private DialogItemAdapter mAdapter;
 
-
-    enum DIALOG_STATUS{
-        REPLY,
-        RETWEET,
-        UNRETWEET,
-        HAIKU_RETWEET,
-        FAVORITE,
-        UNFAVORITE,
-        DELETE,
-
-
-    }
+    private OnFragmentResultListener mListener;
 
     public TweetDataDialogFragment() {
         // Required empty public constructor
@@ -68,15 +57,16 @@ public class TweetDataDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_tweet_data_dialog, new FrameLayout(getActivity().getApplicationContext()), false);
 
         ListView listView = (ListView)view.findViewById(R.id.listView);
-        mAdapter = new DialogItemAdapter(getActivity().getApplicationContext());
+        DialogItemAdapter mAdapter = new DialogItemAdapter(getActivity().getApplicationContext());
         listView.setAdapter(mAdapter);
         setDataToAdapter(mAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DialogItem item = (DialogItem) parent.getItemAtPosition(position);
-                Log.d(TAG, position + item.getText());
+                STATUS item = (STATUS) parent.getItemAtPosition(position);
+                mListener.onTweetDataDialogResult(mData, item);
+                getDialog().dismiss();
             }
         });
 
@@ -86,28 +76,47 @@ public class TweetDataDialogFragment extends DialogFragment {
         return  builder.create();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentResultListener) {
+            mListener = (OnFragmentResultListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnHomeTimelineFragmentListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
     private void setDataToAdapter(DialogItemAdapter adapter){
+
+        if(mApp.doesMakeHaiku() && mData.getHaiku() != null && !mData.getHaiku().equals(mApp.getHaikuManger().MAKE_NO_HAIKU_MESSAGE)){
+            adapter.add(STATUS.HAIKURETWEET);
+        }
+        adapter.add(STATUS.REPLY);
+
+        if(mData.isFavoritedByMe()){
+            adapter.add(STATUS.UNFAV);
+        }else {
+            adapter.add(STATUS.FAV);
+        }
 
         if(mData.getRawUserId() == mApp.getUserData().getUserId()){
             // my tweet
-            adapter.add(new DialogItem(DialogItem.STATUS.DELETE));
+            adapter.add(STATUS.DELETE);
 
         }else{
             // not my tweet
             if(mData.isRetweetedByMe()){
-                adapter.add(new DialogItem(DialogItem.STATUS.UNRETWEET));
+                adapter.add(STATUS.UNRETWEET);
             }else {
-                adapter.add(new DialogItem(DialogItem.STATUS.RETWEET));
+                adapter.add(STATUS.RETWEET);
             }
         }
-
-        if(mData.isFavoritedByMe()){
-            adapter.add(new DialogItem(DialogItem.STATUS.UNFAV));
-        }else {
-            adapter.add(new DialogItem(DialogItem.STATUS.FAV));
-        }
-        adapter.add(new DialogItem(DialogItem.STATUS.REPLY));
-        adapter.add(new DialogItem(DialogItem.STATUS.DETAIL));
-
     }
 }

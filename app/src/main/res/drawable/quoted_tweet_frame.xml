@@ -2,6 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="@color/transparent" />
-    <stroke android:width="2dp" android:color="@color/chigusanezu" />
+    <stroke android:width="2dp" android:color="@color/quoted_tweet_frame" />
     <corners android:radius="6dp" />
 </shape>

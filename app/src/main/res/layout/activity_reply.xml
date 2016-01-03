@@ -40,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:text="@string/test_screenname_long"
             android:textSize="@dimen/text_name_size"
-            android:textColor="@color/text_name_color"
+            android:textColor="@color/text_sub_color"
             />
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_below="@+id/text"
             android:gravity="right"
             android:textSize="@dimen/text_date_size"
-            android:textColor="@color/text_date_color"/>
+            android:textColor="@color/text_sub_color"/>
 
         <TextView
             android:id="@+id/haiku_text"

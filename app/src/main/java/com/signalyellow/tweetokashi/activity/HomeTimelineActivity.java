@@ -27,6 +27,11 @@ import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
+import com.signalyellow.tweetokashi.async.DestroyAsyncTask;
+import com.signalyellow.tweetokashi.async.FavoriteAsyncTask;
+import com.signalyellow.tweetokashi.async.RetweetAsyncTask;
+import com.signalyellow.tweetokashi.async.TweetAsyncTask;
+import com.signalyellow.tweetokashi.data.STATUS;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.fragment.FavoriteListFragment;
 import com.signalyellow.tweetokashi.fragment.FollowUserFragment;
@@ -146,7 +151,7 @@ public class HomeTimelineActivity extends AppCompatActivity
     }
 
     private void replaceFragment(Fragment fragment, String tag){
-        replaceFragment(fragment,tag,null);
+        replaceFragment(fragment, tag, null);
     }
 
     private void replaceFragment(Fragment fragment, String tag, Fragment deleteFragment){
@@ -208,7 +213,37 @@ public class HomeTimelineActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDialogResult() {
+    public void onUserDataDialogResult(UserData data) {
+
+    }
+
+    @Override
+    public void onTweetDataDialogResult(TweetData data, STATUS status) {
+
+        Twitter twitter = mApp.getTwitterInstance();
+        switch (status){
+            case RETWEET:
+                new RetweetAsyncTask(twitter,data,RetweetAsyncTask.RETWEET_STATUS.RETWEET).execute();
+                break;
+            case UNRETWEET:
+                new RetweetAsyncTask(twitter,data,RetweetAsyncTask.RETWEET_STATUS.DELETE).execute();
+                break;
+            case HAIKURETWEET:
+                new TweetAsyncTask(twitter,data.getHaikuRetweetText()).execute();
+                break;
+            case FAV:
+                new FavoriteAsyncTask(twitter,data,FavoriteAsyncTask.FAVORITE_STATUS.FAVORITE).execute();
+                break;
+            case UNFAV:
+                new FavoriteAsyncTask(twitter,data,FavoriteAsyncTask.FAVORITE_STATUS.DELETE).execute();
+                break;
+            case DELETE:
+                new DestroyAsyncTask(twitter,data).execute();
+                break;
+            default:
+                break;
+        }
+
 
     }
 

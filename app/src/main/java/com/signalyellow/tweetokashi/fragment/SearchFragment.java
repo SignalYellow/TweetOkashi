@@ -70,7 +70,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         View view =  inflater.inflate(R.layout.fragment_home_timeline, container, false);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.refresh);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.main_color, android.R.color.holo_orange_dark);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, android.R.color.holo_orange_dark);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         ListView mListView = (ListView)view.findViewById(R.id.listView);

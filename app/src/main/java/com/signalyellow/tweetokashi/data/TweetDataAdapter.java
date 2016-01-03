@@ -114,11 +114,12 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         if(count > 0) {
             holder.RTViewGroup.setVisibility(View.VISIBLE);
             if(data.isRetweetedByMe()){
-                holder.textRetweetTitle.setText("RT済");
+
+                holder.textRetweetTitle.setText(R.string.title_retweet_count_done);
                 holder.textRetweetTitle.setTextColor(Color.RED);
             }else{
-                holder.textRetweetTitle.setText("RT");
-                holder.textRetweetTitle.setTextColor(Color.BLACK);
+                holder.textRetweetTitle.setText(R.string.title_retweet_count);
+                holder.textRetweetTitle.setTextColor(Color.GRAY);
             }
             holder.textRetweetedCount.setText(String.valueOf(count));
             return;
@@ -133,11 +134,11 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         if( count > 0 ){
             holder.FAVViewGroup.setVisibility(View.VISIBLE);
             if(data.isFavoritedByMe()) {
-                holder.textFavoritedTitle.setText("FAV済");
+                holder.textFavoritedTitle.setText(R.string.title_fav_count_done);
                 holder.textFavoritedTitle.setTextColor(Color.RED);
             }else {
-                holder.textFavoritedTitle.setText("FAV");
-                holder.textFavoritedTitle.setTextColor(Color.BLACK);
+                holder.textFavoritedTitle.setText(R.string.title_fav_count);
+                holder.textFavoritedTitle.setTextColor(Color.GRAY);
             }
             holder.textFavoritedCount.setText(String.valueOf(count));
             return;

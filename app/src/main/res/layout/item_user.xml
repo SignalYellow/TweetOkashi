@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/test_screenname_long"
                 android:textSize="@dimen/text_name_size"
-                android:textColor="@color/text_name_color"
+                android:textColor="@color/text_sub_color"
                 android:singleLine="true"
                 />
             <TextView

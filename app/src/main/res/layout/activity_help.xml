@@ -18,7 +18,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                 android:text="@string/help_description_concept"/>
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 android:text="@string/help_description_login"/>
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 android:text="@string/help_description_haiku"/>
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                 android:text="@string/help_description_timeline"/>
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                 android:text="@string/help_description_haikuretweet"/>
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                 android:text="@string/help_description_regenerate"/>
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
                 android:text="@string/help_description_search"/>
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                 android:text="@string/help_description_users"/>
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
 
 
             <TextView
-                android:textColor="@color/main_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

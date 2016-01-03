@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.signalyellow.tweetokashi.R;
 
-public class DialogItemAdapter extends ArrayAdapter<DialogItem>{
+public class DialogItemAdapter extends ArrayAdapter<STATUS>{
 
     public DialogItemAdapter(Context context){
         this(context, R.layout.item_tweet);
@@ -26,7 +26,7 @@ public class DialogItemAdapter extends ArrayAdapter<DialogItem>{
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
-        final DialogItem item = getItem(position);
+        final STATUS item = getItem(position);
 
         LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout root = new LinearLayout(getContext());

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:padding="@dimen/item_tweet_padding">
-
-
+    android:padding="@dimen/item_tweet_padding"
+    >
     <RelativeLayout
         android:id="@+id/RTbyTextGroup"
         android:layout_width="match_parent"
@@ -15,19 +14,19 @@
             android:id="@+id/RTbyText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="さんがリツイート"
+            android:text="@string/title_retweeted_by"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             />
         <TextView
             android:id="@+id/RTbyUserNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ついいとおかしついいとおかしついいとおかしついいとおかし"
-            android:textColor="@color/main_color"
+            android:text="@string/test_name_long"
+            android:textColor="@color/colorPrimary"
             android:singleLine="true"
-            android:layout_toLeftOf="@id/RTbyText"/>
-
+            android:layout_toLeftOf="@id/RTbyText"
+            android:layout_toStartOf="@id/RTbyText"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -47,7 +46,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:src="@mipmap/ic_launcher"
-                android:contentDescription="icon"/>
+                android:contentDescription="@string/description_icon"/>
 
             <LinearLayout
                 android:id="@+id/RTGroup"
@@ -60,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_retweet"
                     android:textSize="@dimen/text_RT_size"
-                    android:textColor="@color/text_date_color"
+                    android:textColor="@color/text_sub_color"
                     />
 
                 <TextView
@@ -68,8 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/test_rtcount"
-                    android:textColor="@color/text_date_color"
-
+                    android:textColor="@color/text_sub_color"
                     android:textSize="@dimen/text_RT_size"/>
 
             </LinearLayout>
@@ -83,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_favorite"
-                    android:textColor="@color/text_date_color"
+                    android:textColor="@color/text_sub_color"
                     android:textSize="@dimen/text_RT_size"
                     />
                 <TextView
@@ -92,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_RT_size"
                     android:text="@string/test_favcount"
-                    android:textColor="@color/text_date_color"
+                    android:textColor="@color/text_sub_color"
                     />
                 </LinearLayout>
         </LinearLayout>
@@ -102,8 +100,11 @@
             android:orientation="vertical"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
+            android:paddingStart="10dp"
             android:paddingRight="4dp"
-            android:layout_toRightOf="@id/top_left_layout">
+            android:paddingEnd="4dp"
+            android:layout_toRightOf="@id/top_left_layout"
+            android:layout_toEndOf="@id/top_left_layout">
 
             <TextView
                 android:id="@+id/name"
@@ -125,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/test_screenname_long"
                     android:textSize="@dimen/text_name_size"
-                    android:textColor="@color/text_name_color"
+                    android:textColor="@color/text_sub_color"
                     android:singleLine="true"
                     />
 
@@ -137,7 +138,7 @@
                     android:gravity="right"
                     android:textSize="@dimen/text_date_size"
                     android:singleLine="true"
-                    android:textColor="@color/text_date_color"/>
+                    android:textColor="@color/text_sub_color"/>
             </RelativeLayout>
 
             <TextView

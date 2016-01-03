@@ -1,7 +1,6 @@
 package com.signalyellow.tweetokashi.manager;
 
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.LruCache;
@@ -24,7 +23,7 @@ public class HaikuManager {
     static final int MAX_HAIKU = 1000; //count of max memorized haiku
     static final String TAG = "HaikuManager";
 
-    private String makeNoHaikuMessage = "できませんでした"; // message when manager can't make a haiku.
+    public static final String MAKE_NO_HAIKU_MESSAGE = "できませんでした"; // message when manager can't make a haiku.
 
     MorphologicalAnalysisByGooAPI mAnalyzer;
     LruCache<Long,String> mCache;
@@ -48,7 +47,7 @@ public class HaikuManager {
             return;
         }
 
-        if(haiku.equals(makeNoHaikuMessage)){
+        if(haiku.equals(MAKE_NO_HAIKU_MESSAGE)){
             textView.setVisibility(View.GONE);
             return;
         }
@@ -82,7 +81,7 @@ public class HaikuManager {
         @Override
         protected void onPostExecute(String s) {
             if(s == null){
-                mCache.put(mData.getTweetId(),makeNoHaikuMessage);
+                mCache.put(mData.getTweetId(), MAKE_NO_HAIKU_MESSAGE);
                 mTextView.setVisibility(View.GONE);
                 return;
             }else {

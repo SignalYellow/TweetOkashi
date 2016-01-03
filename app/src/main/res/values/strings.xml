@@ -14,6 +14,17 @@
     <string name="title_follow_count">フォロー</string>
     <string name="title_follower_count">フォロワー</string>
 
+    <string name="title_retweet_count">RT</string>
+    <string name="title_retweet_count_done">RT済</string>
+    <string name="title_fav_count">FAV</string>
+    <string name="title_fav_count_done">FAV済</string>
+
+    <string name="title_retweeted_by">さんがリツイート</string>
+
+    <string name="description_icon">画像</string>
+
+
+
 
     <!-- page name -->
     <string name="timeline_page_name">TIMELINE</string>
