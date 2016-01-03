@@ -119,6 +119,34 @@ public class HomeTimelineFragment extends Fragment
         new TimelineAsyncTask().execute();
     }
 
+
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        mIsRefreshing = refreshing;
+        mSwipeRefreshLayout.setRefreshing(refreshing);
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return mIsRefreshing;
+    }
+
+    @Override
+    public void scrolled() {
+        if(!mIsScrollable) return;
+
+        Paging paging = new Paging();
+        TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
+        paging.setMaxId(lastData.getTweetId() -1);
+        new TimelineAsyncTask(paging).execute();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        TweetData data = (TweetData) adapterView.getItemAtPosition(position);
+        mListener.onTimelineItemClick(data);
+    }
+
     private class TimelineAsyncTask extends AsyncTask<Void,Void,ResponseList<Status>> {
 
         Paging mPaging;
@@ -161,33 +189,6 @@ public class HomeTimelineFragment extends Fragment
         }
     }
 
-    @Override
-    public void setRefreshing(boolean refreshing) {
-        mIsRefreshing = refreshing;
-        mSwipeRefreshLayout.setRefreshing(refreshing);
-    }
-
-    @Override
-    public boolean isRefreshing() {
-        return mIsRefreshing;
-    }
-
-    @Override
-    public void scrolled() {
-        if(!mIsScrollable) return;
-
-        Paging paging = new Paging();
-        TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
-        paging.setMaxId(lastData.getTweetId() -1);
-        new TimelineAsyncTask(paging).execute();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        TweetData data = (TweetData) adapterView.getItemAtPosition(position);
-
-        mListener.onTimelineItemClick(data);
-    }
 
     class MyUserStreamAdapter extends UserStreamAdapter {
         @Override

@@ -32,15 +32,17 @@ import twitter4j.TwitterException;
 public class UserTimelineFragment extends Fragment
         implements AutoUpdateTimelineScrollable,SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener{
 
-    private static final String ARG_USER_DATA = "USER_DATA";
-    private static final String TAG = "UserTimeline";
-    private UserData mUserData;
-    TweetOkashiApplication mApp;
-    Twitter mTwitter;
-    TweetDataAdapter mAdapter;
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    private static final String TAG = UserTimelineFragment.class.getSimpleName();
 
-    boolean mIsRefreshing = false;
+    private static final String ARG_USER_DATA = "USER_DATA";
+    private UserData mUserData;
+
+    private TweetOkashiApplication mApp;
+    private TweetDataAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private boolean mIsRefreshing = false;
+    private boolean mIsScrollable = true;
 
     private OnFragmentResultListener mListener;
 
@@ -60,11 +62,11 @@ public class UserTimelineFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         if (getArguments() != null) {
             mUserData = (UserData)getArguments().getSerializable(ARG_USER_DATA);
         }
         mApp= (TweetOkashiApplication)getActivity().getApplicationContext();
-        mTwitter = mApp.getTwitterInstance();
     }
 
     @Override
@@ -98,18 +100,61 @@ public class UserTimelineFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-        new UserTimelineAsyncTask().execute();
+        if (mAdapter != null && mAdapter.getCount() == 0) {
+            new UserTimelineAsyncTask(mApp.getTwitterInstance()).execute();
+        }
     }
 
-    private class UserTimelineAsyncTask extends AsyncTask<Void,Void, ResponseList<Status>>{
-        Paging mPaging;
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
-        public UserTimelineAsyncTask() {
-            mPaging = null;
+    @Override
+    public void onRefresh() {
+        mIsScrollable = true;
+        new UserTimelineAsyncTask(mApp.getTwitterInstance()).execute();
+    }
+
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        mIsRefreshing = refreshing;
+        mSwipeRefreshLayout.setRefreshing(refreshing);
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return mIsRefreshing;
+    }
+
+    @Override
+    public void scrolled() {
+        if(!mIsScrollable) return;
+
+        Paging paging = new Paging();
+        TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
+        paging.setMaxId(lastData.getTweetId() - 1);
+        new UserTimelineAsyncTask(mApp.getTwitterInstance(), paging).execute();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TweetData data = (TweetData)parent.getItemAtPosition(position);
+        mListener.onTimelineItemClick(data);
+    }
+
+    private class UserTimelineAsyncTask extends AsyncTask<Void,Void,ResponseList<Status>>{
+        Paging mPaging;
+        Twitter mTwitter;
+
+        public UserTimelineAsyncTask(Twitter twitter) {
+            this(twitter,null);
         }
 
-        public UserTimelineAsyncTask(Paging paging) {
+        public UserTimelineAsyncTask(Twitter twitter, Paging paging) {
             mPaging = paging;
+            mTwitter = twitter;
         }
 
         @Override
@@ -122,7 +167,7 @@ public class UserTimelineFragment extends Fragment
         protected ResponseList<twitter4j.Status> doInBackground(Void... params) {
             try {
                 return mPaging == null ? mTwitter.getUserTimeline(mUserData.getUserId())
-                                       : mTwitter.getUserTimeline(mUserData.getUserId(),mPaging);
+                        : mTwitter.getUserTimeline(mUserData.getUserId(),mPaging);
             }catch (TwitterException e){
                 Log.e(TAG,e.toString());
                 return null;
@@ -141,43 +186,6 @@ public class UserTimelineFragment extends Fragment
             }
             setRefreshing(false);
         }
-    }
-
-
-    @Override
-    public void onRefresh() {
-        new UserTimelineAsyncTask().execute();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TweetData data = (TweetData)parent.getItemAtPosition(position);
-        mListener.onTimelineItemClick(data);
-    }
-
-    @Override
-    public void setRefreshing(boolean refreshing) {
-        mIsRefreshing = refreshing;
-        mSwipeRefreshLayout.setRefreshing(refreshing);
-    }
-
-    @Override
-    public boolean isRefreshing() {
-        return mIsRefreshing;
-    }
-
-    @Override
-    public void scrolled() {
-        Paging paging = new Paging();
-        TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
-        paging.setMaxId(lastData.getTweetId() -1);
-        new UserTimelineAsyncTask(paging).execute();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
 

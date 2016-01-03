@@ -27,22 +27,9 @@ import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
-import com.signalyellow.tweetokashi.async.DestroyAsyncTask;
-import com.signalyellow.tweetokashi.async.FavoriteAsyncTask;
-import com.signalyellow.tweetokashi.async.RetweetAsyncTask;
-import com.signalyellow.tweetokashi.async.TweetAsyncTask;
-import com.signalyellow.tweetokashi.data.STATUS;
-import com.signalyellow.tweetokashi.data.UserData;
-import com.signalyellow.tweetokashi.fragment.FavoriteListFragment;
-import com.signalyellow.tweetokashi.fragment.FollowUserFragment;
-import com.signalyellow.tweetokashi.fragment.FollowerFragment;
-import com.signalyellow.tweetokashi.fragment.HaikuSettingFragment;
-import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
-import com.signalyellow.tweetokashi.data.TweetData;
-import com.signalyellow.tweetokashi.fragment.SearchFragment;
-import com.signalyellow.tweetokashi.fragment.TweetDataDialogFragment;
-import com.signalyellow.tweetokashi.fragment.TweetFragment;
-import com.signalyellow.tweetokashi.fragment.UserTimelineFragment;
+import com.signalyellow.tweetokashi.async.*;
+import com.signalyellow.tweetokashi.data.*;
+import com.signalyellow.tweetokashi.fragment.*;
 import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.*;
@@ -215,6 +202,11 @@ public class HomeTimelineActivity extends AppCompatActivity
     @Override
     public void onUserDataDialogResult(UserData data) {
 
+    }
+
+    @Override
+    public void onResult(String message) {
+        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
 
     @Override

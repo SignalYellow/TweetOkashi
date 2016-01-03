@@ -108,8 +108,11 @@ public class TweetDataDialogFragment extends DialogFragment {
 
         if(mData.getRawUserId() == mApp.getUserData().getUserId()){
             // my tweet
-            adapter.add(STATUS.DELETE);
-
+            if (mData.isRetweeted()){
+                adapter.add(STATUS.UNRETWEET);
+            }else {
+                adapter.add(STATUS.DELETE);
+            }
         }else{
             // not my tweet
             if(mData.isRetweetedByMe()){

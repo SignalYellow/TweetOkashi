@@ -57,12 +57,12 @@ public class TweetData implements Serializable{
 
         this.status = status;
         this.retweetId = status.getCurrentUserRetweetId();
+
         try {
             this.rawUserId = status.getUser().getId();
         }catch (Exception e){
             this.rawUserId = -1;
             Log.e("aaa",status.getText());
-
         }
         if(status.getRetweetedStatus() != null){
             this.retweetId = status.getId();

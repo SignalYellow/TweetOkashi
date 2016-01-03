@@ -24,8 +24,6 @@
     <string name="description_icon">画像</string>
 
 
-
-
     <!-- page name -->
     <string name="timeline_page_name">TIMELINE</string>
 
@@ -316,6 +314,7 @@
     <string name="title_activity_base_list">BaseListActivity</string>
     <string name="title_activity_pra">PraActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 
 </resources>
