@@ -16,6 +16,7 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.data.UserDataAdapter;
+import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollListener;
 import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
 import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
@@ -36,6 +37,8 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
 
     private boolean mIsRefreshing = false;
     private boolean mIsScrollable = true;
+
+    private long mCursor;
 
 
     private OnFragmentResultListener mListener;
@@ -67,10 +70,16 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_follow_user, container, false);
+        View view =inflater.inflate(R.layout.fragment_home_timeline, container, false);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.refresh);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, android.R.color.holo_orange_dark);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
         ListView listView = (ListView)view.findViewById(R.id.listView);
         listView.setAdapter(mAdapter = new UserDataAdapter(getActivity()));
         listView.setOnItemClickListener(this);
+        listView.setOnScrollListener(new AutoUpdateTimelineScrollListener(this));
 
         return view;
     }
@@ -78,7 +87,7 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
     @Override
     public void onStart() {
         super.onStart();
-        new FollowerAsyncTask(mApp.getTwitterInstance()).execute(mApp.getUserData().getUserId());
+        new FollowerAsyncTask(mApp.getTwitterInstance(),mUserData).execute();
     }
 
     @Override
@@ -116,8 +125,9 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
 
     @Override
     public void scrolled() {
-        if(!mIsScrollable) return;
+        if(!mIsScrollable || mCursor == 0) return;
 
+        new FollowerAsyncTask(mApp.getTwitterInstance(),mUserData,mCursor).execute();
     }
 
     @Override
@@ -126,20 +136,33 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
         mListener.onUserItemClick(data);
     }
 
-    private class FollowerAsyncTask extends AsyncTask<Long,Void, PagableResponseList<User>> {
+    private class FollowerAsyncTask extends AsyncTask<Void,Void, PagableResponseList<User>> {
         Twitter mTwitter;
+        UserData mUserData;
+        long cursor;
 
-        public FollowerAsyncTask(Twitter twitter){
+
+        public FollowerAsyncTask(Twitter twitter,UserData userData) {
+            this(twitter,userData,-1);
+        }
+
+        public FollowerAsyncTask(Twitter twitter,UserData userData,long cursor){
             mTwitter = twitter;
+            mUserData = userData;
+            this.cursor = cursor;
         }
 
         @Override
-        protected PagableResponseList<User> doInBackground(Long... longs) {
-            Long userId = longs[0];
-            Long cursor = longs.length > 1 ? longs[1] : -1;
+        protected void onPreExecute() {
+            super.onPreExecute();
+            setRefreshing(true);
+        }
+
+        @Override
+        protected PagableResponseList<User> doInBackground(Void... voids) {
 
             try{
-                return mTwitter.getFollowersList(userId,cursor);
+                return mTwitter.getFollowersList(mUserData.getUserId(),cursor);
             }catch (TwitterException e){
                 Log.e(TAG,e.toString());
                 return null;
@@ -150,14 +173,19 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
         protected void onPostExecute(PagableResponseList<User> users) {
             super.onPostExecute(users);
 
-            for(User user: users){
-                mAdapter.add(new UserData(user));
+            if(users != null) {
+                if (cursor == -1) mAdapter.clear();
+                if (users.size() == 0) mIsScrollable = false;
+
+                mCursor = users.getNextCursor();
+                for (User user : users) {
+                    mAdapter.add(new UserData(user));
+                }
+                Log.d("onPost", mCursor + "");
+            }else{
+                Log.e(TAG,"null!");
             }
+            setRefreshing(false);
         }
     }
-
-
-
-
-
 }
