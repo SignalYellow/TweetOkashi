@@ -10,7 +10,11 @@ public enum STATUS {
     DELETE("削除する",R.drawable.icon_delete_64),
     FAV("いいね",R.drawable.icon_favorite_64),
     UNFAV("いいね取り消し",R.drawable.icon_not_favorite_64),
-    DETAIL("詳細",R.drawable.icon_books);
+    DETAIL("詳細",R.drawable.icon_books),
+    USER_TIMELINE("このユーザーのツイート",R.drawable.icon_not_favorite_64),
+    USER_FAVORITE("このユーザーのいいね",R.drawable.icon_reply_64),
+    USER_FOLLOW("このユーザーのフォロー",R.drawable.icon_retweet_64),
+    USER_FOLLOER("このユーザーのフォロワー",R.drawable.icon_tweet);
 
     private final String text;
     private final int drawableId;

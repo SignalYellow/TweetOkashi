@@ -32,6 +32,15 @@ public class TweetOkashiApplication extends Application{
         mLoadBitmapManger = new LoadBitmapManager();
     }
 
+
+    public void logout(){
+        TwitterUtils.deleteAccessToken(getApplicationContext());
+        mHaikuManger = new HaikuManager();
+        mLoadBitmapManger = new LoadBitmapManager();
+        mUserData = null;
+        mTwitter = null;
+    }
+
     public Twitter getTwitterInstance(){
         return mTwitter == null ? mTwitter = TwitterUtils.getTwitterInstance(this)
                                 : mTwitter;

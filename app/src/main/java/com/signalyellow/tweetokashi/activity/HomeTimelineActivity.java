@@ -1,14 +1,19 @@
 package com.signalyellow.tweetokashi.activity;
 
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +36,7 @@ import com.signalyellow.tweetokashi.async.*;
 import com.signalyellow.tweetokashi.data.*;
 import com.signalyellow.tweetokashi.fragment.*;
 import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
+import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.*;
 
@@ -354,9 +360,12 @@ public class HomeTimelineActivity extends AppCompatActivity
                 return true;
 
             case R.id.nav_logout:
+                new LogoutDialogFragment()
+                        .show(getFragmentManager(),LogoutDialogFragment.class.getSimpleName());
                 return true;
         }
         return false;
     }
+
 
 }

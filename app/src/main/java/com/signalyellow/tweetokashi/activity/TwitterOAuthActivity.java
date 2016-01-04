@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
 
-public class TwitterOAuthActivity extends Activity {
+public class TwitterOAuthActivity extends AppCompatActivity {
 
     private static final String TAG = "OauthActivity";
 
