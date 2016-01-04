@@ -47,7 +47,6 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
         // Required empty public constructor
     }
 
-
     public static FollowerFragment newInstance(UserData data) {
         FollowerFragment fragment = new FollowerFragment();
         Bundle args = new Bundle();

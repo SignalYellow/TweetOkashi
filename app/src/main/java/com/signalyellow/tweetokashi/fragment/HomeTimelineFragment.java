@@ -53,12 +53,6 @@ public class HomeTimelineFragment extends Fragment
 
         mApp= (TweetOkashiApplication)getActivity().getApplicationContext();
         mTwitter = mApp.getTwitterInstance();
-
-        if(mStream == null) {
-            mStream = TwitterUtils.getTwitterStreamInstance(getActivity());
-            mStream.addListener(new MyUserStreamAdapter());
-            //mStream.user();
-        }
     }
 
     @Override
@@ -98,6 +92,11 @@ public class HomeTimelineFragment extends Fragment
         if (mAdapter != null && mAdapter.getCount() == 0) {
             new TimelineAsyncTask().execute();
         }
+        if(mApp.doesStream() && mStream == null ) {
+            mStream = TwitterUtils.getTwitterStreamInstance(getActivity());
+            mStream.addListener(new MyUserStreamAdapter());
+            mStream.user();
+        }
     }
 
     @Override
@@ -110,7 +109,10 @@ public class HomeTimelineFragment extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        Log.d(TAG, "onDetach");
         if(mStream != null) mStream.shutdown();
+        mStream = null;
     }
 
     @Override

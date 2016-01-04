@@ -51,6 +51,11 @@ public class TweetOkashiApplication extends Application{
         return pref.getBoolean(this.getString(R.string.pref_key_haiku_generate),false);
     }
 
+    public boolean doesStream(){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        return pref.getBoolean(this.getString(R.string.pref_key_stream),false);
+    }
+
     public LoadBitmapManager getLoadBitmapManger() {
         return mLoadBitmapManger;
     }

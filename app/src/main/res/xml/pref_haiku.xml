@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="設定" >
+    <PreferenceCategory android:title="Twitterの設定" >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_stream"
+            android:summary="ストリームでの自分のタイムラインのデータ受信"
+            android:summaryOn="ストリームでデータを受信します"
+            android:summaryOff="ストリームでデータを受信しません"
+            android:title="タイムラインのストリーム"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="俳句の設定" >
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/pref_key_haiku_generate"
@@ -11,5 +22,4 @@
             android:title="俳句"
             />
     </PreferenceCategory>
-
 </PreferenceScreen>
