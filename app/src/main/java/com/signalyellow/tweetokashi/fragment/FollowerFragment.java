@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.signalyellow.tweetokashi.R;
@@ -21,7 +22,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
-public class FollowerFragment extends Fragment {
+public class FollowerFragment extends Fragment implements AdapterView.OnItemClickListener{
     private static final String TAG = "FollowerFrag";
     private UserDataAdapter mAdapter;
     private TweetOkashiApplication mApp;
@@ -58,6 +59,7 @@ public class FollowerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_follow_user, container, false);
         ListView listView = (ListView)view.findViewById(R.id.listView);
         listView.setAdapter(mAdapter = new UserDataAdapter(getActivity()));
+        listView.setOnItemClickListener(this);
 
         return view;
     }
@@ -83,6 +85,13 @@ public class FollowerFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        UserData data = (UserData)parent.getItemAtPosition(position);
+        mListener.onUserItemClick(data);
     }
 
     private class FollowerAsyncTask extends AsyncTask<Long,Void, PagableResponseList<User>> {
@@ -114,6 +123,8 @@ public class FollowerFragment extends Fragment {
             }
         }
     }
+
+
 
 
 

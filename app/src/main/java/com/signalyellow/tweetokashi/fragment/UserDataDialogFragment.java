@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.signalyellow.tweetokashi.R;
-import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.DialogItemAdapter;
 import com.signalyellow.tweetokashi.data.STATUS;
 import com.signalyellow.tweetokashi.data.UserData;
@@ -24,15 +23,12 @@ public class UserDataDialogFragment extends DialogFragment {
     private static final String ARG_USER_DATA = "UserData";
 
     private UserData mUserData;
-    private TweetOkashiApplication mApp;
 
     private OnFragmentResultListener mListener;
 
     public UserDataDialogFragment() {
         // should be empty
     }
-
-
 
     public static UserDataDialogFragment newInstance(UserData data) {
         UserDataDialogFragment fragment = new UserDataDialogFragment();
@@ -42,14 +38,12 @@ public class UserDataDialogFragment extends DialogFragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mUserData = (UserData)getArguments().getSerializable(ARG_USER_DATA);
         }
-        mApp = (TweetOkashiApplication)getActivity().getApplicationContext();
     }
 
     @Override

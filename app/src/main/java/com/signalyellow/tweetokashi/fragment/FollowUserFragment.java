@@ -74,6 +74,32 @@ public class FollowUserFragment extends Fragment
         new FollowUserAsyncTask(mApp.getTwitterInstance()).execute(mApp.getUserData().getUserId());
     }
 
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentResultListener) {
+            mListener = (OnFragmentResultListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG,"onItemClick");
+        UserData data = (UserData)parent.getItemAtPosition(position);
+        mListener.onUserItemClick(data);
+    }
+
     private class FollowUserAsyncTask extends AsyncTask<Long,Void, PagableResponseList<User>>{
 
         Twitter mTwitter;
@@ -105,28 +131,4 @@ public class FollowUserFragment extends Fragment
         }
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentResultListener) {
-            mListener = (OnFragmentResultListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG,"onItemClick");
-        UserData data = (UserData)parent.getItemAtPosition(position);
-        mListener.onUserItemClick(data);
-    }
 }
