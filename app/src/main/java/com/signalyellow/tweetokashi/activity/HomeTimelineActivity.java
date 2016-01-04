@@ -120,7 +120,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         followCountLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FollowUserFragment fragment = new FollowUserFragment();
+                FollowUserFragment fragment = FollowUserFragment.newInstance(mApp.getUserData());
                 replaceFragment(fragment, FollowUserFragment.class.getSimpleName());
             }
         });
@@ -128,7 +128,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         followerCountLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FollowerFragment fragment = new FollowerFragment();
+                FollowerFragment fragment = FollowerFragment.newInstance(mApp.getUserData());
                 replaceFragment(fragment, FollowerFragment.class.getSimpleName());
             }
         });

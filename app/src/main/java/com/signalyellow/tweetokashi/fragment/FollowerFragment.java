@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.data.UserDataAdapter;
+import com.signalyellow.tweetokashi.listener.AutoUpdateTimelineScrollable;
 import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.PagableResponseList;
@@ -22,11 +24,18 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
-public class FollowerFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class FollowerFragment extends Fragment implements AutoUpdateTimelineScrollable,SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener{
     private static final String TAG = "FollowerFrag";
+
+    private static final String ARG_USER_DATA = "USER_DATA";
+    private UserData mUserData;
+
     private UserDataAdapter mAdapter;
     private TweetOkashiApplication mApp;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
+    private boolean mIsRefreshing = false;
+    private boolean mIsScrollable = true;
 
 
     private OnFragmentResultListener mListener;
@@ -36,9 +45,10 @@ public class FollowerFragment extends Fragment implements AdapterView.OnItemClic
     }
 
 
-    public static FollowerFragment newInstance() {
+    public static FollowerFragment newInstance(UserData data) {
         FollowerFragment fragment = new FollowerFragment();
         Bundle args = new Bundle();
+        args.putSerializable(ARG_USER_DATA,data);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,6 +57,7 @@ public class FollowerFragment extends Fragment implements AdapterView.OnItemClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mUserData = (UserData)getArguments().getSerializable(ARG_USER_DATA);
         }
         mApp = (TweetOkashiApplication)getActivity().getApplicationContext();
 
@@ -87,6 +98,27 @@ public class FollowerFragment extends Fragment implements AdapterView.OnItemClic
         mListener = null;
     }
 
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        mIsRefreshing = refreshing;
+        mSwipeRefreshLayout.setRefreshing(refreshing);
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return mIsRefreshing;
+    }
+
+    @Override
+    public void onRefresh() {
+        setRefreshing(false);
+    }
+
+    @Override
+    public void scrolled() {
+        if(!mIsScrollable) return;
+
+    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

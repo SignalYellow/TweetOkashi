@@ -20,7 +20,7 @@ import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 public class UserDataDialogFragment extends DialogFragment {
 
     private static final String TAG = UserDataDialogFragment.class.getSimpleName();
-    private static final String ARG_USER_DATA = "UserData";
+    private static final String ARG_USER_DATA = "USER_DATA";
 
     private UserData mUserData;
 

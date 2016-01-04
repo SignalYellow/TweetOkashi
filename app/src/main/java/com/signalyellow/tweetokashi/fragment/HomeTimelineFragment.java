@@ -57,7 +57,7 @@ public class HomeTimelineFragment extends Fragment
         if(mStream == null) {
             mStream = TwitterUtils.getTwitterStreamInstance(getActivity());
             mStream.addListener(new MyUserStreamAdapter());
-            mStream.user();
+            //mStream.user();
         }
     }
 
