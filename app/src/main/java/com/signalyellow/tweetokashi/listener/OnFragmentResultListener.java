@@ -8,5 +8,5 @@ public interface OnFragmentResultListener extends OnAsyncResultListener{
     void onTimelineItemClick(TweetData data);
     void onUserItemClick(UserData data);
     void onTweetDataDialogResult(TweetData data, STATUS status);
-    void onUserDataDialogResult(UserData data);
+    void onUserDataDialogResult(UserData data, STATUS status);
 }

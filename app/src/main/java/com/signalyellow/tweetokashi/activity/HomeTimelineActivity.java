@@ -1,30 +1,22 @@
 package com.signalyellow.tweetokashi.activity;
 
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,13 +24,29 @@ import android.widget.Toast;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
-import com.signalyellow.tweetokashi.async.*;
-import com.signalyellow.tweetokashi.data.*;
-import com.signalyellow.tweetokashi.fragment.*;
+import com.signalyellow.tweetokashi.async.DestroyAsyncTask;
+import com.signalyellow.tweetokashi.async.FavoriteAsyncTask;
+import com.signalyellow.tweetokashi.async.RetweetAsyncTask;
+import com.signalyellow.tweetokashi.async.TweetAsyncTask;
+import com.signalyellow.tweetokashi.data.STATUS;
+import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.data.UserData;
+import com.signalyellow.tweetokashi.fragment.FavoriteListFragment;
+import com.signalyellow.tweetokashi.fragment.FollowUserFragment;
+import com.signalyellow.tweetokashi.fragment.FollowerFragment;
+import com.signalyellow.tweetokashi.fragment.HaikuSettingFragment;
+import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
+import com.signalyellow.tweetokashi.fragment.LogoutDialogFragment;
+import com.signalyellow.tweetokashi.fragment.SearchFragment;
+import com.signalyellow.tweetokashi.fragment.TweetDataDialogFragment;
+import com.signalyellow.tweetokashi.fragment.TweetFragment;
+import com.signalyellow.tweetokashi.fragment.UserDataDialogFragment;
+import com.signalyellow.tweetokashi.fragment.UserTimelineFragment;
 import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
-import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
-import twitter4j.*;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 public class HomeTimelineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , OnFragmentResultListener {
@@ -202,12 +210,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
     @Override
     public void onUserItemClick(UserData data) {
-
-    }
-
-    @Override
-    public void onUserDataDialogResult(UserData data) {
-
+        UserDataDialogFragment.newInstance(data).show(getFragmentManager(), "userDialog" + data.getUserId());
     }
 
     @Override
@@ -241,7 +244,10 @@ public class HomeTimelineActivity extends AppCompatActivity
             default:
                 break;
         }
+    }
 
+    @Override
+    public void onUserDataDialogResult(UserData data, STATUS status) {
 
     }
 
@@ -361,7 +367,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
             case R.id.nav_logout:
                 new LogoutDialogFragment()
-                        .show(getFragmentManager(),LogoutDialogFragment.class.getSimpleName());
+                        .show(getFragmentManager(), LogoutDialogFragment.class.getSimpleName());
                 return true;
         }
         return false;

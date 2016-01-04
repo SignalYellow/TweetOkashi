@@ -15,37 +15,39 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.DialogItemAdapter;
 import com.signalyellow.tweetokashi.data.STATUS;
-import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
+public class UserDataDialogFragment extends DialogFragment {
 
-public class TweetDataDialogFragment extends DialogFragment {
+    private static final String TAG = UserDataDialogFragment.class.getSimpleName();
+    private static final String ARG_USER_DATA = "UserData";
 
-    private static final String TAG = TweetDataDialogFragment.class.getSimpleName();
-    private static final String ARG_TWEET_DATA = "tweetData";
-
-    private TweetData mData;
+    private UserData mUserData;
     private TweetOkashiApplication mApp;
 
     private OnFragmentResultListener mListener;
 
-    public TweetDataDialogFragment() {
-        // Required empty public constructor
+    public UserDataDialogFragment() {
+        // should be empty
     }
 
-    public static TweetDataDialogFragment newInstance(TweetData data) {
-        TweetDataDialogFragment fragment = new TweetDataDialogFragment();
+
+
+    public static UserDataDialogFragment newInstance(UserData data) {
+        UserDataDialogFragment fragment = new UserDataDialogFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_TWEET_DATA, data);
+        args.putSerializable(ARG_USER_DATA, data);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mData = (TweetData)getArguments().getSerializable(ARG_TWEET_DATA);
+            mUserData = (UserData)getArguments().getSerializable(ARG_USER_DATA);
         }
         mApp = (TweetOkashiApplication)getActivity().getApplicationContext();
     }
@@ -65,13 +67,13 @@ public class TweetDataDialogFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 STATUS item = (STATUS) parent.getItemAtPosition(position);
-                mListener.onTweetDataDialogResult(mData, item);
+                mListener.onUserDataDialogResult(mUserData, item);
                 getDialog().dismiss();
             }
         });
 
         AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity());
-        builder.setTitle(mData.getName());
+        builder.setTitle(mUserData.getUserName());
         builder.setView(view);
         return  builder.create();
     }
@@ -94,32 +96,9 @@ public class TweetDataDialogFragment extends DialogFragment {
     }
 
     private void setDataToAdapter(DialogItemAdapter adapter){
-
-        if(mApp.doesMakeHaiku() && mData.getHaiku() != null && !mData.getHaiku().equals(mApp.getHaikuManger().MAKE_NO_HAIKU_MESSAGE)){
-            adapter.add(STATUS.HAIKURETWEET);
-        }
-        adapter.add(STATUS.REPLY);
-
-        if(mData.isFavoritedByMe()){
-            adapter.add(STATUS.UNFAV);
-        }else {
-            adapter.add(STATUS.FAV);
-        }
-
-        if(mData.getRawUserId() == mApp.getUserData().getUserId()){
-            // my tweet
-            if (mData.isRetweeted()){
-                adapter.add(STATUS.UNRETWEET);
-            }else {
-                adapter.add(STATUS.DELETE);
-            }
-        }else{
-            // not my tweet
-            if(mData.isRetweetedByMe()){
-                adapter.add(STATUS.UNRETWEET);
-            }else {
-                adapter.add(STATUS.RETWEET);
-            }
-        }
+        adapter.add(STATUS.USER_TIMELINE);
+        adapter.add(STATUS.USER_FOLLOW);
+        adapter.add(STATUS.USER_FOLLOER);
+        adapter.add(STATUS.USER_FAVORITE);
     }
 }

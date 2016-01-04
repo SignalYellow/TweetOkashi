@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.data.UserDataAdapter;
+import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
@@ -22,11 +24,12 @@ import twitter4j.TwitterException;
 import twitter4j.User;
 
 
-public class FollowUserFragment extends Fragment {
+public class FollowUserFragment extends Fragment
+        implements AdapterView.OnItemClickListener{
 
     private static final String TAG = "FollowUserFragment";
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentResultListener mListener;
 
     TweetOkashiApplication mApp;
     private UserDataAdapter mAdapter;
@@ -60,6 +63,7 @@ public class FollowUserFragment extends Fragment {
 
         ListView listView = (ListView)view.findViewById(R.id.listView);
         listView.setAdapter(mAdapter = new UserDataAdapter(getActivity()));
+        listView.setOnItemClickListener(this);
 
         return view;
     }
@@ -105,11 +109,11 @@ public class FollowUserFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnFragmentResultListener) {
+            mListener = (OnFragmentResultListener) context;
         } else {
-            /*throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");*/
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -119,8 +123,10 @@ public class FollowUserFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG,"onItemClick");
+        UserData data = (UserData)parent.getItemAtPosition(position);
+        mListener.onUserItemClick(data);
     }
 }

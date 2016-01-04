@@ -16,6 +16,8 @@ public class UserData implements Serializable {
     private int followerCount;
     private String description;
 
+    private String haiku;
+
     public UserData(User user) {
         this.userId = user.getId();
         this.userName = user.getName();
@@ -61,4 +63,7 @@ public class UserData implements Serializable {
         return followerCount;
     }
 
+    public String getHaiku() {
+        return haiku;
+    }
 }
