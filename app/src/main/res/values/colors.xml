@@ -23,16 +23,24 @@
     <color name="kimidori">#b8d200</color>
     <color name="kikyonezu">#95949a</color>
     <color name="chigusanezu">#bed3ca</color>
+    <color name="transparent">#00000000</color>
+
+
+    <!-- icon image color -->
+
+
+    <color name="icon_retweet">#38b48b</color>
+    <color name="icon_favorite">#e9546b</color>
+    <color name="icon_reply">#2ca9e1</color>
+    <color name="icon_user">#f08300</color>
+    <color name="icon_not">#95949a</color>
+
 
     <!-- End -->
 
 
     <color name="glycine">#D775C0</color>
 
-    <color name="icon_retweet">#38b48b</color>
-    <color name="icon_favorite">#e9546b</color>
-    <color name="icon_reply">#2ca9e1</color>
-    <color name="icon_not">#95949a</color>
 
     <color name="kyomurasaki">#9d5b8b</color>
 
@@ -45,7 +53,6 @@
     <color name="white_out">#33ffffff</color>
     <color name="white">#fff</color>
 
-    <color name="transparent">#00000000</color>
 
 
 

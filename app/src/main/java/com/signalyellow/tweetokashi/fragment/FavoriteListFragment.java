@@ -150,6 +150,7 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
             this.mPaging = paging;
         }
 
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -159,7 +160,11 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
         @Override
         protected ResponseList<twitter4j.Status> doInBackground(Void... voids) {
             try{
-                return mPaging == null ? mTwitter.getFavorites() : mTwitter.getFavorites(mPaging);
+                if(mUserData == null) {
+                    return mPaging == null ? mTwitter.getFavorites() : mTwitter.getFavorites(mPaging);
+                }else{
+                    return mPaging == null ? mTwitter.getFavorites(mUserData.getUserId()) : mTwitter.getFavorites(mUserData.getUserId(),mPaging);
+                }
             }catch (TwitterException e){
                 Log.e(TAG, e.toString());
                 return null;
@@ -170,6 +175,7 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
         protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
             Log.d(TAG, "debug");
             if(statuses != null){
+                Log.d(TAG,statuses.size() + "");
                 if(statuses.size() == 0) mIsScrollable = false;
                 if(mPaging == null ) mAdapter.clear();
 
@@ -177,11 +183,10 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
                     mAdapter.add(new TweetData(status));
                 }
             }else {
+                mIsScrollable = false;
                 mListener.onResult(getString(R.string.error_twitter_exception));
             }
             setRefreshing(false);
         }
     }
-
-
 }

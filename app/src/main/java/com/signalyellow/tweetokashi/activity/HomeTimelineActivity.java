@@ -243,6 +243,7 @@ public class HomeTimelineActivity extends AppCompatActivity
                 new DestroyAsyncTask(twitter,data).execute();
                 break;
 
+
             default:
                 break;
         }
@@ -255,6 +256,9 @@ public class HomeTimelineActivity extends AppCompatActivity
         switch (status){
             case USER_TIMELINE:
                 replaceFragment(UserTimelineFragment.newInstance(data),UserTimelineFragment.class.getSimpleName());
+                break;
+            case USER_FAVORITE:
+                replaceFragment(FavoriteListFragment.newInstance(data),UserTimelineFragment.class.getSimpleName());
                 break;
         }
 

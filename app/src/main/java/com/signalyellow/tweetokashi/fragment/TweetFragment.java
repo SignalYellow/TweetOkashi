@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.async.TweetAsyncTask;
+import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.view.DeletableImageView;
 
 
@@ -33,6 +34,8 @@ import java.util.List;
 public class TweetFragment extends Fragment implements DeletableImageView.OnViewDeleteListener{
 
     private static final String TAG = "TweetFragment";
+
+    private static final String ARG_TWEET_DATA="TWEET_DATA";
 
     static final int SELECT_PIC = 1;
 
@@ -49,6 +52,14 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
 
     public TweetFragment() {
         // Required empty public constructor
+    }
+
+    public static TweetFragment newInstance(TweetData data) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_TWEET_DATA,data);
+        TweetFragment fragment = new TweetFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
