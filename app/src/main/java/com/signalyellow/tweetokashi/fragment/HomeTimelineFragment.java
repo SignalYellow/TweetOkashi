@@ -186,6 +186,8 @@ public class HomeTimelineFragment extends Fragment
                 for(twitter4j.Status s : statuses){
                     mAdapter.add(new TweetData(s));
                 }
+            }else{
+                mListener.onResult(getString(R.string.error_twitter_exception));
             }
             setRefreshing(false);
         }

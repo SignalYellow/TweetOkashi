@@ -23,6 +23,9 @@
 
     <string name="description_icon">画像</string>
 
+    <!-- システム エラー　-->
+    <string name="error_twitter_exception">ツイッターエラー</string>
+
     <!-- -->
 
     <!-- page name -->

@@ -182,7 +182,7 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
                 }
                 Log.d("onPost", mCursor + "");
             }else{
-                Log.e(TAG,"null!");
+                mListener.onResult(getString(R.string.error_twitter_exception));
             }
             setRefreshing(false);
         }

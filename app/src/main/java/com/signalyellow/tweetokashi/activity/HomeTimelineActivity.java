@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -241,6 +242,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             case DELETE:
                 new DestroyAsyncTask(twitter,data).execute();
                 break;
+
             default:
                 break;
         }
@@ -248,6 +250,13 @@ public class HomeTimelineActivity extends AppCompatActivity
 
     @Override
     public void onUserDataDialogResult(UserData data, STATUS status) {
+        Log.d(TAG,status.getText());
+
+        switch (status){
+            case USER_TIMELINE:
+                replaceFragment(UserTimelineFragment.newInstance(data),UserTimelineFragment.class.getSimpleName());
+                break;
+        }
 
     }
 

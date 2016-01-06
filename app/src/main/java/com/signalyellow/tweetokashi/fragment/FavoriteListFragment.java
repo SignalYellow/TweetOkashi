@@ -26,6 +26,7 @@ import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 
 public class FavoriteListFragment extends Fragment
@@ -159,7 +160,7 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
         protected ResponseList<twitter4j.Status> doInBackground(Void... voids) {
             try{
                 return mPaging == null ? mTwitter.getFavorites() : mTwitter.getFavorites(mPaging);
-            }catch (Exception e){
+            }catch (TwitterException e){
                 Log.e(TAG, e.toString());
                 return null;
             }
@@ -167,7 +168,7 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
 
         @Override
         protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
-            Log.d(TAG,"debug");
+            Log.d(TAG, "debug");
             if(statuses != null){
                 if(statuses.size() == 0) mIsScrollable = false;
                 if(mPaging == null ) mAdapter.clear();
@@ -175,6 +176,8 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
                 for(twitter4j.Status status:statuses){
                     mAdapter.add(new TweetData(status));
                 }
+            }else {
+                mListener.onResult(getString(R.string.error_twitter_exception));
             }
             setRefreshing(false);
         }
