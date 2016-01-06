@@ -91,8 +91,6 @@ public class UserDataDialogFragment extends DialogFragment {
 
     private void setDataToAdapter(DialogItemAdapter adapter){
         adapter.add(STATUS.USER_TIMELINE);
-        adapter.add(STATUS.USER_FOLLOW);
-        adapter.add(STATUS.USER_FOLLOER);
         adapter.add(STATUS.USER_FAVORITE);
     }
 }

@@ -121,5 +121,7 @@ public class TweetDataDialogFragment extends DialogFragment {
                 adapter.add(STATUS.RETWEET);
             }
         }
+
+        adapter.add(STATUS.USER_TIMELINE);
     }
 }

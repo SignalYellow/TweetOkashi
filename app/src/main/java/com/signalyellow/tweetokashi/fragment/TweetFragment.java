@@ -49,6 +49,7 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
     List<String> imgStringList = new ArrayList<>();
 
     TweetOkashiApplication mApp;
+    TweetData mData;
 
     public TweetFragment() {
         // Required empty public constructor
@@ -65,6 +66,9 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mData = (TweetData)getArguments().getSerializable(ARG_TWEET_DATA);
+        }
         mApp = (TweetOkashiApplication)getActivity().getApplicationContext();
         Log.d(TAG,"onCreate");
     }
@@ -84,9 +88,10 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
         tweetButton.setOnClickListener(new OnTweetButtonClickListener());
         imageButton.setOnClickListener(new OnImageAddButtonClickListener());
 
+        if(mData != null) tweetEditText.setText("@" + mData.getScreenName() + " ");
+
         return view;
     }
-
 
     private class OnTweetButtonClickListener implements View.OnClickListener{
         @Override
@@ -107,12 +112,14 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
                 return;
             }
 
-            TweetAsyncTask tweetAsyncTask = new TweetAsyncTask(mApp.getTwitterInstance(), text);
+
+            TweetAsyncTask tweetAsyncTask = new TweetAsyncTask(mApp.getTwitterInstance(), text
+                    , mData == null ? null : mData.getTweetId());
 
             if(imgStringList.size() == 0) {
                 tweetAsyncTask.execute();
             }else{
-                tweetAsyncTask.execute((String[])imgStringList.toArray(new String[0]));
+                tweetAsyncTask.execute((String[])imgStringList.toArray(new String[4]));
             }
         }
     }
@@ -120,9 +127,7 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
     private class OnImageAddButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-
             startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), SELECT_PIC);
-
         }
     }
 
@@ -135,25 +140,20 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
         }
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             mCountTextView.setText(String.valueOf(s.length()));
         }
-
         @Override
-        public void afterTextChanged(Editable s) {
-
-        }
+        public void afterTextChanged(Editable s) {}
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG,requestCode +" " + requestCode);
+        Log.d(TAG, requestCode + " " + requestCode);
         if(resultCode == Activity.RESULT_OK){
             if(requestCode == SELECT_PIC){
                 Uri uri = data.getData();
@@ -182,17 +182,6 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
         imgStringList.remove(tag);
         parentLayout.removeView(v);
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
 
 
 }

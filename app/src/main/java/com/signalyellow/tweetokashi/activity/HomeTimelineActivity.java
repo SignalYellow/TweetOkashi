@@ -4,6 +4,7 @@ package com.signalyellow.tweetokashi.activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -98,7 +99,8 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 TweetFragment fragment = new TweetFragment();
-                replaceFragment(fragment, TweetFragment.class.getSimpleName());
+                startActivity(new Intent(getApplicationContext(),TweetPostActivity.class));
+                //replaceFragment(fragment, TweetFragment.class.getSimpleName());
             }
         });
     }
@@ -242,8 +244,13 @@ public class HomeTimelineActivity extends AppCompatActivity
             case DELETE:
                 new DestroyAsyncTask(twitter,data).execute();
                 break;
-
-
+            case USER_TIMELINE:
+                replaceFragment(UserTimelineFragment.newInstance(data.getUserData()),UserTimelineFragment.class.getSimpleName());
+                break;
+            case REPLY:
+                Intent intent = new Intent(getApplicationContext(),TweetPostActivity.class);
+                intent.putExtra(TweetPostActivity.ARG_TWEET_DATA,data);
+                startActivity(intent);
             default:
                 break;
         }

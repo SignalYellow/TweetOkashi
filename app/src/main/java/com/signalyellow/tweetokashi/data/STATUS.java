@@ -11,7 +11,7 @@ public enum STATUS {
     FAV("いいね",R.drawable.icon_favorite_64),
     UNFAV("いいね取り消し",R.drawable.icon_not_favorite_64),
     DETAIL("詳細",R.drawable.icon_books),
-    USER_TIMELINE("このユーザーのつぶやき",R.drawable.icon_user_64),
+    USER_TIMELINE("このユーザーのつぶやき",R.drawable.icon_comment_64),
     USER_FAVORITE("このユーザーのいいね",R.drawable.icon_favorite_64),
     USER_FOLLOW("このユーザーのフォロー",R.drawable.icon_retweet_64),
     USER_FOLLOER("このユーザーのフォロワー",R.drawable.icon_tweet);

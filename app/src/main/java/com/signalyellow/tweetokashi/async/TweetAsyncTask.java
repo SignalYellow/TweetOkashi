@@ -17,10 +17,16 @@ public class TweetAsyncTask extends AsyncTask<String ,Void, Status> {
 
     private Twitter mTwitter;
     private String mText;
+    private Long mReplyId;
 
     public TweetAsyncTask(Twitter twitter, String text) {
+        this(twitter,text,null);
+    }
+
+    public TweetAsyncTask(Twitter twitter,String text,Long replyId){
         mTwitter = twitter;
         mText = text;
+        mReplyId = replyId;
     }
 
     @Override
@@ -39,6 +45,7 @@ public class TweetAsyncTask extends AsyncTask<String ,Void, Status> {
                 }
                 statusUpdate.setMediaIds(mediaIds);
             }
+            if(mReplyId != null) statusUpdate.setInReplyToStatusId(mReplyId);
             return mTwitter.updateStatus(statusUpdate);
         }catch (Exception e){
             Log.e(TAG,e.toString());

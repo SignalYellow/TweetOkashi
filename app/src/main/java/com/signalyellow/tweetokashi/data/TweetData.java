@@ -219,4 +219,8 @@ public class TweetData implements Serializable{
     public String getHaikuRetweetText(){
         return haiku + HAIKU_TAG + getUrlForQuote();
     }
+
+    public UserData getUserData() {
+        return userData;
+    }
 }
