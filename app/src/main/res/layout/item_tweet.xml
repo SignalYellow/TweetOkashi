@@ -42,11 +42,10 @@
             android:id="@+id/top_left_layout"
             android:orientation="vertical">
 
-            <ImageView
+            <com.loopj.android.image.SmartImageView
                 android:id="@+id/icon"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:src="@mipmap/ic_launcher"
                 android:contentDescription="@string/description_icon"/>
 
             <LinearLayout
@@ -181,7 +180,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/haiku_text">
-        <ImageView
+        <com.loopj.android.image.SmartImageView
             android:id="@+id/imageView1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -1,45 +1,44 @@
 package com.signalyellow.tweetokashi.data;
 
-import android.media.Image;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 
-
-/**
- * Created by shohei on 15/12/14.
- */
 class TweetDataViewHolder {
+    //BASE
     public TextView textUserName;
     public TextView textScreenName;
     public TextView textDate;
     public TextView textContent;
+    public SmartImageView imageThumbnail;
 
+    //RT by
     public ViewGroup RTbyTextGroup;
     public TextView textRTbyUserName;
-
+    //RT
     public ViewGroup RTViewGroup;
     public TextView textRetweetTitle;
     public TextView textRetweetedCount;
-
+    //FAV
     public ViewGroup FAVViewGroup;
     public TextView textFavoritedTitle;
     public TextView textFavoritedCount;
-
+    //Haiku
     public TextView textHaiku;
 
-    public ImageView imageThumbnail;
-
+    //Quote
     public ViewGroup quotedTweetLayout;
     public TextView textQuotedUserName;
     public TextView textQuotedScreenName;
     public TextView textQuotedDate;
     public TextView textQuotedText;
 
+    //Image
     public ViewGroup imageGroupLayout;
-    public ImageView imageView;
+    public SmartImageView imageView;
 
 
     public void setRTbyView(ViewGroup viewGroup){

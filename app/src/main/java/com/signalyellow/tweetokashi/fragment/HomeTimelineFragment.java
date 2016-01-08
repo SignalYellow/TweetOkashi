@@ -25,7 +25,6 @@ import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 import twitter4j.*;
 
-
 public class HomeTimelineFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable, AdapterView.OnItemClickListener{
 
@@ -92,9 +91,9 @@ public class HomeTimelineFragment extends Fragment
             new TimelineAsyncTask().execute();
         }
         if(mApp.doesStream() && mStream == null ) {
-            /*mStream = TwitterUtils.getTwitterStreamInstance(getActivity());
+            mStream = TwitterUtils.getTwitterStreamInstance(getActivity());
             mStream.addListener(new MyUserStreamAdapter());
-            mStream.user();*/
+            mStream.user();
         }
     }
 

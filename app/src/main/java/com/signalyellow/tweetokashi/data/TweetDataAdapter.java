@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
@@ -50,11 +51,11 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
             viewHolder.textScreenName = (TextView)view.findViewById(R.id.screen_name);
             viewHolder.textContent = (TextView)view.findViewById(R.id.text);
             viewHolder.textHaiku = (TextView)view.findViewById(R.id.haiku_text);
-            viewHolder.imageThumbnail = (ImageView)view.findViewById(R.id.icon);
+            viewHolder.imageThumbnail = (SmartImageView)view.findViewById(R.id.icon);
             viewHolder.textDate = (TextView)view.findViewById(R.id.datetime);
             viewHolder.setQuotedTweetView((ViewGroup) view.findViewById(R.id.quoted_tweet_layout));
             viewHolder.imageGroupLayout = (ViewGroup)view.findViewById(R.id.picture_group_layout);
-            viewHolder.imageView = (ImageView)view.findViewById(R.id.imageView1);
+            viewHolder.imageView = (SmartImageView)view.findViewById(R.id.imageView1);
             viewHolder.setRTbyView((ViewGroup)view.findViewById(R.id.RTbyTextGroup));
             viewHolder.setRTViewGroup((ViewGroup) view.findViewById(R.id.RTGroup));
             viewHolder.setFAVViewGroup((ViewGroup)view.findViewById(R.id.FavGroup));
@@ -73,12 +74,10 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         setRetweetedCount(data, viewHolder);
         setFavoritedCount(data, viewHolder);
         setPictures(data, viewHolder);
-        setHaiku(data,viewHolder);
-        setRetweetedByText(data,viewHolder);
+        setHaiku(data, viewHolder);
+        setRetweetedByText(data, viewHolder);
 
-        viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
-        mApp.getLoadBitmapManger().downloadBitmap(viewHolder.imageThumbnail, data.getProfileImageURL());
-
+        viewHolder.imageThumbnail.setImageUrl(data.getProfileImageURL());
 
         return view;
     }
@@ -157,8 +156,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
 
         MediaEntity[] entities  = data.getMediaURLs();
         MediaEntity entity = entities[0];
-        holder.imageView.setTag(entity.getMediaURL());
-        mApp.getLoadBitmapManger().downloadBitmap(holder.imageView, entity.getMediaURL());
+        holder.imageView.setImageUrl(entity.getMediaURL());
     }
 
     private void setHaiku(TweetData data, TweetDataViewHolder holder){

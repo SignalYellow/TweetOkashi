@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
@@ -18,7 +19,7 @@ import com.signalyellow.tweetokashi.manager.LoadBitmapManager;
 
 public class UserDataAdapter extends ArrayAdapter<UserData>{
 
-    private LoadBitmapManager mLoadBitmapManager;
+
     private HaikuManager mHaikuManager;
 
     public UserDataAdapter(Context context){
@@ -29,7 +30,6 @@ public class UserDataAdapter extends ArrayAdapter<UserData>{
         super(context, resource);
 
         TweetOkashiApplication app = (TweetOkashiApplication)context.getApplicationContext();
-        mLoadBitmapManager = app.getLoadBitmapManger();
         mHaikuManager = app.getHaikuManger();
     }
 
@@ -47,7 +47,7 @@ public class UserDataAdapter extends ArrayAdapter<UserData>{
 
             viewHolder.textUserName = (TextView)view.findViewById(R.id.name);
             viewHolder.textScreenName = (TextView)view.findViewById(R.id.screen_name);
-            viewHolder.imageThumbnail = (ImageView)view.findViewById(R.id.icon);
+            viewHolder.imageThumbnail = (SmartImageView)view.findViewById(R.id.icon);
             viewHolder.textDescription = (TextView)view.findViewById(R.id.introduction);
             viewHolder.textHaiku  = (TextView)view.findViewById(R.id.haiku_text);
 
@@ -59,9 +59,7 @@ public class UserDataAdapter extends ArrayAdapter<UserData>{
         viewHolder.textUserName.setText(data.getUserName());
         viewHolder.textScreenName.setText("@" + data.getScreenName());
         viewHolder.textDescription.setText(data.getDescription());
-
-        viewHolder.imageThumbnail.setTag(data.getProfileImageURL());
-        mLoadBitmapManager.downloadBitmap(viewHolder.imageThumbnail,data.getProfileImageURL());
+        viewHolder.imageThumbnail.setImageUrl(data.getProfileImageURL());
 
         viewHolder.textHaiku.setVisibility(View.GONE);
 
