@@ -75,37 +75,31 @@ public class HomeTimelineActivity extends AppCompatActivity
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        if(mApp.getUserData() == null) {
+        if (mApp.getUserData() == null) {
             new UserAsyncTask(getApplicationContext(), new UserAsyncTask.UserAsyncTaskListener() {
                 @Override
                 public void onFinish(UserData data) {
-                    if (data != null)
-                    setNavigationHeader(navigationView.getHeaderView(0));
+                    if (data != null) setNavigationHeader(navigationView.getHeaderView(0));
                 }
             }).execute();
-            //new UserAsyncTask(getApplicationContext(), navigationView.getHeaderView(0)).execute();
-        }else{
+        } else {
             setNavigationHeader(navigationView.getHeaderView(0));
         }
 
+        if (findViewById(R.id.fragment_container) != null
+                && getFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName()) == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, new HomeTimelineFragment(), HomeTimelineFragment.class.getSimpleName())
+                    .addToBackStack(null)
+                    .commit();
 
-        if (savedInstanceState == null) {
-            if (findViewById(R.id.fragment_container) != null
-                    && getFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName()) == null) {
+            if (findViewById(R.id.fragment_container_sub) != null) {
+                Log.d(TAG, "land");
+
                 getFragmentManager().beginTransaction()
-                        .add(R.id.fragment_container, new HomeTimelineFragment(), HomeTimelineFragment.class.getSimpleName())
+                        .add(R.id.fragment_container_sub, new FavoriteListFragment(), FavoriteListFragment.class.getSimpleName())
                         .addToBackStack(null)
                         .commit();
-
-                if(findViewById(R.id.fragment_container_sub) != null){
-                    Log.d(TAG, "land");
-
-                    getFragmentManager().beginTransaction()
-                            .add(R.id.fragment_container_sub, new FavoriteListFragment(), FavoriteListFragment.class.getSimpleName())
-                            .addToBackStack(null)
-                            .commit();
-                }
             }
         }
 
@@ -115,7 +109,7 @@ public class HomeTimelineActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 TweetFragment fragment = new TweetFragment();
-                startActivity(new Intent(getApplicationContext(),TweetPostActivity.class));
+                startActivity(new Intent(getApplicationContext(), TweetPostActivity.class));
                 //replaceFragment(fragment, TweetFragment.class.getSimpleName());
             }
         });
@@ -260,8 +254,14 @@ public class HomeTimelineActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-           Toast.makeText(getApplicationContext(),"終了しますか？",Toast.LENGTH_SHORT).show();
+        }
+        else if(getFragmentManager().getBackStackEntryCount() > 1){
+            Log.d(TAG,"a");
+            getFragmentManager().popBackStack();
+        }
+        else {
+
+            Toast.makeText(getApplicationContext(),"終了しますか？",Toast.LENGTH_SHORT).show();
             super.onBackPressed();
         }
     }

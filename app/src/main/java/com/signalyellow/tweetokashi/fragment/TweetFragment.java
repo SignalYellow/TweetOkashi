@@ -88,8 +88,12 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
         tweetButton.setOnClickListener(new OnTweetButtonClickListener());
         imageButton.setOnClickListener(new OnImageAddButtonClickListener());
 
-        if(mData != null) tweetEditText.setText("@" + mData.getScreenName() + " ");
+        if(mData != null) {
+            String text = "@" + mData.getScreenName() + " ";
+            tweetEditText.setText(text);
+            tweetEditText.setSelection(text.length());
 
+        }
         return view;
     }
 
