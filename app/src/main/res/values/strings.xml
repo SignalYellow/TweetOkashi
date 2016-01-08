@@ -22,6 +22,7 @@
     <string name="title_retweeted_by">さんがリツイート</string>
 
     <string name="description_icon">画像</string>
+    <string name="at">\@%1$s</string>
 
     <!-- システム エラー　-->
     <string name="error_twitter_exception">ツイッターエラー</string>

@@ -7,15 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
-import com.signalyellow.tweetokashi.manager.HaikuManager;
-import com.signalyellow.tweetokashi.manager.LoadBitmapManager;
 
 import twitter4j.MediaEntity;
 
@@ -30,7 +27,6 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
 
     public TweetDataAdapter(Context context){
         super(context, R.layout.item_tweet);
-
         mApp = (TweetOkashiApplication)context.getApplicationContext();
     }
 
@@ -65,7 +61,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
             viewHolder = (TweetDataViewHolder)view.getTag();
         }
 
-        viewHolder.textScreenName.setText("@" + data.getScreenName());
+        viewHolder.textScreenName.setText(data.getAtScreenName());
         viewHolder.textUserName.setText(data.getName());
         viewHolder.textContent.setText(data.getText());
         viewHolder.textDate.setText(TimeUtils.getRelativeTime(data.getDate()));
@@ -91,7 +87,7 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
             holder.textQuotedText.setText(q.getText());
             holder.textQuotedDate.setText(TimeUtils.getRelativeTime(q.getDate()));
             holder.textQuotedUserName.setText(q.getName());
-            holder.textQuotedScreenName.setText("@" + q.getScreenName());
+            holder.textQuotedScreenName.setText(q.getAtScreenName());
             holder.quotedTweetLayout.setVisibility(View.VISIBLE);
         }
     }

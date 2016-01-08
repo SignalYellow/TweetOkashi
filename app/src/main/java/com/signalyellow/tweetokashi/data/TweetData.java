@@ -126,6 +126,10 @@ public class TweetData implements Serializable{
         return screenName;
     }
 
+    public String getAtScreenName(){
+        return "@" + screenName;
+    }
+
     public String getProfileImageURL() {
         return profileImageURL;
     }
