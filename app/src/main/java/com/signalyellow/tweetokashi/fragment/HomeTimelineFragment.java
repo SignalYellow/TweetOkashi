@@ -49,7 +49,6 @@ public class HomeTimelineFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
-        setRetainInstance(true);
 
         mApp= (TweetOkashiApplication)getActivity().getApplicationContext();
         mTwitter = mApp.getTwitterInstance();
@@ -93,9 +92,9 @@ public class HomeTimelineFragment extends Fragment
             new TimelineAsyncTask().execute();
         }
         if(mApp.doesStream() && mStream == null ) {
-            mStream = TwitterUtils.getTwitterStreamInstance(getActivity());
+            /*mStream = TwitterUtils.getTwitterStreamInstance(getActivity());
             mStream.addListener(new MyUserStreamAdapter());
-            mStream.user();
+            mStream.user();*/
         }
     }
 

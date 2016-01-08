@@ -30,6 +30,7 @@ import com.signalyellow.tweetokashi.async.DestroyAsyncTask;
 import com.signalyellow.tweetokashi.async.FavoriteAsyncTask;
 import com.signalyellow.tweetokashi.async.RetweetAsyncTask;
 import com.signalyellow.tweetokashi.async.TweetAsyncTask;
+import com.signalyellow.tweetokashi.async.UserAsyncTask;
 import com.signalyellow.tweetokashi.data.STATUS;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.UserData;
@@ -47,8 +48,6 @@ import com.signalyellow.tweetokashi.fragment.UserTimelineFragment;
 import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.User;
 
 public class HomeTimelineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , OnFragmentResultListener {
@@ -73,12 +72,19 @@ public class HomeTimelineActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
         if(mApp.getUserData() == null) {
-            new UserAsyncTask(getApplicationContext(), navigationView.getHeaderView(0)).execute();
+            new UserAsyncTask(getApplicationContext(), new UserAsyncTask.UserAsyncTaskListener() {
+                @Override
+                public void onFinish(UserData data) {
+                    if (data != null)
+                    setNavigationHeader(navigationView.getHeaderView(0));
+                }
+            }).execute();
+            //new UserAsyncTask(getApplicationContext(), navigationView.getHeaderView(0)).execute();
         }else{
             setNavigationHeader(navigationView.getHeaderView(0));
         }
@@ -89,7 +95,17 @@ public class HomeTimelineActivity extends AppCompatActivity
                     && getFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName()) == null) {
                 getFragmentManager().beginTransaction()
                         .add(R.id.fragment_container, new HomeTimelineFragment(), HomeTimelineFragment.class.getSimpleName())
+                        .addToBackStack(null)
                         .commit();
+
+                if(findViewById(R.id.fragment_container_sub) != null){
+                    Log.d(TAG, "land");
+
+                    getFragmentManager().beginTransaction()
+                            .add(R.id.fragment_container_sub, new FavoriteListFragment(), FavoriteListFragment.class.getSimpleName())
+                            .addToBackStack(null)
+                            .commit();
+                }
             }
         }
 
@@ -174,38 +190,6 @@ public class HomeTimelineActivity extends AppCompatActivity
     }
 
 
-
-    class UserAsyncTask extends AsyncTask<Void, Void, User> {
-
-        private TweetOkashiApplication mApp;
-        private View mHeaderView;
-        private Twitter mTwitter;
-
-        public UserAsyncTask(Context context, View headerView) {
-            mApp = (TweetOkashiApplication) context;
-            mHeaderView = headerView;
-            mTwitter = mApp.getTwitterInstance();
-        }
-
-        @Override
-        protected User doInBackground(Void... params) {
-            try {
-                return mTwitter.verifyCredentials();
-            } catch (TwitterException e) {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(User user) {
-            if (user == null) {
-                return;
-            }
-            mApp.setUserData(new UserData(user));
-            setNavigationHeader(mHeaderView);
-        }
-    }
-
     @Override
     public void onTimelineItemClick(TweetData data) {
         TweetDataDialogFragment.newInstance(data).show(getFragmentManager(), "dialog" + data.getTweetId());
@@ -277,6 +261,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+           Toast.makeText(getApplicationContext(),"終了しますか？",Toast.LENGTH_SHORT).show();
             super.onBackPressed();
         }
     }

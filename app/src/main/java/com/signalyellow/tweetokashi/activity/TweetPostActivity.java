@@ -23,8 +23,7 @@ public class TweetPostActivity extends AppCompatActivity {
         final TweetData data = (TweetData)getIntent().getSerializableExtra(ARG_TWEET_DATA);
 
         if (savedInstanceState == null) {
-            if (findViewById(R.id.fragment_container) != null
-                    && getFragmentManager().findFragmentByTag(TweetFragment.class.getSimpleName()) == null) {
+            if (findViewById(R.id.fragment_container) != null) {
                 getFragmentManager().beginTransaction()
                         .add(R.id.fragment_container,data == null ? new TweetFragment() : TweetFragment.newInstance(data), TweetFragment.class.getSimpleName())
                         .commit();
