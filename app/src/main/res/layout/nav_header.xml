@@ -18,7 +18,7 @@
         android:paddingBottom="9dp"
         
         >
-        <ImageView
+        <com.loopj.android.image.SmartImageView
             android:id="@+id/nav_image"
             android:layout_width="60dp"
             android:layout_height="60dp"

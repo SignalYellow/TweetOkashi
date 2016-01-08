@@ -29,7 +29,6 @@ public class TweetOkashiApplication extends Application{
     public void onCreate() {
         super.onCreate();
         mHaikuManger = new HaikuManager();
-        mLoadBitmapManger = new LoadBitmapManager();
     }
 
 
@@ -54,10 +53,6 @@ public class TweetOkashiApplication extends Application{
     public boolean doesStream(){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         return pref.getBoolean(this.getString(R.string.pref_key_stream),false);
-    }
-
-    public LoadBitmapManager getLoadBitmapManger() {
-        return mLoadBitmapManger;
     }
 
     public HaikuManager getHaikuManger() {

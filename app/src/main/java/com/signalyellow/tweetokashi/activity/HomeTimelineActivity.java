@@ -3,9 +3,7 @@ package com.signalyellow.tweetokashi.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -19,11 +17,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.async.DestroyAsyncTask;
@@ -108,9 +106,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TweetFragment fragment = new TweetFragment();
                 startActivity(new Intent(getApplicationContext(), TweetPostActivity.class));
-                //replaceFragment(fragment, TweetFragment.class.getSimpleName());
             }
         });
     }
@@ -147,7 +143,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         });
 
         //profiles
-        ImageView imageView = (ImageView)headerView.findViewById(R.id.nav_image);
+        SmartImageView imageView = (SmartImageView)headerView.findViewById(R.id.nav_image);
         TextView textViewName = (TextView)headerView.findViewById(R.id.nav_text_name);
         TextView textViewScreenName = (TextView)headerView.findViewById(R.id.nav_text_screen_name);
         TextView textViewTweetCount = (TextView)headerView.findViewById(R.id.nav_text_tweet_count);
@@ -160,8 +156,8 @@ public class HomeTimelineActivity extends AppCompatActivity
         textViewFollowCount.setText(String.valueOf(user.getFollowCount()));
         textViewFollowerCount.setText(String.valueOf(user.getFollowerCount()));
         textViewTweetCount.setText(String.valueOf(user.getTweetCount()));
-        imageView.setTag(user.getProfileImageURL());
-        mApp.getLoadBitmapManger().downloadBitmap(imageView, user.getProfileImageURL());
+
+        imageView.setImageUrl(user.getProfileImageURL());
     }
 
     private void replaceFragment(Fragment fragment, String tag){
@@ -256,7 +252,6 @@ public class HomeTimelineActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
         else if(getFragmentManager().getBackStackEntryCount() > 1){
-            Log.d(TAG,"a");
             getFragmentManager().popBackStack();
         }
         else {
