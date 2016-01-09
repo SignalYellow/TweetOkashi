@@ -1,10 +1,11 @@
 package com.signalyellow.tweetokashi.fragment;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.signalyellow.tweetokashi.activity.MainActivity;
@@ -21,6 +22,7 @@ public class LogoutDialogFragment extends DialogFragment {
         mApp = (TweetOkashiApplication)getActivity().getApplicationContext();
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

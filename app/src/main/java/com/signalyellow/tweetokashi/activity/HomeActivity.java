@@ -1,12 +1,12 @@
 package com.signalyellow.tweetokashi.activity;
 
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,9 +35,9 @@ import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.fragment.FavoriteListFragment;
 import com.signalyellow.tweetokashi.fragment.FollowUserFragment;
 import com.signalyellow.tweetokashi.fragment.FollowerFragment;
-import com.signalyellow.tweetokashi.fragment.HaikuSettingFragment;
 import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
 import com.signalyellow.tweetokashi.fragment.LogoutDialogFragment;
+import com.signalyellow.tweetokashi.fragment.MentionFragment;
 import com.signalyellow.tweetokashi.fragment.SearchFragment;
 import com.signalyellow.tweetokashi.fragment.TweetDataDialogFragment;
 import com.signalyellow.tweetokashi.fragment.TweetFragment;
@@ -47,7 +47,7 @@ import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.Twitter;
 
-public class HomeTimelineActivity extends AppCompatActivity
+public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , OnFragmentResultListener {
 
     private static final String TAG = "HomeTimeline";
@@ -85,8 +85,8 @@ public class HomeTimelineActivity extends AppCompatActivity
         }
 
         if (findViewById(R.id.fragment_container) != null
-                && getFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName()) == null) {
-            getFragmentManager().beginTransaction()
+                && getSupportFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName()) == null) {
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new HomeTimelineFragment(), HomeTimelineFragment.class.getSimpleName())
                     .addToBackStack(null)
                     .commit();
@@ -94,8 +94,8 @@ public class HomeTimelineActivity extends AppCompatActivity
             if (findViewById(R.id.fragment_container_sub) != null) {
                 Log.d(TAG, "land");
 
-                getFragmentManager().beginTransaction()
-                        .add(R.id.fragment_container_sub, new FavoriteListFragment(), FavoriteListFragment.class.getSimpleName())
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container_sub,new MentionFragment())
                         .addToBackStack(null)
                         .commit();
             }
@@ -167,7 +167,9 @@ public class HomeTimelineActivity extends AppCompatActivity
     private void replaceFragment(Fragment fragment, String tag, Fragment deleteFragment){
         mSearchView.setIconified(true);
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Log.d(TAG,fragment.getClass().getSimpleName());
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
         if(deleteFragment != null) transaction.remove(deleteFragment);
         transaction.addToBackStack(null);
@@ -182,12 +184,12 @@ public class HomeTimelineActivity extends AppCompatActivity
 
     @Override
     public void onTimelineItemClick(TweetData data) {
-        TweetDataDialogFragment.newInstance(data).show(getFragmentManager(), "dialog" + data.getTweetId());
+        TweetDataDialogFragment.newInstance(data).show(getSupportFragmentManager(), "dialog" + data.getTweetId());
     }
 
     @Override
     public void onUserItemClick(UserData data) {
-        UserDataDialogFragment.newInstance(data).show(getFragmentManager(), "userDialog" + data.getUserId());
+        UserDataDialogFragment.newInstance(data).show(getSupportFragmentManager(), "userDialog" + data.getUserId());
     }
 
     @Override
@@ -251,12 +253,7 @@ public class HomeTimelineActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else if(getFragmentManager().getBackStackEntryCount() > 1){
-            getFragmentManager().popBackStack();
-        }
         else {
-
-            Toast.makeText(getApplicationContext(),"終了しますか？",Toast.LENGTH_SHORT).show();
             super.onBackPressed();
         }
     }
@@ -275,7 +272,7 @@ public class HomeTimelineActivity extends AppCompatActivity
                 }
 
                 String searchTag = SearchFragment.class.getSimpleName();
-                SearchFragment fragment = (SearchFragment) getFragmentManager()
+                SearchFragment fragment = (SearchFragment) getSupportFragmentManager()
                         .findFragmentByTag(searchTag);
                 if (fragment == null) {
                     fragment = SearchFragment.newInstance(query);
@@ -320,7 +317,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
         switch (item.getItemId()){
             case R.id.nav_home:
-                HomeTimelineFragment fragment = (HomeTimelineFragment)getFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName());
+                HomeTimelineFragment fragment = (HomeTimelineFragment)getSupportFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName());
                 if(fragment == null){
                     fragment = new HomeTimelineFragment();
                 }
@@ -329,7 +326,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
             case R.id.nav_favorite:
                 String favTag = FavoriteListFragment.class.getSimpleName();
-                FavoriteListFragment favoriteListFragment = (FavoriteListFragment)getFragmentManager()
+                FavoriteListFragment favoriteListFragment = (FavoriteListFragment)getSupportFragmentManager()
                         .findFragmentByTag(favTag);
                 if(favoriteListFragment == null){favoriteListFragment = new FavoriteListFragment();}
                 replaceFragment(favoriteListFragment, favTag);
@@ -337,7 +334,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
             case R.id.nav_tweet:
                 String tweetTag = TweetFragment.class.getSimpleName();
-                TweetFragment tweetFragment = (TweetFragment)getFragmentManager()
+                TweetFragment tweetFragment = (TweetFragment)getSupportFragmentManager()
                         .findFragmentByTag(tweetTag);
                 if(tweetFragment == null){tweetFragment = new TweetFragment();}
                 replaceFragment(tweetFragment, tweetTag);
@@ -345,7 +342,7 @@ public class HomeTimelineActivity extends AppCompatActivity
 
             case R.id.nav_search:
                 String searchTag = SearchFragment.class.getSimpleName();
-                SearchFragment searchFragment = (SearchFragment)getFragmentManager()
+                SearchFragment searchFragment = (SearchFragment)getSupportFragmentManager()
                         .findFragmentByTag(searchTag);
                 if(searchFragment != null){
                     replaceFragment(searchFragment, searchTag);
@@ -353,21 +350,22 @@ public class HomeTimelineActivity extends AppCompatActivity
                 }
                 mSearchView.setIconified(false);
                 return true;
-
-            case R.id.nav_setting:
-                String settingTag = HaikuSettingFragment.class.getSimpleName();
-                HaikuSettingFragment haikuSettingFragment = (HaikuSettingFragment)getFragmentManager()
-                        .findFragmentByTag(settingTag);
-                if(haikuSettingFragment != null){
-                    replaceFragment(haikuSettingFragment,settingTag);
-                    return true;
+            case R.id.nav_mention:
+                String mentsionTag = MentionFragment.class.getSimpleName();
+                MentionFragment mentionFragment = (MentionFragment)getSupportFragmentManager()
+                        .findFragmentByTag(mentsionTag);
+                if(mentionFragment == null){
+                    mentionFragment = new MentionFragment();
                 }
-                replaceFragment(new HaikuSettingFragment(),settingTag);
+                replaceFragment(mentionFragment, mentsionTag);
+                return true;
+            case R.id.nav_setting:
+                // TODO: 16/01/09 nav_setting at hometimeline activity 
                 return true;
 
             case R.id.nav_logout:
                 new LogoutDialogFragment()
-                        .show(getFragmentManager(), LogoutDialogFragment.class.getSimpleName());
+                        .show(getSupportFragmentManager(), LogoutDialogFragment.class.getSimpleName());
                 return true;
         }
         return false;

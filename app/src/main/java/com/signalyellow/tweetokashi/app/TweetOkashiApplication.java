@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.signalyellow.tweetokashi.R;
-import com.signalyellow.tweetokashi.activity.HomeTimelineActivity;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
 import com.signalyellow.tweetokashi.manager.LoadBitmapManager;

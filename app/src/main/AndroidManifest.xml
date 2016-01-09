@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.HomeTimelineActivity"
+            android:name=".activity.HomeActivity"
             android:label="@string/app_name_en" />
         <activity
             android:name=".activity.TweetPostActivity"

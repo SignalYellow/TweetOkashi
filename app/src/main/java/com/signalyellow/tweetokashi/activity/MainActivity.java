@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.twitter.TwitterUtils;
 
 public class MainActivity extends Activity {
@@ -17,7 +16,7 @@ public class MainActivity extends Activity {
             startActivity(intent);
             finish();
         }else{
-            startActivity(new Intent(this, HomeTimelineActivity.class));
+            startActivity(new Intent(this, HomeActivity.class));
             finish();
         }
     }

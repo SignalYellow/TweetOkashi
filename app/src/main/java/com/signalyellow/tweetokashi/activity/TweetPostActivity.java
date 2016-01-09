@@ -24,7 +24,7 @@ public class TweetPostActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             if (findViewById(R.id.fragment_container) != null) {
-                getFragmentManager().beginTransaction()
+                getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container,data == null ? new TweetFragment() : TweetFragment.newInstance(data), TweetFragment.class.getSimpleName())
                         .commit();
             }

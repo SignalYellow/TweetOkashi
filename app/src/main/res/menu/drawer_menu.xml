@@ -8,9 +8,9 @@
             android:title="Home"
             />
         <item
-            android:id="@+id/nav_tweet"
-            android:icon="@drawable/icon_tweet"
-            android:title="Tweet"
+            android:id="@+id/nav_mention"
+            android:icon="@drawable/icon_bell"
+            android:title="Mention"
             />
         <item
             android:id="@+id/nav_search"
@@ -22,6 +22,12 @@
             android:icon="@drawable/icon_heart"
             android:title="Favorite List"
             />
+        <item
+            android:id="@+id/nav_tweet"
+            android:icon="@drawable/icon_tweet"
+            android:title="Tweet"
+            />
+
     </group>
 
     <item android:title="System">
