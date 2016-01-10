@@ -1,7 +1,6 @@
 package com.signalyellow.tweetokashi.data;
 
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.loopj.android.image.SmartImageView;

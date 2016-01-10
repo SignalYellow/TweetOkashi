@@ -360,7 +360,7 @@ public class HomeActivity extends AppCompatActivity
                 replaceFragment(mentionFragment, mentsionTag);
                 return true;
             case R.id.nav_setting:
-                // TODO: 16/01/09 nav_setting at hometimeline activity 
+                startActivity(new Intent(getApplicationContext(),SettingActivity.class));
                 return true;
 
             case R.id.nav_logout:

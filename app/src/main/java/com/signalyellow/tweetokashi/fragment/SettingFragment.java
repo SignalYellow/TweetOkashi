@@ -7,10 +7,10 @@ import android.preference.PreferenceFragment;
 import com.signalyellow.tweetokashi.R;
 
 
-public class HaikuSettingFragment extends PreferenceFragment {
+public class SettingFragment extends PreferenceFragment{
 
 
-    public HaikuSettingFragment() {
+    public SettingFragment() {
         // Required empty public constructor
     }
 
