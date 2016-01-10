@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.manager.HaikuManager;
@@ -27,6 +30,7 @@ public class TweetOkashiApplication extends Application{
     public void onCreate() {
         super.onCreate();
         mHaikuManger = new HaikuManager();
+
     }
 
 

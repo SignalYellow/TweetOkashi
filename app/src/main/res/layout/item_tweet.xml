@@ -174,18 +174,18 @@
         android:gravity="center" />
 
     <LinearLayout
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="12dp"
         android:id="@+id/picture_group_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal|top"
         android:orientation="horizontal"
         android:layout_below="@id/haiku_text">
         <com.loopj.android.image.SmartImageView
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:src="@drawable/sgoo"/>
+            android:src="@drawable/icon_reload"/>
     </LinearLayout>
 
 

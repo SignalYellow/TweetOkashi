@@ -2,16 +2,21 @@ package com.signalyellow.tweetokashi.data;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.loopj.android.image.SmartImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 
@@ -145,27 +150,29 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
         holder.FAVViewGroup.setVisibility(View.GONE);
     }
 
-    private void setPictures(TweetData data, TweetDataViewHolder holder){
-        if(data.getMediaURLs() == null || data.getMediaURLs().length == 0){
-            holder.imageView.setVisibility(View.GONE);
+    private void setPictures(TweetData data, TweetDataViewHolder holder) {
+
+        final SmartImageView imageView = holder.imageView;
+        imageView.setAnimation(null);
+        List<TweetData.PicData> pics = data.getPicDatas();
+        if (data.getMediaURLs() == null || pics == null || pics.size() < 1) {
+            imageView.setVisibility(View.GONE);
             return;
         }
+        imageView.setVisibility(View.VISIBLE);
 
-        holder.imageView.setVisibility(View.VISIBLE);
-
-        MediaEntity[] entities  = data.getMediaURLs();
-        MediaEntity entity = entities[0];
-        List<TweetData.PicData> pics = data.getPicDatas();
-        if(pics != null){
-            TweetData.PicData picData = pics.get(0);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)holder.imageView.getLayoutParams();
-            params.height = picData.getSizeY();
-            params.width = picData.getSizeX();
-            holder.imageView.setLayoutParams(params);
-            holder.imageView.setBackgroundColor(Color.GRAY);
-            holder.imageView.setImageUrl(entity.getMediaURL());
-        }
+        final TweetData.PicData picData = pics.get(0);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
+        params.height = picData.getSizeY();
+        params.width = picData.getSizeX();
+        imageView.setLayoutParams(params);
+        imageView.setImageResource(R.drawable.icon_reload);
+        AlphaAnimation animation = new AlphaAnimation(0.1f, 1);
+        animation.setDuration(500);
+        imageView.setAnimation(animation);
+        imageView.setImageUrl(picData.getUrl());
     }
+
 
     private void setHaiku(TweetData data, TweetDataViewHolder holder){
 
