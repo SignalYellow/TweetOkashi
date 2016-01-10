@@ -123,6 +123,8 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
 
     @Override
     public void scrolled() {
+        if(!mIsScrollable) return;
+
         Paging paging = new Paging();
         TweetData lastData = mAdapter.getItem(mAdapter.getCount()-1);
         paging.setMaxId(lastData.getTweetId() - 1);

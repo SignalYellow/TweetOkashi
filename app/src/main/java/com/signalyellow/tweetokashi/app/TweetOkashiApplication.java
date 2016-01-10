@@ -19,7 +19,6 @@ import twitter4j.Twitter;
  */
 public class TweetOkashiApplication extends Application{
 
-    private LoadBitmapManager mLoadBitmapManger;
     private HaikuManager mHaikuManger;
     private UserData mUserData;
     private Twitter mTwitter;
@@ -34,7 +33,6 @@ public class TweetOkashiApplication extends Application{
     public void logout(){
         TwitterUtils.deleteAccessToken(getApplicationContext());
         mHaikuManger = new HaikuManager();
-        mLoadBitmapManger = new LoadBitmapManager();
         mUserData = null;
         mTwitter = null;
     }

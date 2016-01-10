@@ -3,7 +3,9 @@ package com.signalyellow.tweetokashi.data;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import twitter4j.MediaEntity;
 import twitter4j.Status;
@@ -51,6 +53,8 @@ public class TweetData implements Serializable{
     //Media & URL
     private String videoURL;
     private MediaEntity[] mediaURLs;
+    private List<PicData> picDatas;
+
     private URLEntity[] urlEntities;
 
     public TweetData(Status status){
@@ -64,6 +68,8 @@ public class TweetData implements Serializable{
             this.rawUserId = -1;
             Log.e("aaa",status.getText());
         }
+
+        
         if(status.getRetweetedStatus() != null){
             this.retweetId = status.getId();
             this.retweetUserName = status.getUser().getName();
@@ -82,6 +88,13 @@ public class TweetData implements Serializable{
         this.isRetweetedByMe = status.isRetweetedByMe();
         this.isFavoritedByMe = status.isFavorited();
         this.mediaURLs = status.getMediaEntities();
+        if(status.getMediaEntities().length > 0){
+            picDatas = new ArrayList<>();
+            for(MediaEntity entity: status.getMediaEntities()){
+                picDatas.add(new PicData(entity));
+            }
+        }
+
         this.urlEntities = status.getURLEntities();
         this.quotedStatusId = status.getQuotedStatusId();
 
@@ -162,6 +175,10 @@ public class TweetData implements Serializable{
         return mediaURLs;
     }
 
+    public List<PicData> getPicDatas() {
+        return picDatas;
+    }
+
     public long getRetweetId() {
         return retweetId;
     }
@@ -226,5 +243,29 @@ public class TweetData implements Serializable{
 
     public UserData getUserData() {
         return userData;
+    }
+
+    public class PicData{
+        private String url;
+        private int sizeX;
+        private int sizeY;
+
+        public PicData(MediaEntity entity) {
+            url = entity.getMediaURL();
+            sizeX = entity.getSizes().get(2).getWidth();
+            sizeY = entity.getSizes().get(2).getHeight();
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public int getSizeX() {
+            return sizeX;
+        }
+
+        public int getSizeY() {
+            return sizeY;
+        }
     }
 }

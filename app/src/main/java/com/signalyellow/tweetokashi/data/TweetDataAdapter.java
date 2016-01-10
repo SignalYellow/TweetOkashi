@@ -7,12 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
+
+import java.util.List;
 
 import twitter4j.MediaEntity;
 
@@ -152,7 +155,16 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
 
         MediaEntity[] entities  = data.getMediaURLs();
         MediaEntity entity = entities[0];
-        holder.imageView.setImageUrl(entity.getMediaURL());
+        List<TweetData.PicData> pics = data.getPicDatas();
+        if(pics != null){
+            TweetData.PicData picData = pics.get(0);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)holder.imageView.getLayoutParams();
+            params.height = picData.getSizeY();
+            params.width = picData.getSizeX();
+            holder.imageView.setLayoutParams(params);
+            holder.imageView.setBackgroundColor(Color.GRAY);
+            holder.imageView.setImageUrl(entity.getMediaURL());
+        }
     }
 
     private void setHaiku(TweetData data, TweetDataViewHolder holder){
