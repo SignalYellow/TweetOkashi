@@ -57,8 +57,10 @@ public class UserDataAdapter extends ArrayAdapter<UserData>{
         }
 
         viewHolder.textUserName.setText(data.getUserName());
-        viewHolder.textScreenName.setText("@" + data.getScreenName());
+        viewHolder.textScreenName.setText(data.getAtScreenName());
         viewHolder.textDescription.setText(data.getDescription());
+
+        viewHolder.imageThumbnail.setImageResource(R.drawable.icon_reload);
         viewHolder.imageThumbnail.setImageUrl(data.getProfileImageURL());
 
         viewHolder.textHaiku.setVisibility(View.GONE);

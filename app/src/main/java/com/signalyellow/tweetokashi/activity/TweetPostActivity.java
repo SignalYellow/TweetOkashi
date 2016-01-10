@@ -3,6 +3,7 @@ package com.signalyellow.tweetokashi.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.data.TweetData;
@@ -17,7 +18,11 @@ public class TweetPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_frame);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setSubtitle("ツイート");
         setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 
         final TweetData data = (TweetData)getIntent().getSerializableExtra(ARG_TWEET_DATA);
@@ -30,5 +35,16 @@ public class TweetPostActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

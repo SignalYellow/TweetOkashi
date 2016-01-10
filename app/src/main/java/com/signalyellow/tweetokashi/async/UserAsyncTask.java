@@ -14,9 +14,9 @@ public class UserAsyncTask extends AsyncTask<Void, Void, User> {
 
     private TweetOkashiApplication mApp;
     private Twitter mTwitter;
-    private UserAsyncTaskListener mListener;
+    private AsyncTaskListener mListener;
 
-    public UserAsyncTask(Context context, UserAsyncTaskListener listener) {
+    public UserAsyncTask(Context context, AsyncTaskListener listener) {
         mApp = (TweetOkashiApplication) context;
         mTwitter = mApp.getTwitterInstance();
         mListener = listener;
@@ -42,7 +42,7 @@ public class UserAsyncTask extends AsyncTask<Void, Void, User> {
         mListener.onFinish(userData);
     }
 
-    public interface UserAsyncTaskListener{
+    public interface AsyncTaskListener {
         void onFinish(UserData data);
     }
 }

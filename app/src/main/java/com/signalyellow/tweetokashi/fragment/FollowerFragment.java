@@ -182,6 +182,7 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
                 }
                 Log.d("onPost", mCursor + "");
             }else{
+                mIsScrollable = false;
                 mListener.onResult(getString(R.string.error_twitter_exception));
             }
             setRefreshing(false);

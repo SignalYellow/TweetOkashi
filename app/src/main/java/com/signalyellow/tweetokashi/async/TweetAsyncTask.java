@@ -4,6 +4,10 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.data.UserData;
+import com.signalyellow.tweetokashi.listener.OnAsyncResultListener;
+
 import java.io.File;
 
 import twitter4j.MediaEntity;
@@ -18,15 +22,21 @@ public class TweetAsyncTask extends AsyncTask<String ,Void, Status> {
     private Twitter mTwitter;
     private String mText;
     private Long mReplyId;
+    OnAsyncResultListener mListener;
 
-    public TweetAsyncTask(Twitter twitter, String text) {
-        this(twitter,text,null);
+    public static String ERROR = "ツイートに失敗しました";
+    public static String SUCCESS = "ツイートに成功しました";
+
+    public TweetAsyncTask(Twitter twitter, String text, OnAsyncResultListener listener) {
+        this(twitter,text,null,listener);
     }
 
-    public TweetAsyncTask(Twitter twitter,String text,Long replyId){
+    public TweetAsyncTask(Twitter twitter,String text,Long replyId, OnAsyncResultListener listener){
         mTwitter = twitter;
         mText = text;
         mReplyId = replyId;
+        mListener = listener;
+
     }
 
     @Override
@@ -56,9 +66,14 @@ public class TweetAsyncTask extends AsyncTask<String ,Void, Status> {
     @Override
     protected void onPostExecute(twitter4j.Status status) {
         if(status == null){
-            Log.e(TAG,"error!");
+            mListener.onResult(ERROR);
             return;
+        }else{
+            mListener.onResult(SUCCESS);
+
         }
         Log.d(TAG,"success tweet");
     }
+
+
 }

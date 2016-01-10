@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,10 +73,11 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (mApp.getUserData() == null) {
-            new UserAsyncTask(getApplicationContext(), new UserAsyncTask.UserAsyncTaskListener() {
+            new UserAsyncTask(getApplicationContext(), new UserAsyncTask.AsyncTaskListener() {
                 @Override
                 public void onFinish(UserData data) {
                     if (data != null) setNavigationHeader(navigationView.getHeaderView(0));
+                    else Toast.makeText(getApplicationContext(),"エラーが発生しました." ,Toast.LENGTH_LONG).show();
                 }
             }).execute();
         } else {
@@ -92,15 +92,12 @@ public class HomeActivity extends AppCompatActivity
                     .commit();
 
             if (findViewById(R.id.fragment_container_sub) != null) {
-                Log.d(TAG, "land");
-
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container_sub,new MentionFragment())
                         .addToBackStack(null)
                         .commit();
             }
         }
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -121,15 +118,20 @@ public class HomeActivity extends AppCompatActivity
         tweetCountLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserTimelineFragment fragment = UserTimelineFragment.newInstance(mApp.getUserData());
-                replaceFragment(fragment, UserTimelineFragment.class.getSimpleName() + mApp.getUserData().getScreenName());
+                UserTimelineFragment fragment = (UserTimelineFragment)getSupportFragmentManager().findFragmentByTag(UserTimelineFragment.class.getSimpleName());
+                if(fragment == null){
+                    fragment = UserTimelineFragment.newInstance(mApp.getUserData());}
+                replaceFragment(fragment, UserTimelineFragment.class.getSimpleName());
             }
         });
 
         followCountLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FollowUserFragment fragment = FollowUserFragment.newInstance(mApp.getUserData());
+                FollowUserFragment fragment = (FollowUserFragment)getSupportFragmentManager().findFragmentByTag(FollowUserFragment.class.getSimpleName());
+                if(fragment == null){
+                    fragment= FollowUserFragment.newInstance(mApp.getUserData());
+                }
                 replaceFragment(fragment, FollowUserFragment.class.getSimpleName());
             }
         });
@@ -137,7 +139,10 @@ public class HomeActivity extends AppCompatActivity
         followerCountLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FollowerFragment fragment = FollowerFragment.newInstance(mApp.getUserData());
+                FollowerFragment fragment = (FollowerFragment)getSupportFragmentManager().findFragmentByTag(FollowerFragment.class.getSimpleName());
+                if(fragment == null) {
+                    fragment = FollowerFragment.newInstance(mApp.getUserData());
+                }
                 replaceFragment(fragment, FollowerFragment.class.getSimpleName());
             }
         });
@@ -167,8 +172,6 @@ public class HomeActivity extends AppCompatActivity
     private void replaceFragment(Fragment fragment, String tag, Fragment deleteFragment){
         mSearchView.setIconified(true);
 
-        Log.d(TAG,fragment.getClass().getSimpleName());
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
         if(deleteFragment != null) transaction.remove(deleteFragment);
@@ -181,15 +184,14 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-
     @Override
     public void onTimelineItemClick(TweetData data) {
-        TweetDataDialogFragment.newInstance(data).show(getSupportFragmentManager(), "dialog" + data.getTweetId());
+        TweetDataDialogFragment.newInstance(data).show(getSupportFragmentManager(),TweetDataDialogFragment.class.getSimpleName());
     }
 
     @Override
     public void onUserItemClick(UserData data) {
-        UserDataDialogFragment.newInstance(data).show(getSupportFragmentManager(), "userDialog" + data.getUserId());
+        UserDataDialogFragment.newInstance(data).show(getSupportFragmentManager(),UserDataDialogFragment.class.getSimpleName());
     }
 
     @Override
@@ -209,7 +211,7 @@ public class HomeActivity extends AppCompatActivity
                 new RetweetAsyncTask(twitter,data,RetweetAsyncTask.RETWEET_STATUS.DELETE).execute();
                 break;
             case HAIKURETWEET:
-                new TweetAsyncTask(twitter,data.getHaikuRetweetText()).execute();
+                new TweetAsyncTask(twitter,data.getHaikuRetweetText(),this).execute();
                 break;
             case FAV:
                 new FavoriteAsyncTask(twitter,data,FavoriteAsyncTask.FAVORITE_STATUS.FAVORITE).execute();
@@ -221,7 +223,7 @@ public class HomeActivity extends AppCompatActivity
                 new DestroyAsyncTask(twitter,data).execute();
                 break;
             case USER_TIMELINE:
-                replaceFragment(UserTimelineFragment.newInstance(data.getUserData()),UserTimelineFragment.class.getSimpleName());
+                replaceFragment(UserTimelineFragment.newInstance(data.getUserData()),UserTimelineFragment.class.getSimpleName() + data.getUserData().getScreenName());
                 break;
             case REPLY:
                 Intent intent = new Intent(getApplicationContext(),TweetPostActivity.class);
@@ -234,17 +236,14 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onUserDataDialogResult(UserData data, STATUS status) {
-        Log.d(TAG,status.getText());
-
         switch (status){
             case USER_TIMELINE:
-                replaceFragment(UserTimelineFragment.newInstance(data),UserTimelineFragment.class.getSimpleName());
+                replaceFragment(UserTimelineFragment.newInstance(data),UserTimelineFragment.class.getSimpleName() + data.getScreenName());
                 break;
             case USER_FAVORITE:
-                replaceFragment(FavoriteListFragment.newInstance(data),UserTimelineFragment.class.getSimpleName());
+                replaceFragment(FavoriteListFragment.newInstance(data),UserTimelineFragment.class.getSimpleName() + data.getScreenName());
                 break;
         }
-
     }
 
     @Override
@@ -300,9 +299,18 @@ public class HomeActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.menu_help:
+                break;
+            case R.id.menu_setting:
+                startActivity(new Intent(getApplicationContext(),SettingActivity.class));
+                break;
+            case R.id.menu_logout:
+                new LogoutDialogFragment()
+                        .show(getSupportFragmentManager(), LogoutDialogFragment.class.getSimpleName());
+                break;
+            case R.id.menu_credit:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -318,24 +326,20 @@ public class HomeActivity extends AppCompatActivity
         switch (item.getItemId()){
             case R.id.nav_home:
                 HomeTimelineFragment fragment = (HomeTimelineFragment)getSupportFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName());
-                if(fragment == null){
-                    fragment = new HomeTimelineFragment();
-                }
+                if(fragment == null){fragment = new HomeTimelineFragment();}
                 replaceFragment(fragment, HomeTimelineFragment.class.getSimpleName());
                 return true;
 
             case R.id.nav_favorite:
                 String favTag = FavoriteListFragment.class.getSimpleName();
-                FavoriteListFragment favoriteListFragment = (FavoriteListFragment)getSupportFragmentManager()
-                        .findFragmentByTag(favTag);
+                FavoriteListFragment favoriteListFragment = (FavoriteListFragment)getSupportFragmentManager().findFragmentByTag(favTag);
                 if(favoriteListFragment == null){favoriteListFragment = new FavoriteListFragment();}
                 replaceFragment(favoriteListFragment, favTag);
                 return true;
 
             case R.id.nav_tweet:
                 String tweetTag = TweetFragment.class.getSimpleName();
-                TweetFragment tweetFragment = (TweetFragment)getSupportFragmentManager()
-                        .findFragmentByTag(tweetTag);
+                TweetFragment tweetFragment = (TweetFragment)getSupportFragmentManager().findFragmentByTag(tweetTag);
                 if(tweetFragment == null){tweetFragment = new TweetFragment();}
                 replaceFragment(tweetFragment, tweetTag);
                 return true;
@@ -346,19 +350,17 @@ public class HomeActivity extends AppCompatActivity
                         .findFragmentByTag(searchTag);
                 if(searchFragment != null){
                     replaceFragment(searchFragment, searchTag);
-                    return true;
-                }
+                    return true;}
                 mSearchView.setIconified(false);
                 return true;
+
             case R.id.nav_mention:
-                String mentsionTag = MentionFragment.class.getSimpleName();
-                MentionFragment mentionFragment = (MentionFragment)getSupportFragmentManager()
-                        .findFragmentByTag(mentsionTag);
-                if(mentionFragment == null){
-                    mentionFragment = new MentionFragment();
-                }
-                replaceFragment(mentionFragment, mentsionTag);
+                String mentionTag = MentionFragment.class.getSimpleName();
+                MentionFragment mentionFragment = (MentionFragment)getSupportFragmentManager().findFragmentByTag(mentionTag);
+                if(mentionFragment == null){mentionFragment = new MentionFragment();}
+                replaceFragment(mentionFragment, mentionTag);
                 return true;
+
             case R.id.nav_setting:
                 startActivity(new Intent(getApplicationContext(),SettingActivity.class));
                 return true;
@@ -370,6 +372,5 @@ public class HomeActivity extends AppCompatActivity
         }
         return false;
     }
-
 
 }

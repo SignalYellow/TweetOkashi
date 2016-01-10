@@ -186,6 +186,7 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     mAdapter.add(new TweetData(s));
                 }
             }else {
+                mIsScrollable = false;
                 mListener.onResult(getString(R.string.error_twitter_exception));
             }
             setRefreshing(false);

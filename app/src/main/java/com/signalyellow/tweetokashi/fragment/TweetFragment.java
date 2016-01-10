@@ -25,6 +25,7 @@ import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.async.TweetAsyncTask;
 import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.listener.OnAsyncResultListener;
 import com.signalyellow.tweetokashi.view.DeletableImageView;
 
 
@@ -117,8 +118,21 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
             }
 
 
-            TweetAsyncTask tweetAsyncTask = new TweetAsyncTask(mApp.getTwitterInstance(), text
-                    , mData == null ? null : mData.getTweetId());
+            TweetAsyncTask tweetAsyncTask = new TweetAsyncTask(
+                    mApp.getTwitterInstance(),
+                    text,
+                    mData == null ? null : mData.getTweetId(),
+                    new OnAsyncResultListener() {
+                        @Override
+                        public void onResult(String message) {
+                            Toast.makeText(getActivity().getApplicationContext(),
+                                    message,
+                                    Toast.LENGTH_LONG);
+                            if(message.equals(TweetAsyncTask.SUCCESS)){
+                                getActivity().finish();
+                            }
+                        }
+                    });
 
             if(imgStringList.size() == 0) {
                 tweetAsyncTask.execute();

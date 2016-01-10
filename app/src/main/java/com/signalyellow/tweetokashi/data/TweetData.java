@@ -14,7 +14,7 @@ import twitter4j.User;
 
 public class TweetData implements Serializable{
 
-    public static final String HAIKU_TAG = " @tweetokashi #ついいとおかし ";
+    public static final String HAIKU_TAG = " #ついいとおかし @tweetokashi";
 
     //basic
     private String name;
