@@ -91,13 +91,11 @@ public class HomeActivity extends AppCompatActivity
                 && getSupportFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName()) == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new HomeTimelineFragment(), HomeTimelineFragment.class.getSimpleName())
-                    .addToBackStack(null)
                     .commit();
 
             if (findViewById(R.id.fragment_container_sub) != null) {
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container_sub,new MentionFragment())
-                        .addToBackStack(null)
                         .commit();
             }
         }
@@ -311,6 +309,7 @@ public class HomeActivity extends AppCompatActivity
 
         switch (id){
             case R.id.menu_help:
+                startActivity(new Intent(getApplicationContext(),HelpActivity.class));
                 break;
             case R.id.menu_setting:
                 startActivity(new Intent(getApplicationContext(),SettingActivity.class));
@@ -320,6 +319,7 @@ public class HomeActivity extends AppCompatActivity
                         .show(getSupportFragmentManager(), LogoutDialogFragment.class.getSimpleName());
                 break;
             case R.id.menu_credit:
+                startActivity(new Intent(getApplicationContext(),CreditActivity.class));
                 break;
         }
 

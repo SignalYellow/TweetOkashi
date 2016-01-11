@@ -4,9 +4,6 @@
     <string name="app_name_ja">ついいとおかし</string>
     <string name="app_name_en">Tweet-Okashi</string>
 
-    <!-- パスワード系 重要かつ基本的に変更しない -->
-    <string name="twitter_callback_url">callback://TwitterOAuthActivity</string>
-
 
     <!-- システム View -->
     <string name="image_view_icon_description">icon</string>
@@ -143,77 +140,6 @@
         このアプリはツイートからランダムに俳句を生成するアプリです。
     </string>
 
-    <string name="help_title_haiku">生成される俳句について</string>
-    <string name="help_description_haiku">
-        このアプリ内では５・７・５の文章はすべて「俳句」ということとします。
-        このアプリ内で生成される俳句は季語を必ず含むわけではないので厳密には俳句ではない場合があります。
-        俳句はランダムに生成しているので同じ文章からでも違う俳句になる場合があります。
-    </string>
-    <string name="help_title_login">ログイン</string>
-    <string name="help_description_login">
-        このアプリではログインはOAUTHで行われます。
-        ログインボタンを押し、Twitterサイトにて承認を行うことで自動的にアプリへ戻り、ログインが行われます。
-        承認を行わずにアプリに手動で戻るとエラーとなる場合が有ります。その時ログインボタンを押しても反応しない場合はもう一度アプリを起動しなおしてログインしてください。
-
-        \n
-        ログアウトはアプリ内のアクションバー（タイトルが書いてある部分）の一番右にあるメニューボタンをクリックし、ログアウトをクリックしてください。
-
-
-    </string>
-    <string name="help_title_timeline">タイムライン(TIMELINE)</string>
-    <string name="help_description_timeline">
-        ユーザーのタイムラインを表示します。上の「更新ボタン」を押すことで更新を行い、
-        リストの最後の「さらに表示」ボタンを押すことでより古いツイートを見ることが可能です。
-        ストリーミングは行っていないので最新のツイートを見る場合は「更新ボタン」を押すことで更新を行ってください。
-
-
-        \n
-        タイムライン上のツイートをクリックすることで、返信、リツイート、そのツイートの作成者のタイムラインの表示、
-        「俳句リツイート」、「俳句再生成」などを行うことができます。「俳句リツイート」「俳句再生成」については後述の説明をご覧ください。
-    </string>
-
-
-    <string name="help_title_haikuretweet">俳句リツイート</string>
-    <string name="help_description_haikuretweet">
-        俳句リツイートは、できた俳句にタグ(#ついいとおかし)を付加したものと
-        元のツイートのURLを貼り付けたものをツイートします。
-
-    </string>
-    <string name="help_title_regenerate">俳句再生成</string>
-    <string name="help_description_regenerate">
-        タイムラインなどのツイートをクリックした後、「俳句を再生成」を押すことで俳句再生成画面に映ります。
-        俳句再生成画面では「俳句再生成」ボタンを押すことで俳句を生成しなおすことが可能です。
-        「俳句再生成」ボタンは何度でも押すことが可能です。
-    </string>
-
-    <string name="help_title_search">検索(SEARCH)</string>
-    <string name="help_description_search">
-        検索(SEARCH)ではキーワードを入力しツイートを検索することが可能です。
-        良い俳句ができそうなキーワードを探してみましょう。
-        ほかの部分は「タイムライン」の場合と同様です。
-        ただ、更新ボタンはないので、同じキーワードで更新したい場合は
-        再度同じキーワードをテキストボックスに入れたまま検索ボタンを押してください。
-    </string>
-    <string name="help_title_users">ユーザー(USERS)</string>
-    <string name="help_description_users">
-        ユーザー(USERS)画面では自分とフォローしているユーザーの自己紹介文を俳句にして表示しています。
-    </string>
-    <string name="help_title_tweet">ツイート</string>
-    <string name="help_description_tweet">
-        ツイートはアクションバーにある紙飛行機のようなアイコンをクリックすることで行うことができます。
-        ツイート画面では、「ツイートや俳句生成」、「俳句リツイート」、「俳句のみツイート」を行うことができます。
-        「俳句生成」は「俳句再生成」の項目を、「俳句リツイート」は「俳句リツイート」の項目をご覧ください。
-        「俳句のみツイート」ではできた俳句にタグ(#ついいとおかし)を付加したものをツイートします。
-    </string>
-
-    <string name="help_title_error">エラーについて</string>
-    <string name="help_description_error">
-        リツイートやお気に入りに登録する際、エラーという表示が出ることがあります。これはもうそのツイートがリツイートやお気に入り済みの場合、
-        またそのツイートが自分自身のものである場合に多くでます。特に重大な問題が発生しているわけではありません。このアプリにはリツイートやお気に入りを外す機能は現在ございませんので、
-        Webや他のクライアントから外していただきますよう御願い致します。
-
-        その他エラー等ございましたらTwitterアカウントやレポートなどで報告いただけるとありがたいです。よろしく御願いいたします。
-    </string>
 
 
     <!-- テスト用 サンプル-->
@@ -257,59 +183,6 @@
     <string name="title_activity_base_navigation_drawer">BaseNavigationDrawerActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_settings">Settings</string>
-
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
 
 
 
