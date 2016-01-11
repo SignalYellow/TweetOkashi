@@ -100,9 +100,13 @@ public class UserTimelineFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
+
+        mIsScrollable = true;
         if (mAdapter != null && mAdapter.getCount() == 0) {
             new UserTimelineAsyncTask(mApp.getTwitterInstance()).execute();
         }
+
+        mListener.onFragmentStart("「@" + mUserData.getScreenName() + "」のツイート");
     }
 
     @Override
@@ -178,7 +182,10 @@ public class UserTimelineFragment extends Fragment
         protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
             super.onPostExecute(statuses);
             if(statuses != null){
-                if(statuses.size() == 0) mIsRefreshing = false;
+                if(statuses.size() == 0){
+                    mIsScrollable = false;
+                    mListener.onResult(getString(R.string.end_of_list));
+                }
                 if(mPaging == null) mAdapter.clear();
                 for(twitter4j.Status s : statuses){
                     mAdapter.add(new TweetData(s));

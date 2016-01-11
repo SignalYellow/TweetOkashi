@@ -72,10 +72,12 @@ public class MentionFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onStart() {
         super.onStart();
+        mIsScrollable = true;
         if (mAdapter != null && mAdapter.getCount() == 0 ) {
-            mIsScrollable = true;
+
             new MentionAsyncTask(mTwitter).execute();
         }
+        mListener.onFragmentStart("あなたへのツイート");
     }
 
     @Override
@@ -164,7 +166,10 @@ public class MentionFragment extends Fragment implements SwipeRefreshLayout.OnRe
         protected void onPostExecute(ResponseList<twitter4j.Status> result) {
 
             if(result != null){
-                if(result.size() <= 0) mIsScrollable = false;
+                if(result.size() <= 0){
+                    mIsScrollable = false;
+                    mListener.onResult(getString(R.string.end_of_list));
+                }
 
                 for(twitter4j.Status s : result){
                     mAdapter.add(new TweetData(s));

@@ -83,10 +83,13 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onStart() {
         super.onStart();
+
+        mIsScrollable = true;
         if (mAdapter != null && mAdapter.getCount() == 0 ) {
-            mIsScrollable = true;
             new SearchAsyncTask(mQuery).execute();
         }
+
+        mListener.onFragmentStart("「" + mQuery + "」の検索結果");
     }
 
     @Override
@@ -179,7 +182,10 @@ public class SearchFragment extends Fragment implements SwipeRefreshLayout.OnRef
         protected void onPostExecute(QueryResult result) {
 
             if(result != null){
-                if(result.getTweets().size() <= 0) mIsScrollable = false;
+                if(result.getTweets().size() <= 0){
+                    mIsScrollable = false;
+                    mListener.onResult(getString(R.string.end_of_list));
+                }
                 if(mMaxId == null) mAdapter.clear();
 
                 for(twitter4j.Status s : result.getTweets()){

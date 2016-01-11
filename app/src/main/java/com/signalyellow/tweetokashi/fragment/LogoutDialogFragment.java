@@ -33,7 +33,6 @@ public class LogoutDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         mApp.logout();
                         startActivity(new Intent(getActivity().getApplicationContext(), MainActivity.class));
-
                     }
                 })
                 .setNegativeButton("　いいえ　",null);

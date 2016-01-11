@@ -101,8 +101,18 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
     @Override
     public void onStart() {
         super.onStart();
-        new FavoriteListAsyncTask().execute();
+
+        mIsScrollable = true;
+        if (mAdapter != null && mAdapter.getCount() == 0)
+            new FavoriteListAsyncTask().execute();
+
+        if (mUserData != null) {
+            mListener.onFragmentStart("「@" + mUserData.getScreenName() + "」のお気に入り");
+        } else {
+            mListener.onFragmentStart("お気に入り");
+        }
     }
+
 
     @Override
     public void onDetach() {
@@ -175,10 +185,11 @@ implements SwipeRefreshLayout.OnRefreshListener,AutoUpdateTimelineScrollable,Ada
 
         @Override
         protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
-            Log.d(TAG, "debug");
             if(statuses != null){
-                Log.d(TAG,statuses.size() + "");
-                if(statuses.size() == 0) mIsScrollable = false;
+                if(statuses.size() == 0){
+                    mIsScrollable = false;
+                    mListener.onResult(getString(R.string.end_of_list));
+                }
                 if(mPaging == null ) mAdapter.clear();
 
                 for(twitter4j.Status status:statuses){

@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="Twitterの設定" >
         <SwitchPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="@string/pref_key_stream"
             android:summary="ストリームでの自分のタイムラインのデータ受信"
             android:summaryOn="ストリームでデータを受信します"

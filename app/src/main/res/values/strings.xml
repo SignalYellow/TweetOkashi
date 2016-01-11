@@ -24,7 +24,8 @@
     <string name="description_icon">画像</string>
     <string name="at">\@%1$s</string>
 
-    <!-- システム エラー　-->
+    <!-- システム メッセージ　-->
+    <string name="end_of_list">これ以上表示するものがありません</string>
     <string name="error_twitter_exception">ツイッターエラー</string>
 
     <!-- -->
@@ -310,16 +311,6 @@
 
     <string name="pref_title_new_message_notifications">New message notifications</string>
 
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_retweet_list">RetweetListActivity</string>
-    <string name="title_activity_favorite_list">FavoriteListActivity</string>
-    <string name="title_activity_base_list">BaseListActivity</string>
-    <string name="title_activity_pra">PraActivity</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_main2">Main2Activity</string>
 
 
 </resources>

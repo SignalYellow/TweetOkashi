@@ -86,7 +86,12 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
     @Override
     public void onStart() {
         super.onStart();
-        new FollowerAsyncTask(mApp.getTwitterInstance(),mUserData).execute();
+        mIsScrollable = true;
+        if (mAdapter != null && mAdapter.getCount() == 0){
+            new FollowerAsyncTask(mApp.getTwitterInstance(),mUserData).execute();
+        }
+
+        mListener.onFragmentStart("フォロワー");
     }
 
     @Override
@@ -174,7 +179,10 @@ public class FollowerFragment extends Fragment implements AutoUpdateTimelineScro
 
             if(users != null) {
                 if (cursor == -1) mAdapter.clear();
-                if (users.size() == 0) mIsScrollable = false;
+                if (users.size() == 0){
+                    mIsScrollable = false;
+                    mListener.onResult(getString(R.string.end_of_list));
+                }
 
                 mCursor = users.getNextCursor();
                 for (User user : users) {

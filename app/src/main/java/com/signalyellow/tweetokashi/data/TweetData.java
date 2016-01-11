@@ -59,15 +59,18 @@ public class TweetData implements Serializable{
 
     public TweetData(Status status){
 
+        if(isQuoted && status.getUser() == null){
+            this.name = "";
+            this.screenName = "";
+            this.date = status.getCreatedAt();
+            this.text = status.getText();
+            return;
+        }
+
         this.status = status;
         this.retweetId = status.getCurrentUserRetweetId();
 
-        try {
-            this.rawUserId = status.getUser().getId();
-        }catch (Exception e){
-            this.rawUserId = -1;
-            Log.e("aaa",status.getText());
-        }
+        this.rawUserId = status.getUser().getId();
 
         
         if(status.getRetweetedStatus() != null){

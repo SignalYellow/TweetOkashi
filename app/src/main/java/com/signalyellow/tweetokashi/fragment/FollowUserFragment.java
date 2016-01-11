@@ -88,7 +88,10 @@ public class FollowUserFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-        new FollowUserAsyncTask(mApp.getTwitterInstance(),mUserData).execute();
+        mIsScrollable = true;
+        if (mAdapter != null && mAdapter.getCount() == 0){
+        new FollowUserAsyncTask(mApp.getTwitterInstance(),mUserData).execute();}
+        mListener.onFragmentStart("フォロー");
     }
 
     @Override
@@ -176,7 +179,10 @@ public class FollowUserFragment extends Fragment
 
             if(users != null) {
                 if (cursor == -1) mAdapter.clear();
-                if (users.size() == 0) mIsScrollable = false;
+                if (users.size() == 0){
+                    mIsScrollable = false;
+                    mListener.onResult(getString(R.string.end_of_list));
+                }
 
                 mCursor = users.getNextCursor();
                 for (User user : users) {

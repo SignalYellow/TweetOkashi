@@ -86,6 +86,7 @@ public class HomeTimelineFragment extends Fragment
         super.onStart();
         Log.d(TAG, "onStart");
 
+        mIsScrollable = true;
         if (mAdapter != null && mAdapter.getCount() == 0) {
             new TimelineAsyncTask().execute();
         }
@@ -94,6 +95,8 @@ public class HomeTimelineFragment extends Fragment
             mStream.addListener(new MyUserStreamAdapter());
             mStream.user();
         }
+
+        mListener.onFragmentStart("タイムライン");
     }
 
     @Override
@@ -177,7 +180,10 @@ public class HomeTimelineFragment extends Fragment
         protected void onPostExecute(ResponseList<twitter4j.Status> statuses) {
 
             if(statuses != null){
-                if(statuses.size() == 0) mIsScrollable = false;
+                if(statuses.size() == 0){
+                    mIsScrollable = false;
+                    mListener.onResult(getString(R.string.end_of_list));
+                }
                 if(mPaging == null) mAdapter.clear();
 
                 for(twitter4j.Status s : statuses){

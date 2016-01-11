@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,20 +54,21 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG = "HomeTimeline";
     private TweetOkashiApplication mApp;
     private SearchView mSearchView;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_timeline);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setSubtitle(getString(R.string.app_name_ja));
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        mToolbar.setSubtitle(getString(R.string.app_name_ja));
 
         mApp = (TweetOkashiApplication) getApplicationContext();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -106,6 +109,7 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(), TweetPostActivity.class));
             }
         });
+
     }
 
     private void setNavigationHeader(View headerView){
@@ -197,6 +201,12 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onResult(String message) {
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void onFragmentStart(String subtitle) {
+        mToolbar.setSubtitle(subtitle);
     }
 
     @Override
@@ -338,10 +348,7 @@ public class HomeActivity extends AppCompatActivity
                 return true;
 
             case R.id.nav_tweet:
-                String tweetTag = TweetFragment.class.getSimpleName();
-                TweetFragment tweetFragment = (TweetFragment)getSupportFragmentManager().findFragmentByTag(tweetTag);
-                if(tweetFragment == null){tweetFragment = new TweetFragment();}
-                replaceFragment(tweetFragment, tweetTag);
+                startActivity(new Intent(getApplicationContext(), TweetPostActivity.class));
                 return true;
 
             case R.id.nav_search:
