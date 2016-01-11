@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- クレジット　ライセンスなど-->
+    <string name="credit_tweetokashi">ついいとおかし(TweetOkashi) Copyright © 2015 SignalYellow(@signalyellowsho).  All rights reserved.</string>
+    <string name="credit_title_yahoo_api">Yahoo Web API</string>
+    <string name="credit_title_library">利用しているライブラリやサービス</string>
+    <string name="credit_yahoo_api_user">このアプリケーションではYahooテキスト解析APIを利用しています</string>
+    <string name="credit_yahoo_api_url">Webサービス by Yahoo! JAPAN（ http://developer.yahoo.co.jp/about ）</string>
+    <string name="credit_yahoo_api_raw_url">http://developer.yahoo.co.jp/about</string>
+    <string name="credit_goo_api_text_en">supported by goo</string>
+    <string name="credit_goo_api_text">このアプリケーションではgooラボAPIを利用しています</string>
+    <string name="credit_goo_api_url">supported by goo( http://www.goo.ne.jp/ )</string>
+    <string name="credit_title_goo_api">gooラボAPI</string>
+
+    <string name="credit_title_twitter4j">twitter4j</string>
+    <string name="credit_twitter4j">このアプリケーションでは、「Apache Licence 2.0（ http://www.apache.org/licenses/LICENSE-2.0 ）」
+    に基づいてリリースされる「twitter4j( http://twitter4j.org/ ）」
+        を利用しています</string>
+    <string name="credit_title_smartimageview">Android Smart Image View</string>
+    <string name="credit_smartimageview">
+        このアプリケーションでは、「Apache Licence 2.0（ http://www.apache.org/licenses/LICENSE-2.0 ）」
+    に基づいてリリースされる「Android Smart Image View ( http://loopj.com/android-smart-image-view/ ）」
+        を利用しています
+    </string>
+
+
+</resources>

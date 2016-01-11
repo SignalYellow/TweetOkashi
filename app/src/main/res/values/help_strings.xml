@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- ヘルプ-->
+    <string name="help_title_concept">概要</string>
+    <string name="help_description_concept">
+        この度は「ついいとおかし」をダウンロードいただきありがとうございます。
+        このアプリはツイートからランダムに俳句を生成するアプリです。
+    </string>
     <string name="help_title_haiku">生成される俳句について</string>
     <string name="help_description_haiku">
         このアプリ内では５・７・５の文章はすべて「俳句」ということとします。
