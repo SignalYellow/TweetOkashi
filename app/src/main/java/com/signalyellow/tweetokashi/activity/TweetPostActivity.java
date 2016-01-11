@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.signalyellow.tweetokashi.R;
+import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.fragment.TweetFragment;
 
@@ -18,7 +19,8 @@ public class TweetPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_frame);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setSubtitle("ツイート");
+        TweetOkashiApplication app = (TweetOkashiApplication)getApplicationContext();
+        toolbar.setSubtitle(app.getUserData().getAtScreenName() + "からツイート");
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

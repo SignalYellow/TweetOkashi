@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ import com.signalyellow.tweetokashi.listener.OnAsyncResultListener;
 import com.signalyellow.tweetokashi.view.DeletableImageView;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,7 +103,6 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
     private class OnTweetButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            Log.d(TAG,"onClick");
             String text = tweetEditText.getText().toString();
 
             if(imgStringList.size() > 4){
@@ -127,7 +128,7 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
                         public void onResult(String message) {
                             Toast.makeText(getActivity().getApplicationContext(),
                                     message,
-                                    Toast.LENGTH_LONG);
+                                    Toast.LENGTH_LONG).show();
                             if(message.equals(TweetAsyncTask.SUCCESS)){
                                 getActivity().finish();
                             }
@@ -137,7 +138,7 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
             if(imgStringList.size() == 0) {
                 tweetAsyncTask.execute();
             }else{
-                tweetAsyncTask.execute((String[])imgStringList.toArray(new String[4]));
+                tweetAsyncTask.execute((String[])imgStringList.toArray(new String[imgStringList.size()]));
             }
         }
     }
@@ -162,7 +163,7 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mCountTextView.setText(String.valueOf(s.length()));
+            mCountTextView.setText(String.valueOf(140-s.length()));
         }
         @Override
         public void afterTextChanged(Editable s) {}
@@ -188,6 +189,8 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
                 String path = cursor.getString(0);
                 imgStringList.add(path);
                 imageView.setTag(path);
+                File file = new File(path);
+
                 parentLayout.addView(imageView);
                 cursor.close();
             }
