@@ -19,9 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
 import com.signalyellow.tweetokashi.async.TweetAsyncTask;
@@ -29,6 +31,8 @@ import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.listener.OnAsyncResultListener;
 import com.signalyellow.tweetokashi.view.DeletableImageView;
 
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -91,11 +95,20 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
         tweetButton.setOnClickListener(new OnTweetButtonClickListener());
         imageButton.setOnClickListener(new OnImageAddButtonClickListener());
 
+
         if(mData != null) {
             String text = "@" + mData.getScreenName() + " ";
             tweetEditText.setText(text);
             tweetEditText.setSelection(text.length());
-
+        }else{
+            /*SmartImageView imageView = (SmartImageView)view.findViewById(R.id.icon);
+            TextView textViewText = (TextView)view.findViewById(R.id.text);
+            TextView screenNameText = (TextView)view.findViewById(R.id.screen_name);
+            TextView nameText = (TextView)view.findViewById(R.id.name);
+            imageView.setImageUrl(mData.getProfileImageURL());
+            textViewText.setText(mData.getText());
+            screenNameText.setText(mData.getAtScreenName());
+            nameText.setText(mData.getName());*/
         }
         return view;
     }

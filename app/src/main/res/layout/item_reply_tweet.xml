@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reply_tweet_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="4dp"
+    android:paddingLeft="4dp"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:layout_marginBottom="5dp">
+    <com.loopj.android.image.SmartImageView
+        android:id="@+id/icon"
+        android:src="@drawable/icon_favorite_64"
+        android:layout_width="24dp"
+        android:layout_height="24dp" />
+
+
+    <TextView
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:id="@+id/name"
+        android:layout_toRightOf="@id/icon"
+        android:layout_toEndOf="@id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/test_name_long"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:singleLine="true"
+        />
+
+    <TextView
+        android:id="@+id/screen_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/test_screenname_long"
+        android:textSize="12sp"
+        android:textColor="@color/text_sub_color"
+        android:singleLine="true"
+        android:layout_toEndOf="@id/name"
+        android:layout_toRightOf="@id/name"
+        />
+
+    <TextView
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_toRightOf="@id/icon"
+        android:layout_toEndOf="@id/icon"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/text_margin_top"
+        android:layout_below="@id/name"
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/test_text"
+        android:textColor="@color/black"
+        />
+</RelativeLayout>

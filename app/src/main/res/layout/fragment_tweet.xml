@@ -2,8 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.TweetFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+    <include layout="@layout/item_reply_tweet" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -39,6 +45,8 @@
 
     </LinearLayout>
 
+    </LinearLayout>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
@@ -62,4 +70,5 @@
 
 
     </LinearLayout>
+
 </FrameLayout>

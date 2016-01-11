@@ -1,7 +1,5 @@
 package com.signalyellow.tweetokashi.data;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +51,7 @@ public class TweetData implements Serializable{
     //Media & URL
     private String videoURL;
     private MediaEntity[] mediaURLs;
-    private List<PicData> picDatas;
+    private List<PictureData> pictureDatas;
 
     private URLEntity[] urlEntities;
 
@@ -67,7 +65,7 @@ public class TweetData implements Serializable{
             return;
         }
 
-        this.status = status;
+        //this.status = status;
         this.retweetId = status.getCurrentUserRetweetId();
 
         this.rawUserId = status.getUser().getId();
@@ -92,9 +90,9 @@ public class TweetData implements Serializable{
         this.isFavoritedByMe = status.isFavorited();
         this.mediaURLs = status.getMediaEntities();
         if(status.getMediaEntities().length > 0){
-            picDatas = new ArrayList<>();
+            pictureDatas = new ArrayList<>();
             for(MediaEntity entity: status.getMediaEntities()){
-                picDatas.add(new PicData(entity));
+                pictureDatas.add(new PictureData(entity));
             }
         }
 
@@ -178,8 +176,8 @@ public class TweetData implements Serializable{
         return mediaURLs;
     }
 
-    public List<PicData> getPicDatas() {
-        return picDatas;
+    public List<PictureData> getPictureDatas() {
+        return pictureDatas;
     }
 
     public long getRetweetId() {
@@ -248,27 +246,5 @@ public class TweetData implements Serializable{
         return userData;
     }
 
-    public class PicData{
-        private String url;
-        private int sizeX;
-        private int sizeY;
 
-        public PicData(MediaEntity entity) {
-            url = entity.getMediaURL();
-            sizeX = entity.getSizes().get(2).getWidth();
-            sizeY = entity.getSizes().get(2).getHeight();
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public int getSizeX() {
-            return sizeX;
-        }
-
-        public int getSizeY() {
-            return sizeY;
-        }
-    }
 }
