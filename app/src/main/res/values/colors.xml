@@ -3,7 +3,7 @@
     <!-- System -->
     <color name="colorPrimary">#8C1274</color>
     <color name="colorPrimaryDark">#b1680079</color>
-    <color name="colorAccent">#73ED8B</color>
+    <color name="colorAccent">@color/kimidori</color>
 
     <color name="colorNavHeader">#AB47BC</color>
 

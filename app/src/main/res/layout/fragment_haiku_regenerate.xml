@@ -36,17 +36,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/text_main_color"
             style="@style/Base.Widget.AppCompat.Button.Colored"
-            android:text="俳句リツイート" />
+            android:text="@string/btn_haiku_retweet" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/haiku_regenerate_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/text_main_color"
             android:layout_weight="2"
-            android:text="俳句再生成"
+            android:text="@string/btn_haiku_regenerate"
             style="@style/Base.Widget.AppCompat.Button.Colored" />
 
 

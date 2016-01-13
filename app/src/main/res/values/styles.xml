@@ -9,13 +9,8 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:button">@style/ButtonTheme</item>
     </style>
 
-
-    <style name="ButtonTheme" parent="Widget.AppCompat.Light.ActionButton">
-
-    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
