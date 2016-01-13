@@ -31,23 +31,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <Button
-            android:drawableLeft="@drawable/icon_haiku_retweet_64"
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/haiku_retweet_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/text_main_color"
-            android:text="俳句リツイート"/>
+            android:textColor="@color/colorPrimary"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            android:text="俳句リツイート" />
 
-        <Button
-            android:drawableLeft="@drawable/icon_haiku_regenerate_64"
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/haiku_regenerate_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_main_color"
-            android:layout_weight="1"
-            android:text="俳句再生成"/>
+            android:textColor="@color/colorPrimary"
+            android:layout_weight="2"
+            android:text="俳句再生成"
+            style="@style/Base.Widget.AppCompat.Button.Colored" />
+
 
     </LinearLayout>
 
