@@ -36,6 +36,7 @@ import com.signalyellow.tweetokashi.data.UserData;
 import com.signalyellow.tweetokashi.fragment.FavoriteListFragment;
 import com.signalyellow.tweetokashi.fragment.FollowUserFragment;
 import com.signalyellow.tweetokashi.fragment.FollowerFragment;
+import com.signalyellow.tweetokashi.fragment.HaikuRegenerateDialogFragment;
 import com.signalyellow.tweetokashi.fragment.HomeTimelineFragment;
 import com.signalyellow.tweetokashi.fragment.LogoutDialogFragment;
 import com.signalyellow.tweetokashi.fragment.MentionFragment;
@@ -235,8 +236,12 @@ public class HomeActivity extends AppCompatActivity
                 break;
             case REPLY:
                 Intent intent = new Intent(getApplicationContext(),TweetPostActivity.class);
-                intent.putExtra(TweetPostActivity.ARG_TWEET_DATA,data);
+                intent.putExtra(TweetPostActivity.ARG_TWEET_DATA, data);
                 startActivity(intent);
+                break;
+            case HAIKUREGENERATE:
+                HaikuRegenerateDialogFragment.newInstance(data).show(getSupportFragmentManager(),HaikuRegenerateDialogFragment.class.getSimpleName());
+                break;
             default:
                 break;
         }

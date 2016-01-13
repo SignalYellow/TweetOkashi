@@ -6,6 +6,7 @@ public enum STATUS {
     RETWEET("リツイート", R.drawable.icon_retweet_64),
     UNRETWEET("リツイートを取り消す",R.drawable.icon_not_retweet_64),
     HAIKURETWEET("俳句リツイート",R.drawable.icon_haiku_retweet_64),
+    HAIKUREGENERATE("俳句再生成",R.drawable.icon_haiku_regenerate_64),
     REPLY("返信する",R.drawable.icon_reply_64),
     DELETE("削除する",R.drawable.icon_delete_64),
     FAV("いいね",R.drawable.icon_favorite_64),

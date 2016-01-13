@@ -117,11 +117,6 @@
     <string name="error_too_long_text">文字数オーバーです</string>
 
 
-
-
-
-
-
     <!-- テスト用 サンプル-->
     <string name="test_name_long">あいうえおかきくけこさしすせそたちつてと</string>
     <string name="test_screenname_long">\@123456789012345</string>
@@ -163,7 +158,6 @@
     <string name="title_activity_base_navigation_drawer">BaseNavigationDrawerActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_settings">Settings</string>
-
 
 
 </resources>

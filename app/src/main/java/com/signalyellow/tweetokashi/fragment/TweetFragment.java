@@ -214,8 +214,6 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
                 String path = cursor.getString(0);
                 imgStringList.add(path);
                 imageView.setTag(path);
-                File file = new File(path);
-
                 parentLayout.addView(imageView);
                 cursor.close();
             }

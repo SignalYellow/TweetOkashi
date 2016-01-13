@@ -97,6 +97,7 @@ public class TweetDataDialogFragment extends DialogFragment {
 
         if(mApp.doesMakeHaiku() && mData.getHaiku() != null && !mData.getHaiku().equals(mApp.getHaikuManger().MAKE_NO_HAIKU_MESSAGE)){
             adapter.add(STATUS.HAIKURETWEET);
+            adapter.add(STATUS.HAIKUREGENERATE);
         }
         adapter.add(STATUS.REPLY);
 
@@ -121,6 +122,7 @@ public class TweetDataDialogFragment extends DialogFragment {
                 adapter.add(STATUS.RETWEET);
             }
         }
+
 
         adapter.add(STATUS.USER_TIMELINE);
     }

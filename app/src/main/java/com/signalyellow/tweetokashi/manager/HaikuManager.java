@@ -27,11 +27,21 @@ public class HaikuManager {
 
     MorphologicalAnalysisByGooAPI mAnalyzer;
     LruCache<Long,String> mCache;
+    LruCache<Long,List<Word>> mParseCache;
 
 
     public HaikuManager(){
         mCache = new LruCache<>(MAX_HAIKU);
+        mParseCache = new LruCache<>(MAX_HAIKU);
         mAnalyzer = new MorphologicalAnalysisByGooAPI(Key.getGooId());
+    }
+
+    public List<Word> getMorpholizedWordList(Long id){
+        return mParseCache.get(id);
+    }
+
+    public void setHaikuCache(Long id,String haiku){
+        mCache.put(id,haiku);
     }
 
     public void refresh(){
@@ -71,6 +81,7 @@ public class HaikuManager {
 
             try {
                 List<Word> list = mAnalyzer.analyze(strings[0]);
+                mParseCache.put(mData.getTweetId(),list);
                 return new HaikuGeneratorByGooAPI(list).generateHaikuStrictly();
             } catch (Exception e) {
                 Log.d(TAG, e.toString());
