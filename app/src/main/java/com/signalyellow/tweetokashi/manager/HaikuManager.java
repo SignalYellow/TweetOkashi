@@ -62,6 +62,7 @@ public class HaikuManager {
             return;
         }
         textView.setVisibility(View.VISIBLE);
+        data.setHaiku(haiku);
         textView.setText(haiku);
     }
 

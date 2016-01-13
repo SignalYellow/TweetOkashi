@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="12dp"
+    android:layout_height="wrap_content">
+    <include layout="@layout/item_reply_tweet" />
+
+    <TextView
+        android:layout_marginTop="@dimen/text_haiku_margin_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_sub_color"
+        android:text="@string/text_haiku_result"
+        />
+
+    <TextView
+        android:id="@+id/haiku_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_haiku_size"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/test_haiku_long"
+        android:textColor="@color/text_main_color"
+        android:layout_marginTop="@dimen/text_margin_top"
+        android:layout_marginBottom="@dimen/text_margin_top"/>
+
+    <LinearLayout
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <Button
+            android:drawableLeft="@drawable/icon_haiku_retweet_64"
+            android:id="@+id/haiku_retweet_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/text_main_color"
+            android:text="俳句リツイート"/>
+
+        <Button
+            android:drawableLeft="@drawable/icon_haiku_regenerate_64"
+            android:id="@+id/haiku_regenerate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main_color"
+            android:layout_weight="1"
+            android:text="俳句再生成"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
