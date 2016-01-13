@@ -148,14 +148,13 @@ public class TweetDataAdapter extends ArrayAdapter<TweetData>{
 
         final SmartImageView imageView = holder.imageView;
         imageView.setAnimation(null);
-        List<PictureData> pics = data.getPictureDatas();
-        if (data.getMediaURLs() == null || pics == null || pics.size() < 1) {
+        PictureData pictureData = data.getPictureData();
+        if (data.getMediaURLs() == null || pictureData == null ) {
             imageView.setVisibility(View.GONE);
             return;
         }
         imageView.setVisibility(View.VISIBLE);
 
-        final PictureData pictureData = pics.get(0);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
         params.height = pictureData.getSizeY();
         params.width = pictureData.getSizeX();

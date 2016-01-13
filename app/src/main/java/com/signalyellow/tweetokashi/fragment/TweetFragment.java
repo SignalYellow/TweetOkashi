@@ -5,7 +5,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Path;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -95,20 +97,24 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
         tweetButton.setOnClickListener(new OnTweetButtonClickListener());
         imageButton.setOnClickListener(new OnImageAddButtonClickListener());
 
+        ViewGroup replyItem = (ViewGroup)view.findViewById(R.id.reply_tweet_item);
 
         if(mData != null) {
             String text = "@" + mData.getScreenName() + " ";
             tweetEditText.setText(text);
             tweetEditText.setSelection(text.length());
-        }else{
-            /*SmartImageView imageView = (SmartImageView)view.findViewById(R.id.icon);
+            SmartImageView imageView = (SmartImageView)view.findViewById(R.id.icon);
             TextView textViewText = (TextView)view.findViewById(R.id.text);
             TextView screenNameText = (TextView)view.findViewById(R.id.screen_name);
             TextView nameText = (TextView)view.findViewById(R.id.name);
             imageView.setImageUrl(mData.getProfileImageURL());
-            textViewText.setText(mData.getText());
+            String t = mData.getText();
+            textViewText.setText(t.replace("\n"," "));
             screenNameText.setText(mData.getAtScreenName());
-            nameText.setText(mData.getName());*/
+            nameText.setText(mData.getName());
+
+        }else{
+            replyItem.setVisibility(View.GONE);
         }
         return view;
     }
@@ -176,7 +182,13 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mCountTextView.setText(String.valueOf(140-s.length()));
+            int c = 140-s.length(); //count
+
+            if(c > 0) mCountTextView.setTextColor(Color.GRAY);
+            else if(c == 0) mCountTextView.setTextColor(Color.BLUE);
+            else if(c < 0) mCountTextView.setTextColor(Color.RED);
+
+            mCountTextView.setText(String.valueOf(c));
         }
         @Override
         public void afterTextChanged(Editable s) {}

@@ -51,7 +51,7 @@ public class TweetData implements Serializable{
     //Media & URL
     private String videoURL;
     private MediaEntity[] mediaURLs;
-    private List<PictureData> pictureDatas;
+    private PictureData pictureData;
 
     private URLEntity[] urlEntities;
 
@@ -90,10 +90,7 @@ public class TweetData implements Serializable{
         this.isFavoritedByMe = status.isFavorited();
         this.mediaURLs = status.getMediaEntities();
         if(status.getMediaEntities().length > 0){
-            pictureDatas = new ArrayList<>();
-            for(MediaEntity entity: status.getMediaEntities()){
-                pictureDatas.add(new PictureData(entity));
-            }
+            this.pictureData = new PictureData(status.getMediaEntities()[0]);
         }
 
         this.urlEntities = status.getURLEntities();
@@ -176,8 +173,8 @@ public class TweetData implements Serializable{
         return mediaURLs;
     }
 
-    public List<PictureData> getPictureDatas() {
-        return pictureDatas;
+    public PictureData getPictureData() {
+        return pictureData;
     }
 
     public long getRetweetId() {

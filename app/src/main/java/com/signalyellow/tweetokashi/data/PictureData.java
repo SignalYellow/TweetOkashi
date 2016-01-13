@@ -1,9 +1,11 @@
 package com.signalyellow.tweetokashi.data;
 
+import java.io.Serializable;
+
 import twitter4j.MediaEntity;
 
 
-public class PictureData {
+public class PictureData implements Serializable{
     private String url;
     private int sizeX;
     private int sizeY;
