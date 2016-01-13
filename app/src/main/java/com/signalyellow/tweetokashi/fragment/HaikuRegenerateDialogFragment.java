@@ -9,19 +9,17 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.image.SmartImageView;
 import com.signalyellow.tweetokashi.R;
 import com.signalyellow.tweetokashi.app.TweetOkashiApplication;
-import com.signalyellow.tweetokashi.data.DialogItemAdapter;
-import com.signalyellow.tweetokashi.data.STATUS;
+import com.signalyellow.tweetokashi.async.TweetAsyncTask;
 import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.listener.OnAsyncResultListener;
 
 import jp.signalyellow.haiku.HaikuGeneratorByGooAPI;
 
@@ -80,6 +78,8 @@ public class HaikuRegenerateDialogFragment extends DialogFragment {
         screenNameText.setText(mData.getAtScreenName());
         nameText.setText(mData.getName());
 
+        
+        //// TODO: 16/01/13 button design 
         Button haikuRegenerateButton = (Button)view.findViewById(R.id.haiku_regenerate_button);
         Button haikuRetweetButton = (Button)view.findViewById(R.id.haiku_retweet_button);
 
@@ -88,17 +88,26 @@ public class HaikuRegenerateDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 haikuTextView.setText(mHaiku = mGenerator.generate());
                 mData.setHaiku(mHaiku);
-
             }
         });
 
         haikuRetweetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG,"haikuretweet");
+                if(mHaiku != null) mData.setHaiku(mHaiku);
+                new TweetAsyncTask(mApp.getTwitterInstance(), mData.getHaikuRetweetText(), new OnAsyncResultListener() {
+                    @Override
+                    public void onResult(String message) {
+                        if(message.equals(TweetAsyncTask.ERROR)){
+                            Toast.makeText(getActivity().getApplicationContext(),"エラー:投稿できませんでした",Toast.LENGTH_SHORT).show();
+                        }else{
+                            dismiss();
+                            Toast.makeText(getActivity().getApplicationContext(),"俳句リツイートに成功しました",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).execute();
             }
         });
-
 
         AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity());
         builder.setView(view);
@@ -113,12 +122,9 @@ public class HaikuRegenerateDialogFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d(TAG,"onDetach" + mHaiku);
+        Log.d(TAG, "onDetach" + mHaiku);
         if(mHaiku != null)
         mApp.getHaikuManger().setHaikuCache(mData.getTweetId(),mHaiku);
         //mListener = null;
     }
-
-
-
 }

@@ -21,6 +21,7 @@ import com.signalyellow.tweetokashi.R;
  */
 public class DeletableImageView extends FrameLayout {
 
+    //// TODO: 16/01/13 design 
     private static String TAG = "deletableImage";
 
     private View mView;

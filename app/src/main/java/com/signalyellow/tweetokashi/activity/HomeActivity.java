@@ -85,6 +85,7 @@ public class HomeActivity extends AppCompatActivity
             setNavigationHeader(navigationView.getHeaderView(0));
         }
 
+        //// TODO: 16/01/13  when screen wide 
         if (findViewById(R.id.fragment_container) != null
                 && getSupportFragmentManager().findFragmentByTag(HomeTimelineFragment.class.getSimpleName()) == null) {
             getSupportFragmentManager().beginTransaction()
