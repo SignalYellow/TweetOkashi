@@ -22,7 +22,6 @@ public class TweetData implements Serializable{
     public String text;
     private Date date;
 
-    private Status status;
     public UserData userData;
 
     private long rawUserId;

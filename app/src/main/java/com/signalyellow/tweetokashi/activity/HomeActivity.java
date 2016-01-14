@@ -281,20 +281,9 @@ public class HomeActivity extends AppCompatActivity
                     return false;
                 }
 
-                String searchTag = SearchFragment.class.getSimpleName();
-                SearchFragment fragment = (SearchFragment) getSupportFragmentManager()
-                        .findFragmentByTag(searchTag);
-                if (fragment == null) {
-                    fragment = SearchFragment.newInstance(query);
-                    replaceFragment(fragment, searchTag);
-                    return false;
-                }
-                if (!fragment.getQuery().equals(query)) {
-                    SearchFragment searchFragment = SearchFragment.newInstance(query);
-                    replaceFragment(searchFragment,searchTag,fragment);
-                    return false;
-                }
-                replaceFragment(fragment, searchTag);
+                String searchTag = SearchFragment.class.getSimpleName() + query;
+                SearchFragment searchFragment = SearchFragment.newInstance(query);
+                replaceFragment(searchFragment,searchTag);
                 return false;
             }
 
@@ -355,12 +344,6 @@ public class HomeActivity extends AppCompatActivity
                 return true;
 
             case R.id.nav_search:
-                String searchTag = SearchFragment.class.getSimpleName();
-                SearchFragment searchFragment = (SearchFragment)getSupportFragmentManager()
-                        .findFragmentByTag(searchTag);
-                if(searchFragment != null){
-                    replaceFragment(searchFragment, searchTag);
-                    return true;}
                 mSearchView.setIconified(false);
                 return true;
 

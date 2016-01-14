@@ -133,27 +133,9 @@
 
 
 
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_help">HelpActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_example">Example action</string>
-    <string name="title_activity_favorite">FavoriteActivity</string>
-    <string name="title_activity_home_tweet">HomeTweetActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_home_view">HomeViewActivity</string>
-    <string name="title_activity_main_home">MainHomeActivity</string>
-    <string name="title_activity_home_timeline">HomeTimelineActivity</string>
-    <string name="title_activity_tweet_post">TweetPostActivity</string>
-    <string name="title_activity_base_navigation_drawer">BaseNavigationDrawerActivity</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_settings">Settings</string>
 
 
 </resources>

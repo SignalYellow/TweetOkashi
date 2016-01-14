@@ -26,7 +26,7 @@ public class TweetAsyncTask extends AsyncTask<String ,Void, Status> {
 
     public static String ERROR = "ツイートに失敗しました";
     public static String SUCCESS = "ツイートに成功しました";
-    public static String PIC_ERROR = "写真のアップロードに失敗しました";
+    public static String PIC_ERROR = "写真のアップロードに失敗しました。端末の設定をご確認ください";
 
     private String message;
 

@@ -138,6 +138,8 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
             }
 
 
+            final SpinProgressDialogFragment fragment = SpinProgressDialogFragment.newInstance("更新中", "ツイートを投稿中です。しばらくおまちください");
+            fragment.show(getActivity().getSupportFragmentManager(),SpinProgressDialogFragment.class.getSimpleName());
             TweetAsyncTask tweetAsyncTask = new TweetAsyncTask(
                     mApp.getTwitterInstance(),
                     text,
@@ -145,6 +147,7 @@ public class TweetFragment extends Fragment implements DeletableImageView.OnView
                     new OnAsyncResultListener() {
                         @Override
                         public void onResult(String message) {
+                            fragment.dismiss();
                             Toast.makeText(getActivity().getApplicationContext(),
                                     message,
                                     Toast.LENGTH_LONG).show();
