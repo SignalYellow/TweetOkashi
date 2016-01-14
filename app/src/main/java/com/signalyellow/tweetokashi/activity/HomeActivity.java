@@ -31,6 +31,7 @@ import com.signalyellow.tweetokashi.async.UserAsyncTask;
 import com.signalyellow.tweetokashi.data.STATUS;
 import com.signalyellow.tweetokashi.data.TweetData;
 import com.signalyellow.tweetokashi.data.UserData;
+import com.signalyellow.tweetokashi.fragment.DeleteDialogFragment;
 import com.signalyellow.tweetokashi.fragment.FavoriteListFragment;
 import com.signalyellow.tweetokashi.fragment.FollowUserFragment;
 import com.signalyellow.tweetokashi.fragment.FollowerFragment;
@@ -42,6 +43,7 @@ import com.signalyellow.tweetokashi.fragment.SearchFragment;
 import com.signalyellow.tweetokashi.fragment.TweetDataDialogFragment;
 import com.signalyellow.tweetokashi.fragment.UserDataDialogFragment;
 import com.signalyellow.tweetokashi.fragment.UserTimelineFragment;
+import com.signalyellow.tweetokashi.listener.OnAsyncResultListener;
 import com.signalyellow.tweetokashi.listener.OnFragmentResultListener;
 
 import twitter4j.Twitter;
@@ -221,7 +223,15 @@ public class HomeActivity extends AppCompatActivity
                 new FavoriteAsyncTask(twitter,data,FavoriteAsyncTask.FAVORITE_STATUS.DELETE).execute();
                 break;
             case DELETE:
-                new DestroyAsyncTask(twitter,data).execute();
+                DeleteDialogFragment.newInstance(data).show(getSupportFragmentManager(),DeleteDialogFragment.class.getSimpleName());
+                break;
+            case DELETE_DONE:
+                new DestroyAsyncTask(mApp.getTwitterInstance(), data, new OnAsyncResultListener() {
+                    @Override
+                    public void onResult(String message) {
+                        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                    }
+                }).execute();
                 break;
             case USER_TIMELINE:
                 replaceFragment(UserTimelineFragment.newInstance(data.getUserData()),UserTimelineFragment.class.getSimpleName() + data.getUserData().getScreenName());

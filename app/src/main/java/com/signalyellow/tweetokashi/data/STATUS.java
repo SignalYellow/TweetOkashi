@@ -15,6 +15,7 @@ public enum STATUS {
     USER_TIMELINE("このユーザーのつぶやき",R.drawable.icon_comment_64),
     USER_FAVORITE("このユーザーのいいね",R.drawable.icon_favorite_64),
     USER_FOLLOW("このユーザーのフォロー",R.drawable.icon_retweet_64),
+    DELETE_DONE("削除終了",R.drawable.icon_delete_64),
     USER_FOLLOER("このユーザーのフォロワー",R.drawable.icon_tweet);
 
     private final String text;

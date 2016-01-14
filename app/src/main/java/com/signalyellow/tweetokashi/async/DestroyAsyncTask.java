@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.listener.OnAsyncResultListener;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -16,10 +17,16 @@ public class DestroyAsyncTask extends AsyncTask<Void,Void, Status>{
 
     Twitter mTwitter;
     TweetData mData;
+    OnAsyncResultListener mListener;
 
-    public DestroyAsyncTask(Twitter twitter, TweetData data) {
+
+    public static String ERROR = "削除に失敗しました";
+    public static String SUCCESS = "削除しました";
+
+    public DestroyAsyncTask(Twitter twitter, TweetData data,OnAsyncResultListener listener) {
         this.mTwitter = twitter;
         this.mData = data;
+        this.mListener = listener;
     }
 
     @Override
@@ -35,10 +42,10 @@ public class DestroyAsyncTask extends AsyncTask<Void,Void, Status>{
     protected void onPostExecute(twitter4j.Status status) {
         super.onPostExecute(status);
         if(status == null){
-            Log.d(TAG, "status is null!");
+            mListener.onResult(ERROR);
             return;
         }
-
-        Log.d(TAG,"success delete");
+        Log.d(TAG,"delete");
+        mListener.onResult(SUCCESS);
     }
 }
