@@ -3,6 +3,7 @@ package com.signalyellow.tweetokashi.async;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.signalyellow.tweetokashi.data.TweetData;
+import com.signalyellow.tweetokashi.listener.OnAsyncResultListener;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -18,11 +19,13 @@ public class RetweetAsyncTask extends AsyncTask<Void,Void, Status> {
     Twitter mTwitter;
     TweetData mData;
     RETWEET_STATUS mStatus;
+    OnAsyncResultListener mListener;
 
-    public RetweetAsyncTask(Twitter twitter, TweetData data, RETWEET_STATUS status) {
+    public RetweetAsyncTask(Twitter twitter, TweetData data, RETWEET_STATUS status, OnAsyncResultListener listener) {
         mData = data;
         mTwitter = twitter;
         mStatus = status;
+        mListener = listener;
     }
 
     @Override
@@ -46,15 +49,18 @@ public class RetweetAsyncTask extends AsyncTask<Void,Void, Status> {
     protected void onPostExecute(twitter4j.Status status) {
         if(status == null) {
             Log.e(TAG,"status is null!");
+            mListener.onResult("エラーが発生しました");
             return;
         }
 
         switch (mStatus){
             case RETWEET:
                 mData.successRetweet(status.getId());
+                mListener.onResult("リツイートしました");
                 return;
             case DELETE:
                 mData.successCancelRetweet();
+                mListener.onResult("リツイート解除しました");
                 return;
             default:
                 Log.e(TAG,"in switch" + mStatus);

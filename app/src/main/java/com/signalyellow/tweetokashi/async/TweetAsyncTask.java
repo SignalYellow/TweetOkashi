@@ -26,6 +26,9 @@ public class TweetAsyncTask extends AsyncTask<String ,Void, Status> {
 
     public static String ERROR = "ツイートに失敗しました";
     public static String SUCCESS = "ツイートに成功しました";
+    public static String PIC_ERROR = "写真のアップロードに失敗しました";
+
+    private String message;
 
     public TweetAsyncTask(Twitter twitter, String text, OnAsyncResultListener listener) {
         this(twitter,text,null,listener);
@@ -45,20 +48,28 @@ public class TweetAsyncTask extends AsyncTask<String ,Void, Status> {
 
         if(fileStrings != null) Log.d(TAG, fileStrings.length + "");
 
-        try{
-            StatusUpdate statusUpdate = new StatusUpdate(mText);
-            if(fileStrings != null && fileStrings.length != 0){
+        StatusUpdate statusUpdate = new StatusUpdate(mText);
+        try {
+            if (fileStrings != null && fileStrings.length != 0) {
                 long[] mediaIds = new long[fileStrings.length];
-                for(int i=0;i<fileStrings.length;i++){
+                for (int i = 0; i < fileStrings.length; i++) {
                     UploadedMedia media = mTwitter.uploadMedia(new File(fileStrings[i]));
                     mediaIds[i] = media.getMediaId();
                 }
                 statusUpdate.setMediaIds(mediaIds);
             }
+        }catch (Exception e){
+            Log.e(TAG,e.toString());
+            message = PIC_ERROR;
+            return null;
+        }
+
+        try {
             if(mReplyId != null) statusUpdate.setInReplyToStatusId(mReplyId);
             return mTwitter.updateStatus(statusUpdate);
         }catch (Exception e){
             Log.e(TAG,e.toString());
+            message = ERROR;
             return null;
         }
     }
@@ -66,7 +77,7 @@ public class TweetAsyncTask extends AsyncTask<String ,Void, Status> {
     @Override
     protected void onPostExecute(twitter4j.Status status) {
         if(status == null){
-            mListener.onResult(ERROR);
+            mListener.onResult(message);
             return;
         }else{
             mListener.onResult(SUCCESS);

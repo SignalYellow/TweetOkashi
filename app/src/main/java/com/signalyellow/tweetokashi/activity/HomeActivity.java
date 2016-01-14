@@ -105,6 +105,7 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+
     private void setNavigationHeader(View headerView){
 
         //nav header layout
@@ -208,30 +209,25 @@ public class HomeActivity extends AppCompatActivity
         Twitter twitter = mApp.getTwitterInstance();
         switch (status){
             case RETWEET:
-                new RetweetAsyncTask(twitter,data,RetweetAsyncTask.RETWEET_STATUS.RETWEET).execute();
+                new RetweetAsyncTask(twitter,data,RetweetAsyncTask.RETWEET_STATUS.RETWEET, this).execute();
                 break;
             case UNRETWEET:
-                new RetweetAsyncTask(twitter,data,RetweetAsyncTask.RETWEET_STATUS.DELETE).execute();
+                new RetweetAsyncTask(twitter,data,RetweetAsyncTask.RETWEET_STATUS.DELETE, this).execute();
                 break;
             case HAIKURETWEET:
                 new TweetAsyncTask(twitter,data.getHaikuRetweetText(),this).execute();
                 break;
             case FAV:
-                new FavoriteAsyncTask(twitter,data,FavoriteAsyncTask.FAVORITE_STATUS.FAVORITE).execute();
+                new FavoriteAsyncTask(twitter,data,FavoriteAsyncTask.FAVORITE_STATUS.FAVORITE,this).execute();
                 break;
             case UNFAV:
-                new FavoriteAsyncTask(twitter,data,FavoriteAsyncTask.FAVORITE_STATUS.DELETE).execute();
+                new FavoriteAsyncTask(twitter,data,FavoriteAsyncTask.FAVORITE_STATUS.DELETE,this).execute();
                 break;
             case DELETE:
                 DeleteDialogFragment.newInstance(data).show(getSupportFragmentManager(),DeleteDialogFragment.class.getSimpleName());
                 break;
             case DELETE_DONE:
-                new DestroyAsyncTask(mApp.getTwitterInstance(), data, new OnAsyncResultListener() {
-                    @Override
-                    public void onResult(String message) {
-                        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-                    }
-                }).execute();
+                new DestroyAsyncTask(mApp.getTwitterInstance(), data, this).execute();
                 break;
             case USER_TIMELINE:
                 replaceFragment(UserTimelineFragment.newInstance(data.getUserData()),UserTimelineFragment.class.getSimpleName() + data.getUserData().getScreenName());

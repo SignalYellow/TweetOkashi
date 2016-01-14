@@ -37,6 +37,7 @@ public class TweetOkashiApplication extends Application{
         mTwitter = null;
     }
 
+
     public Twitter getTwitterInstance(){
         return mTwitter == null ? mTwitter = TwitterUtils.getTwitterInstance(this)
                                 : mTwitter;

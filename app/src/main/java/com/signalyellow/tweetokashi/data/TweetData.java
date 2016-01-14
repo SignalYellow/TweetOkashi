@@ -57,7 +57,8 @@ public class TweetData implements Serializable{
 
     public TweetData(Status status){
 
-        if(isQuoted && status.getUser() == null){
+        //dont know when the user is null
+        if( status.getUser() == null){
             this.name = "";
             this.screenName = "";
             this.date = status.getCreatedAt();
