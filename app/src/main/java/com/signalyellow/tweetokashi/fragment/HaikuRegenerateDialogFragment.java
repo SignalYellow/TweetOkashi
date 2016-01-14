@@ -125,6 +125,5 @@ public class HaikuRegenerateDialogFragment extends DialogFragment {
         Log.d(TAG, "onDetach" + mHaiku);
         if(mHaiku != null)
         mApp.getHaikuManger().setHaikuCache(mData.getTweetId(),mHaiku);
-        //mListener = null;
     }
 }

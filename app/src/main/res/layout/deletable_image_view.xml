@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginLeft="32dp"
+    android:layout_marginStart="32dp">
 
     <ImageView
         android:id="@+id/image_view_deletable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:src="@drawable/sgoo"
-        android:layout_marginRight="32dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginTop="32dp"
 
         />
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/delete_button"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_gravity="end|top"
-        android:background="@drawable/deletable_button"/>
-</FrameLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/batsu_64"
+        android:layout_marginLeft="-32dp"
+        android:layout_marginStart="-32dp"
+        android:layout_marginTop="-32dp"
+        android:layout_alignTop="@+id/image_view_deletable"
+        android:layout_toRightOf="@+id/image_view_deletable"
+        android:layout_toEndOf="@+id/image_view_deletable" />
+
+
+
+</RelativeLayout>

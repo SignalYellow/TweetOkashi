@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ public class DeletableImageView extends FrameLayout {
 
     private View mView;
     private ImageView mImageView;
-    private Button mButton;
+    private FloatingActionButton mButton;
     private OnViewDeleteListener mListener;
 
 
@@ -51,7 +52,7 @@ public class DeletableImageView extends FrameLayout {
         a.recycle();
 
         mView = LayoutInflater.from(context).inflate(R.layout.deletable_image_view, this);
-        mButton = (Button)mView.findViewById(R.id.delete_button);
+        mButton = (FloatingActionButton)mView.findViewById(R.id.delete_button);
         mButton.setOnClickListener(new OnDeleteButtonClickListener(this));
         mImageView = (ImageView)mView.findViewById(R.id.image_view_deletable);
 
